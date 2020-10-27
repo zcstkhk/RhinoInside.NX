@@ -782,29 +782,27 @@ namespace RhinoInside.NX.Loader
             return 0;
         }
 
-        private class LogTraceListener : TraceListener, IDisposable
+        private class LogTraceListener : TraceListener
         {
-            StreamWriter logWriter;
+            //StreamWriter logWriter;
 
-            public LogTraceListener()
-            {
-                if (!Directory.Exists(Path.Combine(Globals.RootPath, "Logs")))
-                    Directory.CreateDirectory(Path.Combine(Globals.RootPath, "Logs"));
+            //public LogTraceListener()
+            //{
+            //    if (!Directory.Exists(Path.Combine(Globals.RootPath, "Logs")))
+            //        Directory.CreateDirectory(Path.Combine(Globals.RootPath, "Logs"));
 
-                logWriter = new StreamWriter(Path.Combine(Globals.RootPath, "Logs", "aaa.syslog"));
-            }
+            //    logWriter = new StreamWriter(Path.Combine(Globals.RootPath, "Logs", "aaa.syslog"));
+            //}
 
             public override void Write(string s)
             {
-                logWriter.Write(s);
+                Console.Write(s);
             }
 
             public override void WriteLine(string s)
             {
-                logWriter.WriteLine(s + "\n");
+                Console.WriteLine(s + "\n");
             }
-
-
         }
 
         internal class CoreArrayType
