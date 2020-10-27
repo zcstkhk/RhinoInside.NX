@@ -7,6 +7,10 @@ A Rhino Plug-in For Siemens NX.
 
 To install this Plug-in, you must install Rhino 7 WIP and Siemens NX 1847 or higher.
 
+The program offered in 00~Program is signed with NX 1926, that means if you use 1847 or other version, you must build the program by yourself then sign the program. For more detail about the signing progress, click the link below.
+
+[Signing Process](https://docs.plm.automation.siemens.com/tdoc/nx/1847/nx_api/#uid:signing_process)
+
 Here is the guide for install this plug-in.
 
 >1. Install the Rhino and NX.

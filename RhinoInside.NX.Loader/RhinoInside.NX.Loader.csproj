@@ -53,7 +53,17 @@
   <ItemGroup>
     <Compile Include="Loader.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="D:\Programs\Siemens\NX1926\UGOPEN\NXSigningResource.res">
+      <Link>NXSigningResource.res</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>D:\Programs\Siemens\NX1926\NXBIN\SignDotNet.exe $(TargetPath)
+D:\Programs\Siemens\NX1926\NXBIN\SignDotNet.exe -verify $(TargetPath)
+pause</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

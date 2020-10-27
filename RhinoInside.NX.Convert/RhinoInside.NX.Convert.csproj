@@ -110,5 +110,15 @@
       <Name>RhinoInside.NX.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="D:\Programs\Siemens\NX1926\UGOPEN\NXSigningResource.res">
+      <Link>NXSigningResource.res</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>D:\Programs\Siemens\NX1926\NXBIN\SignDotNet.exe $(TargetPath)
+D:\Programs\Siemens\NX1926\NXBIN\SignDotNet.exe -verify $(TargetPath)
+pause</PostBuildEvent>
+  </PropertyGroup>
 </Project>
