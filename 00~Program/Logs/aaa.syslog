@@ -1,0 +1,367 @@
+Verifying E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\RhinoInside.NX.Loader.dll for NXOpen signature.
+
+NXOpen.Utilities.MissingResourceException: Assembly has not been compiled with an NX resource bundle
+   在 NXOpen.Utilities.ResourceUtilities..ctor(Byte[] assemblyData)
+   在 NXOpen.Utilities.BaseSession.verifyAssembly(String filename, Boolean& alliance_mode, SignatureType signTypeNeeded)
+
+Validation failed 
+
+Verifying E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\NXOpen.Extensions.dll for NXOpen signature.
+
+NXOpen.Utilities.MissingResourceException: Assembly has not been compiled with an NX resource bundle
+   在 NXOpen.Utilities.ResourceUtilities..ctor(Byte[] assemblyData)
+   在 NXOpen.Utilities.BaseSession.verifyAssembly(String filename, Boolean& alliance_mode, SignatureType signTypeNeeded)
+
+Validation failed 
+
+NXOpen.Utilities.NeedDOTNETAuthorLicenseException: Invalid NX signature found
+   在 NXOpen.Utilities.BaseSession.verifyAssemblyData(Boolean callEvaluateStack)
+   在 NXOpen.Utilities.BaseSession.InitLicense()
+
+Validation failed but author license exists - loading library
+
+RhinoInside.Loader.Load: E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\RhinoInside.NX.Core.dll 名称:RhinoInside.NX.Loader.dll
+无上下文策略。
+
+
+AppBase: E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\
+
+Loaded assembly: RhinoInside.NX.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\RhinoInside.NX.Core.dll
+
+RhinoInside.Loader Loaded assembly: RhinoInside.NX.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\RhinoInside.NX.Core.dll
+
+Resolve failed: NXOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: NXOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\NXOpen.dll
+
+RhinoInside.Loader Loaded assembly: NXOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\NXOpen.dll
+
+Loaded: NXOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Resolve failed: RhinoCommon, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530
+
+RhinoInside Resolve failed: RhinoCommon, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530
+
+Loaded assembly: RhinoCommon, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530 from D:\Engineering\Rhino\7WIP\System\RhinoCommon.dll
+
+RhinoInside.Loader Loaded assembly: RhinoCommon, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530 from D:\Engineering\Rhino\7WIP\System\RhinoCommon.dll
+
+RhinoInside Loaded: RhinoCommon, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530
+
+Resolve failed: Grasshopper, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803
+
+RhinoInside Resolve failed: Grasshopper, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803
+
+Loaded assembly: Grasshopper, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Grasshopper.dll
+
+RhinoInside.Loader Loaded assembly: Grasshopper, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Grasshopper.dll
+
+RhinoInside Loaded: Grasshopper, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803
+
+Loaded assembly: GH_IO, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=6a29997d2e6b4f97 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\GH_IO.dll
+
+RhinoInside.Loader Loaded assembly: GH_IO, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=6a29997d2e6b4f97 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\GH_IO.dll
+
+Resolve failed: NXOpenUI, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: NXOpenUI, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\NXOpenUI.dll
+
+RhinoInside.Loader Loaded assembly: NXOpenUI, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\NXOpenUI.dll
+
+Loaded: NXOpenUI, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: RhinoInside.NX.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null from E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\RhinoInside.NX.Extensions.dll
+
+RhinoInside.Loader Loaded assembly: RhinoInside.NX.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null from E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\RhinoInside.NX.Extensions.dll
+
+Loaded assembly: System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Windows.Forms\v4.0_4.0.0.0__b77a5c561934e089\System.Windows.Forms.dll
+
+RhinoInside.Loader Loaded assembly: System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089 from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Windows.Forms\v4.0_4.0.0.0__b77a5c561934e089\System.Windows.Forms.dll
+
+TypeResolveHandler : NXOpen.UI
+
+Loaded: NXOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: NXOpen.Guide, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\NXOpen.Guide.dll
+
+RhinoInside.Loader Loaded assembly: NXOpen.Guide, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\NXOpen.Guide.dll
+
+Loaded: NXOpen.Guide, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded: NXOpen.UF, Version=1926.1700.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded: NXOpen.Utilities, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded: NXOpenUI, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: Snap, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\Snap.dll
+
+RhinoInside.Loader Loaded assembly: Snap, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\Snap.dll
+
+Loaded: Snap, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: MiniSnap, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MiniSnap.dll
+
+RhinoInside.Loader Loaded assembly: MiniSnap, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MiniSnap.dll
+
+Loaded: MiniSnap, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: MFGViewMakerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MFGViewMakerOpen.dll
+
+RhinoInside.Loader Loaded assembly: MFGViewMakerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MFGViewMakerOpen.dll
+
+Loaded: MFGViewMakerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: BaseCheckerCS, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\BaseCheckerCS.dll
+
+RhinoInside.Loader Loaded assembly: BaseCheckerCS, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\BaseCheckerCS.dll
+
+Loaded: BaseCheckerCS, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: CLDKinOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\CLDKinOpen.dll
+
+RhinoInside.Loader Loaded assembly: CLDKinOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\CLDKinOpen.dll
+
+Loaded: CLDKinOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: ToolDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\ToolDesignerOpen.dll
+
+RhinoInside.Loader Loaded assembly: ToolDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\ToolDesignerOpen.dll
+
+Loaded: ToolDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: MfgModelOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MfgModelOpen.dll
+
+RhinoInside.Loader Loaded assembly: MfgModelOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MfgModelOpen.dll
+
+Loaded: MfgModelOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: AnimationDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\AnimationDesignerOpen.dll
+
+RhinoInside.Loader Loaded assembly: AnimationDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\AnimationDesignerOpen.dll
+
+Loaded: AnimationDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: JoinOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\JoinOpen.dll
+
+RhinoInside.Loader Loaded assembly: JoinOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\JoinOpen.dll
+
+Loaded: JoinOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: RuleOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\RuleOpen.dll
+
+RhinoInside.Loader Loaded assembly: RuleOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\RuleOpen.dll
+
+Loaded: RuleOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: MfgMlpOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MfgMlpOpen.dll
+
+RhinoInside.Loader Loaded assembly: MfgMlpOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MfgMlpOpen.dll
+
+Loaded: MfgMlpOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: LineDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\LineDesignerOpen.dll
+
+RhinoInside.Loader Loaded assembly: LineDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\LineDesignerOpen.dll
+
+Loaded: LineDesignerOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: MPAOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MPAOpen.dll
+
+RhinoInside.Loader Loaded assembly: MPAOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MPAOpen.dll
+
+Loaded: MPAOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: PressLineSimulationOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\PressLineSimulationOpen.dll
+
+RhinoInside.Loader Loaded assembly: PressLineSimulationOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\PressLineSimulationOpen.dll
+
+Loaded: PressLineSimulationOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: AMEOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\AMEOpen.dll
+
+RhinoInside.Loader Loaded assembly: AMEOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\AMEOpen.dll
+
+Loaded: AMEOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: TDPOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\TDPOpen.dll
+
+RhinoInside.Loader Loaded assembly: TDPOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\TDPOpen.dll
+
+Loaded: TDPOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: MoldCoolingOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MoldCoolingOpen.dll
+
+RhinoInside.Loader Loaded assembly: MoldCoolingOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MoldCoolingOpen.dll
+
+Loaded: MoldCoolingOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: CLDCommonOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\CLDCommonOpen.dll
+
+RhinoInside.Loader Loaded assembly: CLDCommonOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\CLDCommonOpen.dll
+
+Loaded: CLDCommonOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: mfgamopen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MfgAmOpen.dll
+
+RhinoInside.Loader Loaded assembly: mfgamopen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MfgAmOpen.dll
+
+Loaded: mfgamopen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: PIDOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\PIDOpen.dll
+
+RhinoInside.Loader Loaded assembly: PIDOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\PIDOpen.dll
+
+Loaded: PIDOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: StageModelOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\StageModelOpen.dll
+
+RhinoInside.Loader Loaded assembly: StageModelOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\StageModelOpen.dll
+
+Loaded: StageModelOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: DMUOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\DMUOpen.dll
+
+RhinoInside.Loader Loaded assembly: DMUOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\DMUOpen.dll
+
+Loaded: DMUOpen, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: MBDOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MBDOpen.dll
+
+RhinoInside.Loader Loaded assembly: MBDOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from D:\Programs\Siemens\NX1926\nxbin\managed\MBDOpen.dll
+
+Loaded: MBDOpen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+
+TypeResolveHandler : NXOpen.UI
+
+RhinoInside Loaded: RhinoCommon, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530
+
+RhinoInside Loaded: Grasshopper, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803
+
+RhinoInside Loaded: GH_IO, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=6a29997d2e6b4f97
+
+Loaded assembly: Eto, Version=2.5.0.0, Culture=neutral, PublicKeyToken=552281e97c755530 from D:\Engineering\Rhino\7WIP\System\Eto.dll
+
+RhinoInside.Loader Loaded assembly: Eto, Version=2.5.0.0, Culture=neutral, PublicKeyToken=552281e97c755530 from D:\Engineering\Rhino\7WIP\System\Eto.dll
+
+RhinoInside Loaded: Eto, Version=2.5.0.0, Culture=neutral, PublicKeyToken=552281e97c755530
+
+Loaded assembly: Rhino.UI, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530 from D:\Engineering\Rhino\7WIP\System\Rhino.UI.dll
+
+RhinoInside.Loader Loaded assembly: Rhino.UI, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530 from D:\Engineering\Rhino\7WIP\System\Rhino.UI.dll
+
+RhinoInside Loaded: Rhino.UI, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=552281e97c755530
+
+Resolve failed: NXOpen.Utilities, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded: NXOpen.Utilities, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Resolve failed: NXOpenUI, Version=11.0.2.7, Culture=neutral, PublicKeyToken=null
+
+Loaded: NXOpenUI, Version=1930.0.0.0, Culture=neutral, PublicKeyToken=null
+
+Loaded assembly: System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Drawing\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Drawing.dll
+
+RhinoInside.Loader Loaded assembly: System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Drawing\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Drawing.dll
+
+Loaded assembly: Microsoft.VisualBasic, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\Microsoft.VisualBasic\v4.0_10.0.0.0__b03f5f7f11d50a3a\Microsoft.VisualBasic.dll
+
+RhinoInside.Loader Loaded assembly: Microsoft.VisualBasic, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\Microsoft.VisualBasic\v4.0_10.0.0.0__b03f5f7f11d50a3a\Microsoft.VisualBasic.dll
+
+Loaded assembly: System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Runtime\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Runtime.dll
+
+RhinoInside.Loader Loaded assembly: System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Runtime\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Runtime.dll
+
+Loaded assembly: System.Threading, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Threading\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Threading.dll
+
+RhinoInside.Loader Loaded assembly: System.Threading, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Threading\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Threading.dll
+
+Loaded assembly: System.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Collections\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Collections.dll
+
+RhinoInside.Loader Loaded assembly: System.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a from C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Collections\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Collections.dll
+
+Loaded assembly: Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Mono.Cecil.dll
+
+RhinoInside.Loader Loaded assembly: Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Mono.Cecil.dll
+
+Loaded assembly: CurveComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\CurveComponents.gha
+
+RhinoInside.Loader Loaded assembly: CurveComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\CurveComponents.gha
+
+Resolve failed: RhinoWindows, Version=7.0.0.0, Culture=neutral, PublicKeyToken=552281e97c755530
+
+RhinoInside Resolve failed: RhinoWindows, Version=7.0.0.0, Culture=neutral, PublicKeyToken=552281e97c755530
+
+Loaded assembly: RhinoWindows, Version=7.0.0.0, Culture=neutral, PublicKeyToken=552281e97c755530 from D:\Engineering\Rhino\7WIP\System\RhinoWindows.dll
+
+RhinoInside.Loader Loaded assembly: RhinoWindows, Version=7.0.0.0, Culture=neutral, PublicKeyToken=552281e97c755530 from D:\Engineering\Rhino\7WIP\System\RhinoWindows.dll
+
+RhinoInside Loaded: RhinoWindows, Version=7.0.0.0, Culture=neutral, PublicKeyToken=552281e97c755530
+
+Loaded assembly: FieldComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\FieldComponents.gha
+
+RhinoInside.Loader Loaded assembly: FieldComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\FieldComponents.gha
+
+Loaded assembly: GalapagosComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\GalapagosComponents.gha
+
+RhinoInside.Loader Loaded assembly: GalapagosComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\GalapagosComponents.gha
+
+Loaded assembly: Galapagos, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\Galapagos.dll
+
+RhinoInside.Loader Loaded assembly: Galapagos, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\Galapagos.dll
+
+Loaded assembly: IOComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\IOComponents.gha
+
+RhinoInside.Loader Loaded assembly: IOComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\IOComponents.gha
+
+Loaded assembly: Kangaroo2Component, Version=2.5.2.0, Culture=neutral, PublicKeyToken=794d913993c0f82d from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\Kangaroo2Component.gha
+
+RhinoInside.Loader Loaded assembly: Kangaroo2Component, Version=2.5.2.0, Culture=neutral, PublicKeyToken=794d913993c0f82d from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\Kangaroo2Component.gha
+
+Loaded assembly: KangarooSolver, Version=2.5.2.0, Culture=neutral, PublicKeyToken=794d913993c0f82d from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\KangarooSolver.dll
+
+RhinoInside.Loader Loaded assembly: KangarooSolver, Version=2.5.2.0, Culture=neutral, PublicKeyToken=794d913993c0f82d from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\KangarooSolver.dll
+
+Loaded assembly: MathComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\MathComponents.gha
+
+RhinoInside.Loader Loaded assembly: MathComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\MathComponents.gha
+
+Loaded assembly: ScriptComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=null from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\ScriptComponents.gha
+
+RhinoInside.Loader Loaded assembly: ScriptComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=null from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\ScriptComponents.gha
+
+Loaded assembly: SurfaceComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\SurfaceComponents.gha
+
+RhinoInside.Loader Loaded assembly: SurfaceComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\SurfaceComponents.gha
+
+Loaded assembly: TriangulationComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\TriangulationComponents.gha
+
+RhinoInside.Loader Loaded assembly: TriangulationComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\TriangulationComponents.gha
+
+Loaded assembly: VectorComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\VectorComponents.gha
+
+RhinoInside.Loader Loaded assembly: VectorComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\VectorComponents.gha
+
+Loaded assembly: XformComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\XformComponents.gha
+
+RhinoInside.Loader Loaded assembly: XformComponents, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803 from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\XformComponents.gha
+
+Loaded assembly: GhPython, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=null from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\GhPython.gha
+
+RhinoInside.Loader Loaded assembly: GhPython, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=null from D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Components\GhPython.gha
+
+Loaded assembly: HelloGrasshopper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null from E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\HelloGrasshopper.gha
+
+RhinoInside.Loader Loaded assembly: HelloGrasshopper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null from E:\Documents\Programming\Repos\RhinoInside\00~Program\Startup\HelloGrasshopper.gha
+
+Resolve failed: Grasshopper, Version=6.28.20199.17141, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803
+
+RhinoInside Resolve failed: Grasshopper, Version=6.28.20199.17141, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803
+
+RhinoInside Loaded: Grasshopper, Version=7.0.20295.18003, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803
+
+Resolve failed: RhinoCommon, Version=6.28.20199.17141, Culture=neutral, PublicKeyToken=552281e97c755530
+
+RhinoInside Resolve failed: RhinoCommon, Version=6.28.20199.17141, Culture=neutral, PublicKeyToken=552281e97c755530
+
+RhinoInside Loaded: RhinoCommon, Version=7.0.20295.
