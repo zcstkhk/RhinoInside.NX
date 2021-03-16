@@ -8,31 +8,45 @@ using Microsoft.Win32.SafeHandles;
 using NXOpen.MenuBar;
 using Rhino;
 using Rhino.Commands;
-using Rhino.Geometry;
 using Rhino.Input;
-using Rhino.PlugIns;
 using Rhino.Runtime.InProcess;
-using static System.Math;
-using static Rhino.RhinoMath;
 using NXOpen;
 using Microsoft.Win32;
 using System.IO;
-using static NXOpen.Extensions.Globals;
-using NXOpen.Extensions;
+using System.Text;
+using Grasshopper.Kernel;
+using Grasshopper;
+using static RhinoInside.NX.Extensions.Globals;
+using NXOpen.UF;
+using RhinoInside.NX.Extensions;
 
 namespace RhinoInside.NX.Core
 {
     public static class Rhinoceros
     {
+        static Rhinoceros()
+        {
+            _theUI = UI.GetUI();
+            _theUfSession = UFSession.GetUFSession();
+        }
+
         #region 字段
+        static UI _theUI;
+        static UFSession _theUfSession;
+
         public static WindowHandle MainWindow = WindowHandle.Zero;
         public static IntPtr MainWindowHandle => MainWindow.Handle;
 
-        static RhinoCore Core;
+        public static RhinoCore Core;
 
         internal static string[] StartupLog;
 
-        static List<GuestInfo> guests;
+        //static List<GuestInfo> guests;
+
+        /*internal*/
+        public static void InvokeInHostContext(Action action) => Core.InvokeInHostContext(action);
+        /*internal*/
+        public static T InvokeInHostContext<T>(Func<T> func) => Core.InvokeInHostContext(func);
 
         public static bool Exposed
         {
@@ -48,13 +62,8 @@ namespace RhinoInside.NX.Core
 
         static ExposureSnapshot QuiescentExposure;
 
-        public static readonly string SystemDir = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\7.0\Install", "Path", null) as string ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Rhino WIP", "System");
+        public static readonly string SystemDir = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\7.0\Install", "Path", null) as string ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Rhino 7", "System");
         #endregion
-
-        static Rhinoceros()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += Loader.Loader.AssemblyResolveHandler;
-        }
 
         public static MenuBarManager.CallbackStatus RhinoStartup()
         {
@@ -63,18 +72,41 @@ namespace RhinoInside.NX.Core
                 // Load RhinoCore
                 try
                 {
-                    Core = new RhinoCore
-                    (
-                      new string[]
-                      {
-                              "/nosplash",
-                              "/notemplate",
-                              "/captureprintcalls",
-                              "/stopwatch",
-                              $"/language=2052"
-                      },
-                      WindowStyle.Hidden
-                    );
+                    int languageCode = 2052;    // 默认为中文
+                    switch (NX.CurrentLanguage)
+                    {
+                        case Language.Simple_Chinese:
+                            languageCode = 2052;
+                            break;
+                        case Language.English:
+                            languageCode = 1033;
+                            break;
+                        case Language.French:
+                            languageCode = 1036;
+                            break;
+                        case Language.German:
+                            languageCode = 1031;
+                            break;
+                        case Language.Japanese:
+                            languageCode = 1041;
+                            break;
+                        case Language.Italian:
+                            languageCode = 1040;
+                            break;
+                        case Language.Russian:
+                            languageCode = 1049;
+                            break;
+                        case Language.Korean:
+                            languageCode = 1042;
+                            break;
+                        case Language.Trad_Chinese:
+                            languageCode = 1028;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    Core = new RhinoCore(new string[] { "/nosplash", "/notemplate", "/captureprintcalls", "/stopwatch", $"/language={languageCode}" }, WindowStyle.Hidden);
                 }
                 catch (Exception ex)
                 {
@@ -90,29 +122,11 @@ namespace RhinoInside.NX.Core
                 MainWindow = new WindowHandle(RhinoApp.MainWindowHandle());
 
                 RhinoApp.MainLoop += MainLoop;
-
                 RhinoDoc.NewDocument += OnNewDocument;
                 RhinoDoc.EndOpenDocumentInitialViewUpdate += EndOpenDocumentInitialViewUpdate;
 
                 Command.BeginCommand += BeginCommand;
                 Command.EndCommand += EndCommand;
-
-                //RunScript(script: Environment.GetEnvironmentVariable("RhinoInside_RunScript"), activate: false);
-
-                // Reset document units
-                //UpdateDocumentUnits(RhinoDoc.ActiveDoc);
-                //UpdateDocumentUnits(RhinoDoc.ActiveDoc, Revit.ActiveDBDocument);
-
-                Type[] types = default;
-                try { types = Assembly.GetCallingAssembly().GetTypes(); }
-                catch (ReflectionTypeLoadException ex) { types = ex.Types?.Where(x => x is object).ToArray(); }
-
-                // Look for Guests
-                guests = types.Where(x => typeof(IGuest).IsAssignableFrom(x)).Where(x => !x.IsInterface).Select(x => new GuestInfo(x)).ToList();
-
-                CheckInGuests();
-
-                StartGrasshopper();
 
                 WindowHandle.ActiveWindow = NX.MainWindow;
             }
@@ -120,66 +134,9 @@ namespace RhinoInside.NX.Core
             return MenuBarManager.CallbackStatus.Continue;
         }
 
-        static void StartGrasshopper()
-        {
-            Guest.LoadEditor();
-        }
-
-        static void CheckInGuests()
-        {
-            if (guests is null)
-                return;
-
-            foreach (var guestInfo in guests)
-            {
-                if (guestInfo.Guest is object)
-                    continue;
-
-                bool load = true;
-                foreach (var guestPlugIn in guestInfo.ClassType.GetCustomAttributes(typeof(GuestPlugInIdAttribute), false).Cast<GuestPlugInIdAttribute>())
-                    load |= PlugIn.GetPlugInInfo(guestPlugIn.PlugInId).IsLoaded;
-                                
-                if (!load)
-                    continue;
-
-                guestInfo.Guest = Activator.CreateInstance(guestInfo.ClassType) as IGuest;
-
-                string complainMessage = string.Empty;
-                try { guestInfo.LoadReturnCode = guestInfo.Guest.OnCheckIn(ref complainMessage); }
-                catch (Exception e)
-                {
-                    guestInfo.LoadReturnCode = LoadReturnCode.ErrorShowDialog;
-                    complainMessage = e.Message;
-                }
-
-                if (guestInfo.LoadReturnCode == LoadReturnCode.ErrorShowDialog)
-                {
-                    TheUI.NXMessageBox.Show(guestInfo.Guest.Name, NXMessageBox.DialogType.Error, $"{guestInfo.Guest.Name} failed to load");
-                }
-            }
-        }
-
-        static void CheckOutGuests()
-        {
-            if (guests is null)
-                return;
-
-            foreach (var guestInfo in Enumerable.Reverse(guests))
-            {
-                if (guestInfo.Guest is null)
-                    continue;
-
-                if (guestInfo.LoadReturnCode == LoadReturnCode.Success)
-                    continue;
-
-                try { guestInfo.Guest.OnCheckOut(); guestInfo.LoadReturnCode = LoadReturnCode.ErrorNoDialog; }
-                catch (Exception) { }
-            }
-        }
-
         internal static MenuBarManager.CallbackStatus Shutdown()
         {
-            CheckOutGuests();
+            //CheckOutGuests();
 
             Command.EndCommand -= EndCommand;
             Command.BeginCommand -= BeginCommand;
@@ -272,7 +229,6 @@ namespace RhinoInside.NX.Core
         {
             if (Command.InScriptRunnerCommand())
                 return;
-
         }
 
         static void UpdateDocumentUnits(RhinoDoc rhinoDoc, Part nxPart = null)
@@ -330,6 +286,79 @@ namespace RhinoInside.NX.Core
                 RhinoApp.SetFocusToMainWindow();
 
             RhinoApp.RunScript(script, false);
+        }
+
+        static bool LoadGHA(string filePath)
+        {
+            var LoadGHAProc = typeof(GH_ComponentServer).GetMethod("LoadGHA", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (LoadGHAProc == null)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("An attempt is made to invoke an invalid target method.");
+                message.AppendLine();
+                var assembly = typeof(GH_ComponentServer).Assembly;
+                var assemblyName = assembly.GetName();
+
+                message.AppendLine($"Assembly Version={assemblyName.Version}");
+                message.AppendLine($"{assembly.Location.Replace(' ', (char)0xA0)}");
+
+                throw new TargetException(message.ToString());
+            }
+
+            try
+            {
+                var loadResult = (bool)LoadGHAProc.Invoke
+                (
+                  Instances.ComponentServer,
+                  new object[] { new GH_ExternalFile(filePath), false }
+                );
+
+                return loadResult;
+            }
+            catch (TargetInvocationException e)
+            {
+                throw e.InnerException;
+            }
+        }
+
+        static bool LoadComponents()
+        {
+            // Load This Assembly as a GHA in Grasshopper
+            {
+                var bCoff = Instances.Settings.GetValue("Assemblies:COFF", false);
+                try
+                {
+                    Instances.Settings.SetValue("Assemblies:COFF", false);
+
+                    var location = Assembly.GetExecutingAssembly().Location;
+                    location = @"E:\Documents\Programming\Repos\RhinoInside\_参考项目\Rhino.Inside\HelloGrassHopper\bin\HelloGrasshopper.gha";
+                    if (!LoadGHA(location))
+                    {
+                        if (!File.Exists(location))
+                            throw new FileNotFoundException("File Not Found.", location);
+
+                        if (CentralSettings.IsLoadProtected(location))
+                            throw new InvalidOperationException($"Assembly '{location}' is load protected.");
+
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    var mainContent = e.Message;
+
+                    _theUI.NXMessageBox.Show("Grasshopper Assembly Failure", NXOpen.NXMessageBox.DialogType.Error, $"Grasshopper cannot load the external assembly RhinoInside.NX.GH.gha. Please contact the provider for assistance.\n{mainContent}");
+
+                    return false;
+                }
+                finally
+                {
+                    Instances.Settings.SetValue("Assemblies:COFF", bCoff);
+                }
+            }
+
+            GH_ComponentServer.UpdateRibbonUI();
+            return true;
         }
 
         /// <summary>

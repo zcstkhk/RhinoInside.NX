@@ -12,16 +12,15 @@ using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 using Rhino.PlugIns;
-using RhinoInside.NX.Convert;
+using RhinoInside.NX.Translator;
 using NXOpen.UF;
 using NXOpen;
 using NXOpen.MenuBar;
 using RhinoInside.NX.Core;
-using RhinoInside.NX.Extensions.NX;
-using NXOpen.Extensions;
-using RhinoInside.NX.Convert.Geometry;
+using RhinoInside.NX.Translator.Geometry;
 using System.Reflection;
 using Microsoft.Win32;
+using RhinoInside.NX.Extensions;
 
 namespace RhinoInside.NX.Core
 {
@@ -33,36 +32,26 @@ namespace RhinoInside.NX.Core
         private static Part workPart = theSession.Parts.Work;
         private static Part dispPart = theSession.Parts.Display;
 
-        public static readonly string SystemDir = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\7.0\Install", "Path", null) as string ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Rhino WIP", "System");
-        static CommandGrasshopperPlayer()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += Loader.Loader.AssemblyResolveHandler;
-            AppDomain.CurrentDomain.AssemblyLoad += Loader.Loader.AssemblyLoadHandler;
-            AppDomain.CurrentDomain.TypeResolve += Loader.Loader.TypeResolveHandler;
-            AppDomain.CurrentDomain.ResourceResolve += Loader.Loader.ResourceResolveHandler;
-           //System.IO.FileNotFoundException.
-        }
-
         public static MenuBarManager.CallbackStatus StartGrasshopperPlayer(MenuButtonEvent buttonEvent)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            if (theSession.Parts.Work == null)
+            {
+                "请先打开或创建一个部件后再使用此工具".ShowNXMessageBox(NXMessageBox.DialogType.Error);
+                return MenuBarManager.CallbackStatus.Error;
+            }
 
             var result = MenuBarManager.CallbackStatus.Error;
 
+            Logger.Info("Start Grasshopper Player");
+
             if ((result = BrowseForFile(out var filePath)) == MenuBarManager.CallbackStatus.Continue)
             {
+                Logger.Info($"Selected {filePath} for Player");
                 string message = "";
                 result = Execute(filePath, ref message);
             }
 
             return result;
-
-            //Rhinoceros.RunScript("_GrasshopperPlayer", activate: true);
-
-            //Rhinoceros.MainWindow.BringToFront();
-
-            //return MenuBarManager.CallbackStatus.Continue;
         }
 
         public static MenuBarManager.CallbackStatus BrowseForFile(out string filePath)
@@ -110,7 +99,6 @@ namespace RhinoInside.NX.Core
                         if (result != MenuBarManager.CallbackStatus.Continue)
                             return result;
 
-                        // Update input volatile data values
                         foreach (var value in values)
                             value.Key.AddVolatileDataList(new global::Grasshopper.Kernel.Data.GH_Path(0), value.Value);
 
@@ -133,7 +121,14 @@ namespace RhinoInside.NX.Core
                         }
                         else
                         {
-                            Console.WriteLine(definition.SolutionState);
+                            var ss = definition.Objects;
+
+                            Logger.Info($"Definition SolutionState:{definition.SolutionState}");
+
+                            foreach (var item in ss)
+                            {
+                                Console.WriteLine(item.GetType());
+                            }
                         }
                     }
                     catch (Exception e)
@@ -179,18 +174,27 @@ namespace RhinoInside.NX.Core
         {
             var inputs = new List<IGH_Param>();
 
-            // Collect input params
+            Logger.Info("开始获取输入参数。");
+
+            // 获取输入参数
             foreach (var obj in definition.Objects)
             {
+                Logger.Info($"Name:{obj.Name}, Type:{obj.GetType()}");
+
                 if (!(obj is IGH_Param param))
                     continue;
+
+                Logger.Info($"\t Source Count:{param.Sources.Count}, Recipient Count:{param.Recipients.Count}");
 
                 if (param.Sources.Count != 0 || param.Recipients.Count == 0)
                     continue;
 
+                Logger.Info($"\t VolatileDataCount:{param.VolatileDataCount}");
+
                 if (param.VolatileDataCount > 0)
                     continue;
 
+                Logger.Info($"\t Locked:{param.Locked}");
                 if (param.Locked)
                     continue;
 
@@ -202,27 +206,11 @@ namespace RhinoInside.NX.Core
 
         internal static MenuBarManager.CallbackStatus PromptForInputs(IList<IGH_Param> inputs, out Dictionary<IGH_Param, IEnumerable<IGH_Goo>> values)
         {
+            Logger.Info("提示用户进行输入");
             values = new Dictionary<IGH_Param, IEnumerable<IGH_Goo>>();
             foreach (IGH_Param input in inputs.OrderBy((x) => x.Attributes.Pivot.Y))
             {
-                //if (input.Type.Name == "GH_Box")
-                //{
-                //    var boxes = PromptBox(input.NickName);
-                //    if (boxes == null)
-                //        return MenuBarManager.CallbackStatus.Cancel;
-                //    values.Add(input, boxes);
-                //}
-                //else if (input.Type.Name == "GH_Point")
-                //{
-                //    var points = PromptPoint(input.NickName);
-                //    if (points == null)
-                //        return MenuBarManager.CallbackStatus.Cancel;
-                //    values.Add(input, points);
-                //}
-                //else
-                //{
-                //    Console.WriteLine(input.Type.Name);
-                //}
+                Logger.Info(input.GetType().ToString());
 
                 switch (input)
                 {
@@ -302,7 +290,7 @@ namespace RhinoInside.NX.Core
             IGH_Goo goo = null;
 
             if (PickPoint(prompt + " : ", out var point))
-                goo = new GH_Point(point.ToPoint3d());
+                goo = new GH_Point(point.ToRhino());
 
             yield return goo;
         }
@@ -317,7 +305,7 @@ namespace RhinoInside.NX.Core
               PickPoint(prompt + " : End pont - ", out var to)
             )
             {
-                goo = new GH_Line(new Rhino.Geometry.Line(from.ToPoint3d(), to.ToPoint3d()));
+                goo = new GH_Line(new Rhino.Geometry.Line(from.ToRhino(), to.ToRhino()));
             }
 
             yield return goo;
@@ -333,7 +321,7 @@ namespace RhinoInside.NX.Core
                 var min = new NXOpen.Point3d(Math.Min(from.X, to.X), Math.Min(from.Y, to.Y), Math.Min(from.Z, to.Z));
                 var max = new NXOpen.Point3d(Math.Max(from.X, to.X), Math.Max(from.Y, to.Y), Math.Max(from.Z, to.Z));
 
-                goo = new GH_Box(new Rhino.Geometry.BoundingBox(min.ToPoint3d(), max.ToPoint3d()));
+                goo = new GH_Box(new Rhino.Geometry.BoundingBox(min.ToRhino(), max.ToRhino()));
             }
 
             yield return goo;
@@ -355,9 +343,9 @@ namespace RhinoInside.NX.Core
 
                     var nxCurve = extractedCurve.GetEntities()[0] as NXOpen.Curve;
 
-                    nxCurve.RemoveParameter();
+                    nxCurve.RemoveParameters();
 
-                    var curve = nxCurve.ToCurve();
+                    var curve = nxCurve.ToRhino();
 
                     goo = new GH_Curve(curve);
                 }

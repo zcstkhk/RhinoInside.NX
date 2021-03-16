@@ -1,82 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{50F50200-A967-4BE5-932C-2D4A82569CFC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RhinoInside.NX.Extensions</RootNamespace>
     <AssemblyName>RhinoInside.NX.Extensions</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <DefineConstants>DEBUG;TRACE;$(Configuration)</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
     <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\00~Program\Startup\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\00~Program\Startup\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\00~Program\Startup\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1872|x64'">
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\00~Program\$(Configuration)\Startup\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>D:\Programs\Siemens\$(Configuration)\NXBIN\managed;D:\Engineering\Rhino 7\Plug-ins\Grasshopper;D:\Engineering\Rhino 7\System</ReferencePath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NXOpen">
-      <HintPath>D:\Programs\Siemens\NX1926\NXBIN\managed\NXOpen.dll</HintPath>
+    <Reference Include="NXOpen, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="NXOpen.UF">
-      <HintPath>D:\Programs\Siemens\NX1926\NXBIN\managed\NXOpen.UF.dll</HintPath>
+    <Reference Include="NXOpen.UF, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="NXOpen.Utilities">
-      <HintPath>D:\Programs\Siemens\NX1926\NXBIN\managed\NXOpen.Utilities.dll</HintPath>
+    <Reference Include="NXOpen.Utilities, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="NXOpenUI">
-      <HintPath>D:\Programs\Siemens\NX1926\NXBIN\managed\NXOpenUI.dll</HintPath>
+    <Reference Include="NXOpenUI, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="pskernel_net">
-      <HintPath>D:\Programs\Siemens\NX1926\NXBIN\managed\pskernel_net.dll</HintPath>
+    <Reference Include="pskernel_net, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="RhinoCommon">
-      <HintPath>D:\Engineering\Rhino\7WIP\System\RhinoCommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -91,22 +63,73 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NX\Matrix4x4Ex.cs" />
+    <Compile Include="Globals\AssemblyResolveHandler.cs" />
+    <Compile Include="Globals\Globals.cs" />
+    <Compile Include="Globals\GetBasePath.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="MathEx\Geometry.cs" />
+    <Compile Include="MathEx\LinearAlgebra.cs" />
+    <Compile Include="MathEx\MathEx.cs" />
+    <Compile Include="MathEx\MatrixMath.cs" />
+    <Compile Include="MathEx\Roots.cs" />
+    <Compile Include="MathEx\SplineMath.cs" />
+    <Compile Include="Message\ConsoleEx.cs" />
+    <Compile Include="Message\ListingWindowEx.cs" />
+    <Compile Include="Message\MessageBoxEx.cs" />
+    <Compile Include="NX\NXOpen\DisplayableObjectEx.cs" />
+    <Compile Include="NX\NXOpen\FaceEx.cs" />
+    <Compile Include="NX\NXOpen\Features\Sew.cs" />
+    <Compile Include="NX\NXOpen\IBaseCurveEx.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\BoduningBox2D.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\BoundingBox3D.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\MassProperties.cs" />
+    <Compile Include="NX\NXOpen\BodyEx.cs" />
+    <Compile Include="NX\NXOpen\Features\Extrude.cs" />
+    <Compile Include="NX\NXOpen\Features\BoundedPlane.cs" />
+    <Compile Include="NX\NXOpen\Features\ExtractGeometry.cs" />
+    <Compile Include="NX\NXOpen\Features\ProjectCurve.cs" />
+    <Compile Include="NX\NXOpen\Features\RemoveParameters.cs" />
+    <Compile Include="NX\NXOpen\Features\_FeatureCollectionEx.cs" />
+    <Compile Include="NX\NXOpen\MaskTripleEx.cs" />
+    <Compile Include="NX\NXOpen\MeasureManagerEx\MeasureAngle.cs" />
+    <Compile Include="NX\NXOpen\MeasureManagerEx\MeasureDistance.cs" />
+    <Compile Include="NX\NXOpen\MeasureManagerEx\MeasureExtreme.cs" />
+    <Compile Include="NX\NXOpen\MeasureManagerEx\MeasureFaces.cs" />
+    <Compile Include="NX\NXOpen\MeasureManagerEx\MeasureProjectDistance.cs" />
+    <Compile Include="NX\NXOpen\NXObjectEx.cs" />
+    <Compile Include="NX\NXOpen\Assemblies\AssemblyManagerEx.cs" />
+    <Compile Include="NX\NXOpen\Assemblies\ComponentAssemblyEx.cs" />
+    <Compile Include="NX\NXOpen\Assemblies\ComponentEx.cs" />
+    <Compile Include="NX\NXOpen\PartEx.cs" />
+    <Compile Include="NX\NXOpen\TaggedObjectEx.cs" />
+    <Compile Include="NX\NXOpen\Triangle.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\ObjectTypes.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\Outline.cs" />
+    <Compile Include="NX\Parasolid\PKTag.cs" />
+    <Compile Include="NX\Parasolid\TOPOLEx.cs" />
+    <Compile Include="NX\Parasolid\VECTOR_TEx.cs" />
+    <Compile Include="NX\NXOpen\Structs\Matrix3x3Ex.cs" />
+    <Compile Include="NX\NXOpen\Structs\Point3dEx.cs" />
+    <Compile Include="NX\NXOpen\Structs\Point4d.cs" />
+    <Compile Include="NX\NXOpen\Structs\Quaternion.cs" />
+    <Compile Include="NX\NXOpen\Structs\Vector3dEx.cs" />
+    <Compile Include="NX\NXOpen\Structs\Vector4d.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\PointClouds.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\PointCloudsRoot.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\Rectangle.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\SimpleLine.cs" />
+    <Compile Include="NX\NXOpen\Structs\Matrix4x4Ex.cs" />
+    <Compile Include="NX\NXOpen\_Add-on\UV.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RhinoCommon.cs" />
+    <Compile Include="Rhino\RhinoCommon.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Win32.cs" />
     <Compile Include="WinForms.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="D:\Programs\Siemens\NX1926\UGOPEN\NXSigningResource.res">
-      <Link>NXSigningResource.res</Link>
-    </EmbeddedResource>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>D:\Programs\Siemens\NX1926\NXBIN\SignDotNet.exe $(TargetPath)
-D:\Programs\Siemens\NX1926\NXBIN\SignDotNet.exe -verify $(TargetPath)
-pause</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

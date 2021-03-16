@@ -1,0 +1,71 @@
+VERSION 120 
+
+EDIT UG_GATEWAY_MAIN_MENUBAR 
+
+BEFORE UG_HELP
+CASCADE_BUTTON RhinoInside_MENU
+LABEL RhinoInside
+END_OF_BEFORE
+
+MENU RhinoInside_MENU
+
+BUTTON Start_Rhino_Button
+LABEL Start Rhino
+MESSAGE Shows Rhino window
+BITMAP  ..\Bitmap\RhinoInside_Rhino.bmp
+ACTIONS STARTRHINO
+
+BUTTON Import_Rhino_Button
+LABEL Import Rhino
+BITMAP  ..\Bitmap\RhinoInside_Import_3DM.bmp
+ACTIONS IMPORTRHINO
+
+BUTTON Start_Grasshopper_Button
+LABEL Grasshopper
+MESSAGE Shows Grasshopper window
+BITMAP  ..\Bitmap\RhinoInside_Grasshopper.bmp
+ACTIONS STARTGRASSHOPPER
+
+BUTTON Grasshopper_Player_Button
+LABEL Player
+MESSAGE Loads and evals a Grasshopper definition
+BITMAP  ..\Bitmap\RhinoInside_GrasshopperPlayer.bmp
+ACTIONS STARTGRASSHOPPERPLAYER
+
+BUTTON Grasshopper_Solver_Button
+LABEL Solver
+MESSAGE Enable/Disable the Grasshopper solver
+BITMAP  ..\Bitmap\RhinoInside_SolverOff.bmp
+ACTIONS GRASSHOPPERSOLVER
+
+BUTTON Grasshopper_Recompute_Button
+LABEL Recompute
+MESSAGE Force a complete recompute of all objects
+BITMAP  ..\Bitmap\RhinoInside_Recompute.bmp
+ACTIONS GRASSHOPPERRECOMPUTE
+
+BUTTON Grasshopper_Bake_Button
+LABEL Bake Selected
+MESSAGE Bakes selected objects content in the NX work part
+BITMAP  ..\Bitmap\RhinoInside_Bake.bmp
+ACTIONS GRASSHOPPERBAKE
+
+BUTTON Start_IronPython_Button
+LABEL Python
+MESSAGE Shows Python editor window
+BITMAP  ..\Bitmap\RhinoInside_Python.bmp
+ACTIONS STARTIRONPYTHON
+
+BUTTON RhinoInside_Log_File
+LABEL Log File
+MESSAGE Shows RhinoInside Log File
+BITMAP styler_multilinetext
+ACTIONS RHINOINSIDELOGFILE
+
+END_OF_MENU
+
+HIDE RhinoInside_MENU
+
+
+
+

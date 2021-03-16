@@ -8,10 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RhinoInside.NX.Convert;
-using static NXOpen.Extensions.Globals;
-using NXOpen.Extensions;
+using RhinoInside.NX.Translator;
 using System.Windows.Forms;
+using static RhinoInside.NX.Extensions.Globals;
 
 namespace RhinoInside.NX.Core
 {
@@ -53,7 +52,7 @@ namespace RhinoInside.NX.Core
                             case Curve curve:
                                 if (curve.TryGetPlane(out var plane, DistanceTolerance))        // 平面曲线转换
                                 {
-                                    if (curve.ToCurve(scaleFactor) is NXOpen.Curve crv)
+                                    if (curve.ToRhino(scaleFactor) is NXOpen.Curve crv)
                                         elements.Add(crv);
                                 }
                                 else

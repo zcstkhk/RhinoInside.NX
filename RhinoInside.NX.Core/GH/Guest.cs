@@ -24,13 +24,16 @@ namespace RhinoInside.NX.Core
     {
         public static Grasshopper.Plugin.GH_RhinoScriptInterface Script = new Grasshopper.Plugin.GH_RhinoScriptInterface();
         public string Name => "Grasshopper";
+        [STAThread]
         LoadReturnCode IGuest.OnCheckIn(ref string errorMessage)
         {
+            //Instances.DocumentEditor 为空，无法加载 Grasshopper
+
             string message = null;
             try
             {
-                if (!LoadComponents())
-                    message = "Failed to load NX Grasshopper components.";
+                //if (!LoadComponents())
+                //    message = "Failed to load NX Grasshopper components.";
             }
             catch (FileNotFoundException e)
             {
@@ -78,9 +81,15 @@ namespace RhinoInside.NX.Core
         /// </summary>
         public static void LoadEditor()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
             Script.LoadEditor();
+
+            var ss = Instances.ComponentServer;
+
             if (!Script.IsEditorLoaded())
-                throw new Exception("Failed to startup Grasshopper");
+                Console.WriteLine("Failed to startup Grasshopper");
         }
 
         /// <summary>
@@ -127,9 +136,6 @@ namespace RhinoInside.NX.Core
 
         static bool LoadGHA(string filePath)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-
             var LoadGHAProc = typeof(GH_ComponentServer).GetMethod("LoadGHA", BindingFlags.NonPublic | BindingFlags.Instance);
             if (LoadGHAProc == null)
             {
@@ -147,11 +153,13 @@ namespace RhinoInside.NX.Core
 
             try
             {
-                return (bool)LoadGHAProc.Invoke
+                var loadResult = (bool)LoadGHAProc.Invoke
                 (
                   Instances.ComponentServer,
                   new object[] { new GH_ExternalFile(filePath), false }
                 );
+
+                return loadResult;
             }
             catch (TargetInvocationException e)
             {
@@ -169,7 +177,7 @@ namespace RhinoInside.NX.Core
                     Instances.Settings.SetValue("Assemblies:COFF", false);
 
                     var location = Assembly.GetExecutingAssembly().Location;
-                    location = Path.Combine(Path.GetDirectoryName(location), "HelloGrasshopper.gha");
+                    location = Path.Combine(Path.GetDirectoryName(location), "RhinoInside.NX.GH.gha");
                     if (!LoadGHA(location))
                     {
                         if (!File.Exists(location))
@@ -265,4 +273,6 @@ namespace RhinoInside.NX.Core
 
         void OnCheckOut();
     }
+
+    
 }

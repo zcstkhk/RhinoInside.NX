@@ -11,9 +11,9 @@ using Rhino.PlugIns;
 using System.Diagnostics;
 using NXOpen.MenuBar;
 using System.Windows.Forms;
-using NXOpen.Extensions;
 using NXOpen.UF;
 using NXOpen;
+using RhinoInside.NX.Extensions;
 
 namespace RhinoInside.NX.Core
 {
@@ -50,7 +50,6 @@ namespace RhinoInside.NX.Core
                     RibbonCreated = true;
                 }
 
-
                 if (buttonEvent.ActiveButton.ToggleStatus == MenuButton.Toggle.On)
                 {
                     theUfSession.Ui.SetRibbonVis(RhinoInsideRibbon, 1);
@@ -83,6 +82,11 @@ namespace RhinoInside.NX.Core
         /// <returns></returns>
         public static MenuBarManager.CallbackStatus StartRhino(MenuButtonEvent buttonEvent)
         {
+            if (Rhinoceros.Core == null)
+            {
+                Rhinoceros.RhinoStartup();
+            }
+
             try
             {
                 Rhinoceros.Exposed = true;
@@ -97,8 +101,6 @@ namespace RhinoInside.NX.Core
             }
             return 0;
         }
-
-        
 
         /// <summary>
         /// Æô¶¯ Python

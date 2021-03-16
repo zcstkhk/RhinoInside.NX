@@ -9,12 +9,17 @@ using Microsoft.Win32.SafeHandles;
 using System.Transactions;
 using NXOpen.MenuBar;
 using RhinoInside.NX.Core;
-using RhinoInside.NX.Convert;
 using NXOpen.UF;
 using NXOpen;
 using System.Reflection;
 using Microsoft.Win32;
-using NXOpen.Extensions;
+using System.Diagnostics;
+using System.Threading;
+using System.Globalization;
+using System.Text;
+using System.Runtime.InteropServices;
+using RhinoInside.NX.Extensions;
+using RhinoInside.NX.Translator;
 
 namespace RhinoInside.NX.Core
 {
@@ -26,23 +31,63 @@ namespace RhinoInside.NX.Core
         private static Part workPart = theSession.Parts.Work;
         private static Part dispPart = theSession.Parts.Display;
 
-        public static readonly string SystemDir = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\7.0\Install", "Path", null) as string ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Rhino WIP", "System");
-
-        static GrasshopperCommands()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += Loader.Loader.AssemblyResolveHandler;
-        }
+        public static readonly string SystemDir = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\7.0\Install", "Path", null) as string ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Rhino 7", "System");
 
         public static MenuBarManager.CallbackStatus StartGrasshopper(MenuButtonEvent buttonEvent)
         {
+            Logger.Info("Starting Grasshopper");
+
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+            Rhinoceros.RunScript("_Grasshopper", activate: true);
+
+            //Instances.DocumentEditor?.GetHashCode().ToString().ConsoleWriteLine();
+
+            //Guest.ShowEditor();
+
+            Rhinoceros.MainWindow.BringToFront();
+
+            Logger.Info("Start Grasshopper Succesfully.");
+
+            return MenuBarManager.CallbackStatus.Continue;
+        }
+
+        private static void DocumentEditor_Load(object sender, EventArgs e)
+        {
+            Logger.Info($"Document Editor AppDomain ID: {AppDomain.CurrentDomain.Id}");
+        }
+
+        static bool LoadGHA(string filePath)
+        {
+            var LoadGHAProc = typeof(GH_ComponentServer).GetMethod("LoadGHA", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (LoadGHAProc == null)
             {
-                //Rhinoceros.RunScript("_Grasshopper", activate: true);
+                var message = new StringBuilder();
+                message.AppendLine("An attempt is made to invoke an invalid target method.");
+                message.AppendLine();
+                var assembly = typeof(GH_ComponentServer).Assembly;
+                var assemblyName = assembly.GetName();
 
-                Guest.ShowEditor();
+                message.AppendLine($"Assembly Version={assemblyName.Version}");
+                message.AppendLine($"{assembly.Location.Replace(' ', (char)0xA0)}");
 
-                Rhinoceros.MainWindow.BringToFront();
+                throw new TargetException(message.ToString());
+            }
 
-                return MenuBarManager.CallbackStatus.Continue;
+            try
+            {
+                var loadResult = (bool)LoadGHAProc.Invoke
+                (
+                  Instances.ComponentServer,
+                  new object[] { new GH_ExternalFile(filePath), false }
+                );
+
+                return loadResult;
+            }
+            catch (TargetInvocationException e)
+            {
+                throw e.InnerException;
             }
         }
 
@@ -75,7 +120,7 @@ namespace RhinoInside.NX.Core
                     finally { GH_Document.EnableSolutions = false; }
                 }
 
-                // If there are no scheduled solutions return control back to Revit now
+                // If there are no scheduled solutions return control back to NX now
                 if (definition.ScheduleDelay > GH_Document.ScheduleRecursive)
                     WindowHandle.ActiveWindow = Rhinoceros.MainWindow;
 
@@ -152,13 +197,7 @@ namespace RhinoInside.NX.Core
             return MenuBarManager.CallbackStatus.Continue;
         }
 
-        public static IEnumerable<IGH_ElementIdBakeAwareObject> GetObjectsToBake(GH_Document definition, BakeOptions options) => ElementIdBakeAwareObject.OfType
-                  (
-                    definition.SelectedObjects().
-                    OfType<IGH_ActiveObject>().
-                    Where(x => !x.Locked)
-                  ).
-                  Where(x => x.CanBake(options));
+        public static IEnumerable<IGH_ElementIdBakeAwareObject> GetObjectsToBake(GH_Document definition, BakeOptions options) => ElementIdBakeAwareObject.OfType(definition.SelectedObjects().OfType<IGH_ActiveObject>().Where(x => !x.Locked)).Where(x => x.CanBake(options));
 
         class ElementIdBakeAwareObject : IGH_ElementIdBakeAwareObject
         {

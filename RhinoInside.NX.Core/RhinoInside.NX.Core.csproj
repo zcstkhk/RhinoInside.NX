@@ -1,100 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B74D4CE-E07D-4A78-8481-D9F1CA87704B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RhinoInside.NX.Core</RootNamespace>
     <AssemblyName>RhinoInside.NX.Core</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <ProjectGuid>{5B74D4CE-E07D-4A78-8481-D9F1CA87704B}</ProjectGuid>
+    <DefineConstants>DEBUG;TRACE;$(Configuration)</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Deterministic>true</Deterministic>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\00~Program\Startup\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>8.0</LangVersion>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1872|x64'">
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\00~Program\Startup\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>8.0</LangVersion>
+  <PropertyGroup>
+    <ReferencePath>D:\Programs\Siemens\$(Configuration)\NXBIN\managed;D:\Engineering\Rhino 7\Plug-ins\Grasshopper;D:\Engineering\Rhino 7\System</ReferencePath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\00~Program\Startup\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>8.0</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>00~Program\Startup\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>8.0</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  <PropertyGroup>
+    <OutputPath>..\00~Program\$(Configuration)\Startup\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Eto">
-      <HintPath>D:\Engineering\Rhino\7WIP\System\Eto.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="GH_IO">
-      <HintPath>D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\GH_IO.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Grasshopper">
-      <HintPath>D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Grasshopper.dll</HintPath>
       <Private>False</Private>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="NXOpen, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(UGII_BASE_DIR)\nxbin\managed\NXOpen.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="NXOpen.Extensions, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NXOpen.Extensions\bin\NXOpen.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="NXOpen.UF, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(UGII_BASE_DIR)\nxbin\managed\NXOpen.UF.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NXOpen.Utilities, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(UGII_BASE_DIR)\nxbin\managed\NXOpen.Utilities.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NXOpenUI, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(UGII_BASE_DIR)\nxbin\managed\NXOpenUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RhinoCommon">
-      <HintPath>D:\Engineering\Rhino\7WIP\System\RhinoCommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -107,42 +67,37 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Externel\EditScope.cs" />
     <Compile Include="GH\Bake.cs" />
     <Compile Include="GH\GrasshopperCommands.cs" />
     <Compile Include="GH\GrasshopperPlayerCommand.cs" />
-    <Compile Include="GH\Guest.cs" />
+    <Compile Include="ImageBuilder.cs" />
+    <Compile Include="ObjectTypes.cs" />
     <Compile Include="Rhino\Import.cs" />
     <Compile Include="Rhino\RhinoCommands.cs" />
     <Compile Include="Rhino\Rhinoceros.cs" />
     <Compile Include="NX\NX.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Externel\UI\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RhinoInside.NX.Convert\RhinoInside.NX.Convert.csproj">
-      <Project>{76bd9ef4-d8ee-422f-a505-0b0bdafd7702}</Project>
-      <Name>RhinoInside.NX.Convert</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RhinoInside.NX.Extensions\RhinoInside.NX.Extensions.csproj">
       <Project>{50f50200-a967-4be5-932c-2d4a82569cfc}</Project>
       <Name>RhinoInside.NX.Extensions</Name>
+      <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\RhinoInside.NX.Loader\RhinoInside.NX.Loader.csproj">
-      <Project>{2582835c-7fbf-495a-8dc6-7fefe8a621ec}</Project>
-      <Name>RhinoInside.NX.Loader</Name>
+    <ProjectReference Include="..\RhinoInside.NX.Translator\RhinoInside.NX.Translator.csproj">
+      <Project>{76bd9ef4-d8ee-422f-a505-0b0bdafd7702}</Project>
+      <Name>RhinoInside.NX.Translator</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="D:\Programs\Siemens\NX1926\UGOPEN\NXSigningResource.res">
-      <Link>NXSigningResource.res</Link>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>D:\Programs\Siemens\NX1926\NXBIN\SignDotNet.exe $(TargetPath)
-D:\Programs\Siemens\NX1926\NXBIN\SignDotNet.exe -verify $(TargetPath)
-pause</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.  
