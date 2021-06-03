@@ -94,10 +94,11 @@ namespace RhinoInside.NX.Core
 
                 GrassHopperDefaultAssemblyFolder = Grasshopper.Folders.DefaultAssemblyFolder;
 
-                for (int i = 0; i < FilesToCopyToLibrary.Length; i++)
-                {
-                    File.Copy(Path.Combine(ApplicationPath, FilesToCopyToLibrary[i]), Path.Combine(GrassHopperDefaultAssemblyFolder, FilesToCopyToLibrary[i]), true);
-                }
+                File.Copy(Path.Combine(ApplicationPath, "RhinoInside.NX.GH.Loader.dll"), Path.Combine(GrassHopperDefaultAssemblyFolder, "RhinoInside.NX.GH.Loader.gha"), true);
+
+#if DEBUG
+                File.Copy(Path.Combine(ApplicationPath, "RhinoInside.NX.GH.Loader.pdb"), Path.Combine(GrassHopperDefaultAssemblyFolder, "RhinoInside.NX.GH.Loader.pdb"), true);
+#endif
 
                 theUI.MenuBarManager.AddMenuAction("STARTRHINOINSIDE", new MenuBarManager.ActionCallback(RhinoCommands.StartRhinoInside));
                 theUI.MenuBarManager.AddMenuAction("STARTRHINO", new MenuBarManager.ActionCallback(RhinoCommands.StartRhino));

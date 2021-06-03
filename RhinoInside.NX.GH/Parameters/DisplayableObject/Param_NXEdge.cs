@@ -15,7 +15,7 @@ using RhinoInside.NX.GH.Properties;
 
 namespace RhinoInside.NX.GH.Parameters
 {
-    public class Param_NXEdge : NX_DisplayableParam<NX_Edge>
+    public class Param_NXEdge : Param_NXDisplayableObject<NX_Edge>
     {
         public override Guid ComponentGuid => new Guid("DE2B4E54-48D8-4B8C-9758-ED9EE19F1ED2");
 
@@ -59,7 +59,5 @@ namespace RhinoInside.NX.GH.Parameters
 
             return GH_GetterResult.cancel;
         }
-
-
     }
 }

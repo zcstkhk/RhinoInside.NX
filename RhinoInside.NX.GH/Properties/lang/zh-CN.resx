@@ -132,6 +132,21 @@
   <data name="GrasshopperTranslatorSubCategory" xml:space="preserve">
     <value>转换器</value>
   </data>
+  <data name="NXBodyParamDesc" xml:space="preserve">
+    <value>包含 NX 体的集合</value>
+  </data>
+  <data name="NXBodyParamName" xml:space="preserve">
+    <value>NX 体</value>
+  </data>
+  <data name="NXBodyParamNickName" xml:space="preserve">
+    <value>体</value>
+  </data>
+  <data name="NXBodyTypeDesc" xml:space="preserve">
+    <value>表示 NX 中的体</value>
+  </data>
+  <data name="NXCSYSTypeDesc" xml:space="preserve">
+    <value>表示 NX 中的坐标系</value>
+  </data>
   <data name="NXCurveParamDesc" xml:space="preserve">
     <value>包含 NX 曲线集合</value>
   </data>
@@ -149,5 +164,20 @@
   </data>
   <data name="NXEdgeTypeDesc" xml:space="preserve">
     <value>表示 NX 中的边</value>
+  </data>
+  <data name="NXFaceParamDesc" xml:space="preserve">
+    <value>包含 NX 中的面的集合</value>
+  </data>
+  <data name="NXFaceParamName" xml:space="preserve">
+    <value>NX 面</value>
+  </data>
+  <data name="NXFaceParamNickName" xml:space="preserve">
+    <value>面</value>
+  </data>
+  <data name="NXFaceTypeDesc" xml:space="preserve">
+    <value>表示 NX 中的面</value>
+  </data>
+  <data name="NXPlaneTypeDesc" xml:space="preserve">
+    <value>表示 NX 中的平面</value>
   </data>
 </root>

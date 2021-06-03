@@ -6,7 +6,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RhinoInside.NX.GH</RootNamespace>
     <AssemblyName>RhinoInside.NX.GH</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>DEBUG;TRACE;$(Configuration)</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -14,17 +14,19 @@
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
+    <OutputPath>..\00~Program\Startup\</OutputPath>
     <Deterministic>true</Deterministic>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1872|x64'">
-    <OutputPath>..\00~Program\NX1872\Startup\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
   </PropertyGroup>
   <PropertyGroup>
     <ReferencePath>
-			  D:\Programs\Siemens\$(Configuration)\NXBIN\managed;
-		  </ReferencePath>
+			D:\Programs\Siemens\$(Configuration)\NXBIN\managed;D:\Engineering\Rhino 7\Plug-ins\Grasshopper;D:\Engineering\Rhino 7\System;D:\Engineering\Rhino 7\Plug-ins\Grasshopper\Components
+		</ReferencePath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NXOpen, Culture=neutral, processorArchitecture=MSIL">
@@ -39,11 +41,16 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Snap, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="NXOpenUI, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="pskernel_net, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ScriptComponents">
+      <HintPath>D:\Engineering\Rhino 7\Plug-ins\Grasshopper\Components\ScriptComponents.gha</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -56,37 +63,43 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="RhinoCommon">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Engineering\Rhino\7WIP\System\rhinocommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Grasshopper">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\Grasshopper.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eto">
       <Private>False</Private>
     </Reference>
     <Reference Include="GH_IO">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Engineering\Rhino\7WIP\Plug-ins\Grasshopper\GH_IO.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Debug\Show Type.cs" />
-    <Compile Include="Parameters\Param_DisplayableObject\Param_BaseCurve\Param_NXCurve.cs" />
-    <Compile Include="Parameters\Param_DisplayableObject\Param_DisplayableObject.cs" />
-    <Compile Include="Parameters\Param_DisplayableObject\Param_BaseCurve\Param_NXEdge.cs" />
+    <Compile Include="Utilities\CSharpScriptComponent.cs" />
+    <Compile Include="Parameters\DisplayableObject\Param_NXCurve.cs" />
+    <Compile Include="Parameters\DisplayableObject\Param_NXDisplayableObject.cs" />
+    <Compile Include="Parameters\DisplayableObject\Param_NXEdge.cs" />
+    <Compile Include="Parameters\DisplayableObject\Param_NXFace.cs" />
+    <Compile Include="Parameters\DisplayableObject\Param_NXBody.cs" />
     <Compile Include="Properties\Icons.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Components\Translators\Curve Translator.cs" />
-    <Compile Include="Components\Translators\Edge Translator.cs" />
     <Compile Include="Properties\lang\Language.cs" />
     <Compile Include="Types\BaseCurve\NX_Curve.cs" />
+    <Compile Include="Types\NX_Body.cs" />
+    <Compile Include="Types\NX_CSYS.cs" />
     <Compile Include="Types\NX_DisplayableObject.cs" />
     <Compile Include="Types\BaseCurve\NX_Edge.cs" />
+    <Compile Include="Types\NX_Face.cs" />
+    <Compile Include="Types\NX_Plane.cs" />
+    <Compile Include="Types\NX_Point.cs" />
+    <Compile Include="Types\NX_SmartObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RhinoInside.NX.Core\RhinoInside.NX.Core.csproj">
@@ -99,9 +112,15 @@
       <Name>RhinoInside.NX.Extensions</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\RhinoInside.NX.GH.Loader\RhinoInside.NX.GH.Loader.csproj">
+      <Project>{f4e0ffec-9223-4817-a363-52a78ed6b6d0}</Project>
+      <Name>RhinoInside.NX.GH.Loader</Name>
+		<Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\RhinoInside.NX.Translator\RhinoInside.NX.Translator.csproj">
       <Project>{76bd9ef4-d8ee-422f-a505-0b0bdafd7702}</Project>
       <Name>RhinoInside.NX.Translator</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -117,10 +136,9 @@
     <None Include="Properties\icons\Debug.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\icons\Type.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Properties\icons\NX_Body.png" />
     <Content Include="Properties\icons\NX_Curve.png" />
+    <Content Include="Properties\icons\NX_Face.png" />
     <None Include="Properties\icons\NX_Show.png" />
     <None Include="Properties\icons\NX_Edge.png" />
     <None Include="Properties\icons\bounding_volume.bmp" />
@@ -128,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Analyze\" />
+    <Folder Include="Components\CurveComponents\" />
     <Folder Include="Extensions\" />
     <Folder Include="Kernel\" />
     <Folder Include="Part\" />
@@ -141,11 +160,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <PostBuildEvent>erase $(ProjectName).gha
-ren $(TargetFileName) $(ProjectName).gha
-		</PostBuildEvent>
-  </PropertyGroup>
   <PropertyGroup>
     <FallbackCulture>en-US</FallbackCulture>
   </PropertyGroup>

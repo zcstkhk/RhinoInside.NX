@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RhinoInside.NX.Translator.Geometry;
 
 namespace RhinoInside.NX.GH.Types
 {
-    public class NX_Curve : NX_DisplayableObject<Curve>
+    public class NX_Curve : NX_SmartObject<Curve>
     {
         public NX_Curve()
         {
@@ -35,6 +36,18 @@ namespace RhinoInside.NX.GH.Types
                 return base.ToString();
             
             return string.Empty;
+        }
+
+        public override bool CastTo<Q>(ref Q target)
+        {
+            if (typeof(Q) == typeof(GH_Curve))
+            {
+                target = (Q)(object)new GH_Curve(Value.ToRhino());
+
+                return true;
+            }
+
+            return base.CastTo(ref target);
         }
     }
 }

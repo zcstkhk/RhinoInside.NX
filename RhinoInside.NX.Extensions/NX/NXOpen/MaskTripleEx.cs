@@ -36,5 +36,7 @@ namespace RhinoInside.NX.Extensions
         public static Selection.MaskTriple Direction => new Selection.MaskTriple(UFConstants.UF_direction_type, UFConstants.UF_all_subtype, 0);
 
         public static Selection.MaskTriple[] Curve => new Selection.MaskTriple[] { Circle, Spline, Line };
+
+        public static Selection.MaskTriple[] BaseCurve => new Selection.MaskTriple[] { Circle, Spline, Line, Edge };
     }
 }

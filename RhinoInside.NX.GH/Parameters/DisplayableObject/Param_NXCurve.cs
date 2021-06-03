@@ -12,7 +12,7 @@ using RhinoInside.NX.GH.Properties;
 
 namespace RhinoInside.NX.GH.Parameters
 {
-    public class Param_NXCurve : NX_DisplayableParam<NX_Curve>
+    public class Param_NXCurve : Param_NXDisplayableObject<NX_Curve>
     {
         public Param_NXCurve() : base(Languages.GetString("NXCurveParamName"), Languages.GetString("NXCurveParamNickName"), Languages.GetString("NXCurveParamDesc"), "NX", Languages.GetString("GrasshopperGeometrySubCategory"))
         {

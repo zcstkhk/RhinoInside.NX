@@ -15,25 +15,29 @@ using System.Timers;
 
 namespace RhinoInside.NX.GH.Types
 {
+    /// <summary>
+    /// 用于关联到 NXOpen.DisplayableObject
+    /// </summary>
     public interface INXDisplayableObject
     {
         Tag Tag { get; }
 
         bool Highlight { get; set; }
 
-        bool Hidden { get; set; }
+        bool Visible { get; set; }
 
         int Layer { get; set; }
 
         void RedisplayObject();
     }
 
-    public abstract class NX_DisplayableObject<T> : GH_Goo<T>, INXDisplayableObject where T : class
+    public abstract class NX_DisplayableObject<T> : GH_Goo<T>, INXDisplayableObject where T : DisplayableObject
     {
         private string Handle;
 
         public NX_DisplayableObject()
         {
+
         }
 
         public NX_DisplayableObject(Tag tag) : base()
@@ -50,6 +54,7 @@ namespace RhinoInside.NX.GH.Types
         /// <param name="highlight"></param>
         public NX_DisplayableObject(Tag tag, bool highlight) : this(tag)
         {
+            m_value = tag.GetTaggedObject() as T;
             Highlight = highlight;
         }
 
@@ -86,10 +91,20 @@ namespace RhinoInside.NX.GH.Types
             }
         }
 
-        public bool Hidden
+        protected bool _visible;
+
+        public virtual bool Visible
         {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get => _visible;
+            set
+            {
+                if (value)
+                    Value.Unblank();
+                else
+                    Value.Blank();
+
+                _visible = value;
+            }
         }
 
         public int Layer

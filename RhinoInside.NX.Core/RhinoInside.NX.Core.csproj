@@ -6,7 +6,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RhinoInside.NX.Core</RootNamespace>
     <AssemblyName>RhinoInside.NX.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>DEBUG;TRACE;$(Configuration)</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -14,17 +14,17 @@
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
+    <OutputPath>..\00~Program\Startup\</OutputPath>
     <Deterministic>true</Deterministic>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1872|x64'">
   </PropertyGroup>
-  <PropertyGroup>
-    <ReferencePath>D:\Programs\Siemens\$(Configuration)\NXBIN\managed;D:\Engineering\Rhino 7\Plug-ins\Grasshopper;D:\Engineering\Rhino 7\System</ReferencePath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>..\00~Program\$(Configuration)\Startup\</OutputPath>
+    <ReferencePath>D:\Programs\Siemens\$(Configuration)\NXBIN\managed;D:\Engineering\Rhino 7\Plug-ins\Grasshopper;D:\Engineering\Rhino 7\System</ReferencePath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Eto">
@@ -55,6 +55,10 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RhinoCommon">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Snap, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

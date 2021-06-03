@@ -93,6 +93,16 @@ namespace RhinoInside.NX.GH.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap NX_Body {
+            get {
+                object obj = ResourceManager.GetObject("NX_Body", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap NX_Curve {
             get {
                 object obj = ResourceManager.GetObject("NX_Curve", resourceCulture);
@@ -113,9 +123,9 @@ namespace RhinoInside.NX.GH.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap NX_Show {
+        internal static System.Drawing.Bitmap NX_Face {
             get {
-                object obj = ResourceManager.GetObject("NX_Show", resourceCulture);
+                object obj = ResourceManager.GetObject("NX_Face", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +133,9 @@ namespace RhinoInside.NX.GH.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap Type {
+        internal static System.Drawing.Bitmap NX_Show {
             get {
-                object obj = ResourceManager.GetObject("Type", resourceCulture);
+                object obj = ResourceManager.GetObject("NX_Show", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -6,6 +6,7 @@ using BodyStyle = NXOpen.GeometricUtilities.FeatureOptions.BodyStyle;
 using RhinoInside.NX.Extensions;
 using System;
 using static RhinoInside.NX.Extensions.Globals;
+using RhinoInside.NX.Translator.Geometry.Raw;
 
 namespace RhinoInside.NX.Translator
 {

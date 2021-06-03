@@ -700,8 +700,6 @@ namespace RhinoInside.NX.Extensions
             Hidden
         }
 
-        public static string[] FilesToCopyToLibrary = new string[] { "RhinoInside.NX.GH.Loader.gha", "RhinoInside.NX.GH.Loader.pdb" };
-
         public static string GrassHopperDefaultAssemblyFolder;
     }
 }

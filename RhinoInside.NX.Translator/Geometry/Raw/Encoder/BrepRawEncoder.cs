@@ -1,165 +1,17 @@
+ï»¿using Rhino.Geometry;
+using Rhino.Geometry.Collections;
+using RhinoInside.NX.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using NXOpen;
-using Rhino.Geometry;
-using Rhino.Geometry.Collections;
-using Plane = Rhino.Geometry.Plane;
-using Point = Rhino.Geometry.Point;
-using Point2d = Rhino.Geometry.Point2d;
-using Point3d = Rhino.Geometry.Point3d;
-using Polyline = Rhino.Geometry.Polyline;
-using Vector3d = Rhino.Geometry.Vector3d;
-using PK = PLMComponents.Parasolid.PK_.Unsafe;
+using System.Text;
+using System.Threading.Tasks;
 using static RhinoInside.NX.Extensions.Globals;
-using RhinoInside.NX.Extensions;
 
-namespace RhinoInside.NX.Translator
+namespace RhinoInside.NX.Translator.Geometry.Raw
 {
-    /// <summary>
-    /// ´ËÀàÖĞµÄ·½·¨ÊÇ½« RAW ĞÎÊ½µÄ¶ÔÏó×ª»»Îª NX ¼¸ºÎÌå¡£
-    /// <para>The input geometry is granted not to be modified on any way, no copies are necessary before calling this methods.</para>
-    /// <para>Raw form is Rhino geometry in NX internal units</para>
-    /// </summary>
-    static class RawEncoder
+    internal static partial class RawEncoder
     {
-        #region Values
-        public static UV AsUV(Point2f value)
-        {
-            return new UV(value.X, value.Y);
-        }
-
-        public static UV AsUV(Point2d value)
-        {
-            return new UV(value.X, value.Y);
-        }
-
-        public static UV AsUV(Vector2d value)
-        {
-            return new UV(value.X, value.Y);
-        }
-        public static UV AsUV(Vector2f value)
-        {
-            return new UV(value.X, value.Y);
-        }
-
-        public static NXOpen.Point3d AsXYZ(Point3f value)
-        {
-            return new NXOpen.Point3d(value.X, value.Y, value.Z);
-        }
-
-        public static NXOpen.Point3d AsXYZ(Point3d value)
-        {
-            return new NXOpen.Point3d(value.X, value.Y, value.Z);
-        }
-
-        public static NXOpen.Point3d AsXYZ(Vector3d value)
-        {
-            return new NXOpen.Point3d(value.X, value.Y, value.Z);
-        }
-
-        public static NXOpen.Point3d AsXYZ(Vector3f value)
-        {
-            return new NXOpen.Point3d(value.X, value.Y, value.Z);
-        }
-
-        public static Matrix4x4 AsTransform(Rhino.Geometry.Transform value)
-        {
-            Debug.Assert(value.IsAffine);
-
-            var result = Matrix4x4Ex.Create(new NXOpen.Vector3d(value.M03, value.M13, value.M23));
-
-            result.SetAxisX(new Vector4d(value.M00, value.M10, value.M20));
-            result.SetAxisY(new Vector4d(value.M01, value.M11, value.M21));
-            result.SetAxisZ(new Vector4d(value.M02, value.M12, value.M22));
-            return result;
-        }
-
-        public static BoundingBox3D AsBoundingBoxXYZ(Rhino.Geometry.BoundingBox value)
-        {
-            return new BoundingBox3D(AsXYZ(value.Min), AsXYZ(value.Max));
-        }
-
-        //public static NXOpen.Extensions.BoundingBox AsBoundingBoxXYZ(Rhino.Geometry.Box value)
-        //{
-        //    return new NXOpen.Extensions.BoundingBox(AsXYZ(value.BoundingBox.Min), AsXYZ(value.BoundingBox.Max), AsTransform(Transform.PlaneToPlane(Plane.WorldXY, value.Plane)));
-        //}
-
-        public static NXOpen.Plane AsPlane(Plane value)
-        {
-            return WorkPart.Planes.CreatePlane(value.Origin.ToXYZ(), value.Normal.ToXYZ(), SmartObject.UpdateOption.WithinModeling);
-        }
-
-        public static NXOpen.Point3d[] AsPolyLine(Polyline value)
-        {
-
-            int count = value.Count;
-            var points = new NXOpen.Point3d[count];
-
-            for (int p = 0; p < count; ++p)
-                points[p] = AsXYZ(value[p]);
-
-            return points;
-        }
-        #endregion
-
-        #region Point
-        public static NXOpen.Point ToHost(Point value)
-        {
-            return value.ToPoint();
-        }
-        #endregion
-
-        #region Curve
-        public static NXOpen.Line ToHost(LineCurve value)
-        {
-            var line = value.Line;
-            return line.ToLine();
-        }
-
-        public static NXOpen.Arc ToHost(ArcCurve value)
-        {
-            var arc = value.Arc;
-            return arc.ToArc();
-        }
-
-        public static double[] ToHost(NurbsCurveKnotList list)
-        {
-            var count = list.Count;
-            var knots = new double[count + 2];
-
-            int j = 0, k = 0;
-            while (j < count)
-                knots[++k] = list[j++];
-
-            knots[0] = knots[1];
-            knots[count + 1] = knots[count];
-
-            return knots;
-        }
-
-        public static NXOpen.Point3d[] ToHost(NurbsCurvePointList list)
-        {
-            var count = list.Count;
-            var points = new NXOpen.Point3d[count];
-
-            for (int p = 0; p < count; ++p)
-            {
-                var location = list[p].Location;
-                points[p] = new NXOpen.Point3d(location.X, location.Y, location.Z);
-            }
-
-            return points;
-        }
-
-        public static NXOpen.Curve ToHost(NurbsCurve value)
-        {
-            return value.ToCurve();
-        }
-        #endregion
-
-        #region Brep
         //public static IEnumerable<NXOpen.BRepBuilderEdgeGeometry> ToHost(BrepEdge edge)
         //{
         //    var edgeCurve = edge.EdgeCurve.Trim(edge.Domain);
@@ -222,7 +74,7 @@ namespace RhinoInside.NX.Translator
         }
 
         /// <summary>
-        /// ½«Ãæ×ª»»ÎªÎ´ĞŞ¼ôµÄÇúÃæ
+        /// å°†é¢è½¬æ¢ä¸ºæœªä¿®å‰ªçš„æ›²é¢
         /// </summary>
         /// <param name="nurbsSurface"></param>
         /// <returns></returns>
@@ -241,16 +93,16 @@ namespace RhinoInside.NX.Translator
                 var bboxUV = new BoundingBox2D(domainU.Min, domainV.Min, domainU.Max, domainV.Max);
 
 #if DEBUG
-                Console.WriteLine($"U ·½Ïò·â±ÕĞÔ£º{nurbsSurface.IsClosed(0)}");
-                Console.WriteLine($"V ·½Ïò·â±ÕĞÔ£º{nurbsSurface.IsClosed(1)}");
-                Console.WriteLine($"U ·½Ïò½×´Î£º{nurbsSurface.Degree(0)}");
-                Console.WriteLine($"V ·½Ïò½×´Î£º{nurbsSurface.Degree(1)}");
-                Console.WriteLine($"U ·½Ïò½áµãÊı£º{knotsU.Length}");
-                Console.WriteLine($"V ·½Ïò½áµãÊı£º{knotsV.Length}");
-                Console.WriteLine($"U ·½Ïò¿ØÖÆµã¸öÊı£º{nurbsSurface.Points.CountU}");
-                Console.WriteLine($"V ·½Ïò¿ØÖÆµã¸öÊı£º{nurbsSurface.Points.CountV}");
+                Console.WriteLine($"U æ–¹å‘å°é—­æ€§ï¼š{nurbsSurface.IsClosed(0)}");
+                Console.WriteLine($"V æ–¹å‘å°é—­æ€§ï¼š{nurbsSurface.IsClosed(1)}");
+                Console.WriteLine($"U æ–¹å‘é˜¶æ¬¡ï¼š{nurbsSurface.Degree(0)}");
+                Console.WriteLine($"V æ–¹å‘é˜¶æ¬¡ï¼š{nurbsSurface.Degree(1)}");
+                Console.WriteLine($"U æ–¹å‘ç»“ç‚¹æ•°ï¼š{knotsU.Length}");
+                Console.WriteLine($"V æ–¹å‘ç»“ç‚¹æ•°ï¼š{knotsV.Length}");
+                Console.WriteLine($"U æ–¹å‘æ§åˆ¶ç‚¹ä¸ªæ•°ï¼š{nurbsSurface.Points.CountU}");
+                Console.WriteLine($"V æ–¹å‘æ§åˆ¶ç‚¹ä¸ªæ•°ï¼š{nurbsSurface.Points.CountV}");
 #endif
-                #region Ê¹ÓÃĞŞ¼ôÇúÃæ·½Ê½´´½¨£¬±¨´í£¬ÎŞ·¨´´½¨ÇúÃæ
+                #region ä½¿ç”¨ä¿®å‰ªæ›²é¢æ–¹å¼åˆ›å»ºï¼ŒæŠ¥é”™ï¼Œæ— æ³•åˆ›å»ºæ›²é¢
                 //double[] poles = new double[nurbsSurface.Points.CountU * nurbsSurface.Points.CountV * 4];
 
                 //for (int i = 0; i < nurbsSurface.Points.CountV; i++)
@@ -336,7 +188,7 @@ namespace RhinoInside.NX.Translator
                 //}
                 #endregion
 
-                #region Ê¹ÓÃÄâºÏ·½Ê½´´½¨£¬Îó²î½Ï´ó
+                #region ä½¿ç”¨æ‹Ÿåˆæ–¹å¼åˆ›å»ºï¼Œè¯¯å·®è¾ƒå¤§
                 //NXOpen.UF.UFModl.BsurfRowInfo[] bSurfRowInfo = new NXOpen.UF.UFModl.BsurfRowInfo[nurbsSurface.Points.CountV];
                 //for (int i = 0; i < bSurfRowInfo.Length; i++)
                 //{
@@ -413,7 +265,7 @@ namespace RhinoInside.NX.Translator
                     out int poleFixup);
                 #endregion
 
-                #region CreateBsurface ±¨´í£¬Ö¸¶¨½á¹¹±ØĞëÄÜÖ±½Ó¸´ÖÆµ½±¾»ú½á¹¹ÖĞ
+                #region CreateBsurface æŠ¥é”™ï¼ŒæŒ‡å®šç»“æ„å¿…é¡»èƒ½ç›´æ¥å¤åˆ¶åˆ°æœ¬æœºç»“æ„ä¸­
                 //double[,] vertices = new double[nurbsSurface.Points.CountU * nurbsSurface.Points.CountV, 4];
 
                 //for (int i = 0; i < nurbsSurface.Points.CountV; i++)
@@ -573,73 +425,5 @@ namespace RhinoInside.NX.Translator
 
         //    return null;
         //}
-        #endregion
-
-        #region Mesh
-        //public static NXOpen.Facet.FacetedBody ToHost(Mesh mesh)
-        //{
-        //  if (mesh is null)
-        //    return null;
-
-        //        //theUfSession.Facet.CreateModel(WorkPart.Tag, out Tag facetModelTag);
-
-
-
-        //  using
-        //  (
-        //    var builder = new NXOpen.TessellatedShapeBuilder()
-        //    {
-        //      GraphicsStyleId = GeometryEncoder.Context.Peek.GraphicsStyleId,
-        //      Target = NXOpen.TessellatedShapeBuilderTarget.Mesh,
-        //      Fallback = NXOpen.TessellatedShapeBuilderFallback.Salvage
-        //    }
-        //  )
-        //  {
-        //    var isSolid = mesh.SolidOrientation() != 0;
-        //    builder.OpenConnectedFaceSet(isSolid);
-
-        //    var vertices = mesh.Vertices.ToPoint3dArray();
-        //    var triangle = new NXOpen.Point3d[3];
-        //    var quad = new NXOpen.Point3d[4];
-
-        //    foreach (var face in mesh.Faces)
-        //    {
-        //      if (face.IsQuad)
-        //      {
-        //        quad[0] = AsXYZ(vertices[face.A]);
-        //        quad[1] = AsXYZ(vertices[face.B]);
-        //        quad[2] = AsXYZ(vertices[face.C]);
-        //        quad[3] = AsXYZ(vertices[face.D]);
-
-        //        builder.AddFace(new NXOpen.TessellatedFace(quad, GeometryEncoder.Context.Peek.MaterialId));
-        //      }
-        //      else
-        //      {
-        //        triangle[0] = AsXYZ(vertices[face.A]);
-        //        triangle[1] = AsXYZ(vertices[face.B]);
-        //        triangle[2] = AsXYZ(vertices[face.C]);
-
-        //        builder.AddFace(new NXOpen.TessellatedFace(triangle, GeometryEncoder.Context.Peek.MaterialId));
-        //      }
-        //    }
-        //    builder.CloseConnectedFaceSet();
-
-        //    builder.Build();
-        //    using (var result = builder.GetBuildResult())
-        //    {
-        //      if (result.Outcome != NXOpen.TessellatedShapeBuilderOutcome.Nothing)
-        //      {
-        //        var geometries = result.GetGeometricalObjects();
-        //        if (geometries.Count == 1)
-        //        {
-        //          return geometries[0] as NXOpen.Mesh;
-        //        }
-        //      }
-        //    }
-        //  }
-
-        //  return null;
-        //}
-        #endregion
     }
 }

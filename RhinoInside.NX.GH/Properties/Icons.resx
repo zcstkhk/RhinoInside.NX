@@ -127,16 +127,19 @@
   <data name="NX" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>icons\NX.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="NX_Body" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>icons\NX_Body.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="NX_Curve" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>icons\NX_Curve.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NX_Edge" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>icons\NX_Edge.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="NX_Face" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>icons\NX_Face.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="NX_Show" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>icons\NX_Show.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Type" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>icons\Type.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

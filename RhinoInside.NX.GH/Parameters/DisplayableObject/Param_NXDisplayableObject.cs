@@ -46,12 +46,15 @@ namespace RhinoInside.NX.GH.Parameters
         }
     }
 
-    public abstract class NX_DisplayableParam<T> : GH_PersistentParam<T> where T : class,  IGH_Goo, INXDisplayableObject
+    public abstract class Param_NXDisplayableObject<T> : GH_PersistentParam<T> where T : class, IGH_Goo, INXDisplayableObject
     {
         private Timer _timer;
 
-        public NX_DisplayableParam(string name, string nickName, string desc, string category, string subCategory) : base(name, nickName, desc, category, subCategory)
+        protected bool Visible;
+
+        public Param_NXDisplayableObject(string name, string nickName, string desc, string category, string subCategory) : base(name, nickName, desc, category, subCategory)
         {
+            Visible = true;
         }
 
         public override void AddedToDocument(GH_Document document)
@@ -151,7 +154,7 @@ namespace RhinoInside.NX.GH.Parameters
                 Menu_AppendObjectName(menu);
             }
 
-            Menu_AppendItem(menu, "Visible", Menu_VisibleInNXClicked, Properties.Icons.NX_Show, true, true);
+            Menu_AppendItem(menu, "Visible", Menu_VisibleInNXClicked, Properties.Icons.NX_Show, true, Visible);
             Menu_AppendEnableItem(menu);
             Menu_AppendItem(menu, "View in NX", Menu_ViewInNX);
             Menu_AppendRuntimeMessages(menu);
@@ -197,9 +200,14 @@ namespace RhinoInside.NX.GH.Parameters
             return true;
         }
 
-        private void Menu_VisibleInNXClicked(object sender, EventArgs e)
+        protected virtual void Menu_VisibleInNXClicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Visible = !Visible;
+
+            for (int i = 0; i < PersistentDataCount; i++)
+            {
+                PersistentData.ElementAt(i).Visible = Visible;
+            }
         }
 
         private void Menu_ClearPersistentData(object sender, EventArgs e)

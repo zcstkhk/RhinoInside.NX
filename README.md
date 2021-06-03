@@ -1,6 +1,8 @@
 # RhinoInside.NX
 A Rhino Plug-in For Siemens NX.
 
+# 将 NX 中的面转换为 Rhino Brep 的时候遇到一些问题，还请有相关经验的小伙伴不吝赐教。
+
 # It's now in a very very early beta. for now, it's not recommended for any actual use.
 
 # Install Guide

@@ -10,10 +10,12 @@ using System.Diagnostics;
 using Grasshopper;
 
 namespace RhinoInside.NX.GH
-{ 
+{
     public class Loader : GH_AssemblyPriority
     {
-        private static string NXBinPath;
+        public static string NXBinPath;
+
+        public static string RhinoInsideDirectory;
 
         static Loader()
         {
@@ -22,14 +24,18 @@ namespace RhinoInside.NX.GH
             var nxModuleFileName = new FileInfo(Process.GetCurrentProcess().MainModule.FileName);
 
             NXBinPath = Path.Combine(nxModuleFileName.DirectoryName, "managed");
+
+            RhinoInsideDirectory = Environment.GetEnvironmentVariable("UGII_RhinoInside_Dir");
         }
 
-        private static HashSet<string> NXOpenAssemblies = new HashSet<string>
+        public static HashSet<string> NXOpenAssemblies = new HashSet<string>
         {
             "NXOpen",
             "NXOpen.UF",
             "NXOpen.Utilities",
-            "NXOpenUI"
+            "NXOpenUI",
+            "pskernel_net",
+            "Snap"
         };
 
         internal static Assembly AssemblyResolveHandler(object sender, ResolveEventArgs args)
@@ -43,8 +49,7 @@ namespace RhinoInside.NX.GH
             }
             else if (assemblyName == "RhinoInside.NX.Extensions")
             {
-                var rhinoInsideStartupDirectory = Environment.GetEnvironmentVariable("RhinoInside_Startup_Directory");
-                return Assembly.LoadFrom(Path.Combine(rhinoInsideStartupDirectory, assemblyName + ".dll"));
+                return Assembly.LoadFrom(Path.Combine(RhinoInsideDirectory, "Startup", assemblyName + ".dll"));
             }
             else
             {
@@ -79,9 +84,7 @@ namespace RhinoInside.NX.GH
                 {
                     Instances.Settings.SetValue("Assemblies:COFF", false);
 
-                   var rhinoInsideProgramDirectory = Environment.GetEnvironmentVariable("RhinoInside_Program_Directory");
-
-                    var location = Path.Combine(rhinoInsideProgramDirectory, "Startup", "RhinoInside.NX.GH.gha");
+                    var location = Path.Combine(RhinoInsideDirectory, "Startup", "RhinoInside.NX.GH.dll");
                     if (!LoadGHA(location))
                     {
                         if (!File.Exists(location))

@@ -27,8 +27,8 @@ namespace RhinoInside.NX.Translator.Geometry
         #region Geometry values
         public static Point3d ToRhino(this NXOpen.Point3d value)
         {
-            var rhino = RawDecoder.ToRhino(value); 
-            UnitConverter.Scale(ref rhino, UnitConverter.NXToRhinoUnitsRatio); 
+            var rhino = RawDecoder.ToRhino(value);
+            UnitConverter.Scale(ref rhino, UnitConverter.NXToRhinoUnitsRatio);
             return rhino;
         }
 
@@ -80,17 +80,19 @@ namespace RhinoInside.NX.Translator.Geometry
 
         #region GeometryBase
 
-
-
-
-        
-
-        
-
-
-
         public static Brep ToBrep(this NXOpen.Face value)
-        { var rhino = RawDecoder.ToRhino(value); UnitConverter.Scale(rhino, UnitConverter.NXToRhinoUnitsRatio); return rhino; }
+        {
+            var rhino = RawDecoder.ToRhinoBrep(value);
+            UnitConverter.Scale(rhino, UnitConverter.NXToRhinoUnitsRatio);
+            return rhino;
+        }
+
+        public static Surface ToRhinoSurface(this NXOpen.Face face)
+        {
+            var rhino = RawDecoder.ToRhinoSurface(face, out _);
+            UnitConverter.Scale(rhino, UnitConverter.NXToRhinoUnitsRatio);
+            return rhino;
+        }
 
         //public static Brep ToBrep(this DB.Solid value)
         //{ var rhino = RawDecoder.ToRhino(value); UnitConverter.Scale(rhino, UnitConverter.ToRhinoUnits); return rhino; }
