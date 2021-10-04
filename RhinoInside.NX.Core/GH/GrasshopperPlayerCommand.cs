@@ -20,6 +20,7 @@ using RhinoInside.NX.Core;
 using RhinoInside.NX.Translator.Geometry;
 using System.Reflection;
 using Microsoft.Win32;
+using NXOpen.Extensions;
 using RhinoInside.NX.Extensions;
 
 namespace RhinoInside.NX.Core
@@ -36,7 +37,7 @@ namespace RhinoInside.NX.Core
         {
             if (theSession.Parts.Work == null)
             {
-                "请先打开或创建一个部件后再使用此工具".ShowNXMessageBox(NXMessageBox.DialogType.Error);
+                "请先打开或创建一个部件后再使用此工具".ShowInNXMessageBox(NXMessageBox.DialogType.Error);
                 return MenuBarManager.CallbackStatus.Error;
             }
 

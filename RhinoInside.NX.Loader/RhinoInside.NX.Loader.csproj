@@ -1,86 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
-		<ProjectGuid>{2582835C-7FBF-495A-8DC6-7FEFE8A621EC}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>RhinoInside.NX</RootNamespace>
-		<AssemblyName>RhinoInside.NX.Loader</AssemblyName>
-		<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-		<DefineConstants>DEBUG;TRACE;$(Configuration)</DefineConstants>
-		<DebugSymbols>true</DebugSymbols>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<DebugType>full</DebugType>
-		<PlatformTarget>x64</PlatformTarget>
-		<LangVersion>8.0</LangVersion>
-		<ErrorReport>prompt</ErrorReport>
-		<Deterministic>true</Deterministic>
-		<StartProgram>D:\Programs\Siemens\$(Configuration)\NXBIN\ugraf.exe</StartProgram>
-		<StartArguments>-nx</StartArguments>
-		<EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
-		<StartAction>Program</StartAction>
-		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-		<OutputPath>..\00~Program\Startup\</OutputPath>
-		<TargetFrameworkProfile />
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1872|x64'">
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
-	</PropertyGroup>
-	<PropertyGroup>
-		<ReferencePath>D:\Programs\Siemens\$(Configuration)\NXBIN\managed</ReferencePath>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="NXOpen, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="NXOpen.UF, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="NXOpen.Utilities, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="NXOpenUI, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="System" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Xml" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="AssemblyInfo.cs" />
-		<Compile Include="RhinoInside.NX.Loader.cs" />
-	</ItemGroup>
-	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-	<ItemGroup>
-		<EmbeddedResource Include="D:\Programs\Siemens\$(Configuration)\UGOPEN\NXSigningResource.res">
-			<Link>NXSigningResource_$(Configuration).res</Link>
-		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\RhinoInside.NX.Extensions\RhinoInside.NX.Extensions.csproj">
-			<Project>{50f50200-a967-4be5-932c-2d4a82569cfc}</Project>
-			<Name>RhinoInside.NX.Extensions</Name>
-			<Private>False</Private>
-		</ProjectReference>
-	</ItemGroup>
-	<PropertyGroup>
-		<PostBuildEvent>
-		</PostBuildEvent>
-	</PropertyGroup>
-	<PropertyGroup>
-		<PostBuildEvent>
+  <PropertyGroup>
+    <ProjectGuid>{2582835C-7FBF-495A-8DC6-7FEFE8A621EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RhinoInside.NX</RootNamespace>
+    <AssemblyName>RhinoInside.NX.Loader</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <DefineConstants>DEBUG;TRACE;$(Configuration)</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Deterministic>true</Deterministic>
+    <StartProgram>$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\ugraf.exe</StartProgram>
+    <StartArguments>-nx</StartArguments>
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <StartAction>Program</StartAction>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <OutputPath>..\00~Program\Startup\</OutputPath>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1872|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
+  </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\managed</ReferencePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NXOpen, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NXOpen.UF, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NXOpen.Utilities, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NXOpen.Extensions">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Documents\Programming\Repos\NXOpen.Extensions\bin\$(Configuration)\NXOpen.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="NXOpenUI, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="pskernel_net, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="RhinoInside.NX.Loader.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="$(SPLM_ROOT_DIR)\$(Configuration)\UGOPEN\NXSigningResource.res">
+      <Link>NXSigningResource_$(Configuration).res</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RhinoInside.NX.Extensions\RhinoInside.NX.Extensions.csproj">
+      <Project>{50f50200-a967-4be5-932c-2d4a82569cfc}</Project>
+      <Name>RhinoInside.NX.Extensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
 			echo Current Building $(Configuration)
-			"D:\Programs\Siemens\$(Configuration)\NXBIN\SignDotNet.exe" "$(TargetPath)"
-			"D:\Programs\Siemens\$(Configuration)\NXBIN\SignDotNet.exe" -verify "$(TargetPath)"
+			"$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\SignDotNet.exe" "$(TargetPath)"
+			"$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\SignDotNet.exe" -verify "$(TargetPath)"
 			pause
 		</PostBuildEvent>
-	</PropertyGroup>
-	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

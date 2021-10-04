@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Grasshopper;
+//using RhinoInside.NX.Extensions;
+using System.Windows.Forms;
 
 namespace RhinoInside.NX.GH
 {
@@ -15,7 +17,7 @@ namespace RhinoInside.NX.GH
     {
         public static string NXBinPath;
 
-        public static string RhinoInsideDirectory;
+        public static string RhinoInsideDirectory => Environment.GetEnvironmentVariable("UGII_RhinoInside_Dir");
 
         static Loader()
         {
@@ -24,8 +26,6 @@ namespace RhinoInside.NX.GH
             var nxModuleFileName = new FileInfo(Process.GetCurrentProcess().MainModule.FileName);
 
             NXBinPath = Path.Combine(nxModuleFileName.DirectoryName, "managed");
-
-            RhinoInsideDirectory = Environment.GetEnvironmentVariable("UGII_RhinoInside_Dir");
         }
 
         public static HashSet<string> NXOpenAssemblies = new HashSet<string>
@@ -47,22 +47,27 @@ namespace RhinoInside.NX.GH
             {
                 return Assembly.LoadFrom(Path.Combine(NXBinPath, assemblyName + ".dll"));
             }
-            else if (assemblyName == "RhinoInside.NX.Extensions")
+            else if (assemblyName == "NXOpen.Extensions" || assemblyName == "RhinoInside.NX.Core")
             {
                 return Assembly.LoadFrom(Path.Combine(RhinoInsideDirectory, "Startup", assemblyName + ".dll"));
             }
             else
             {
+                //Logger.Error($"无法加载{assemblyName}");
                 Console.WriteLine($"无法加载{assemblyName}");
                 return null;
             }
         }
 
+        /// <summary>
+        /// 加载过程中的回调函数
+        /// </summary>
+        /// <returns></returns>
         public override GH_LoadingInstruction PriorityLoad()
         {
             if (Process.GetCurrentProcess().ProcessName == "ugraf")
             {
-                LoadComponent();
+                LoadRhinoInsideNXGHComponent();
                 return GH_LoadingInstruction.Proceed;
             }
             else
@@ -76,7 +81,7 @@ namespace RhinoInside.NX.GH
 
         }
 
-        bool LoadComponent()
+        bool LoadRhinoInsideNXGHComponent()
         {
             {
                 var bCoff = Instances.Settings.GetValue("Assemblies:COFF", false);
@@ -84,7 +89,7 @@ namespace RhinoInside.NX.GH
                 {
                     Instances.Settings.SetValue("Assemblies:COFF", false);
 
-                    var location = Path.Combine(RhinoInsideDirectory, "Startup", "RhinoInside.NX.GH.dll");
+                    var location = Path.Combine(RhinoInsideDirectory, "Application", "RhinoInside.NX.GH.dll");
                     if (!LoadGHA(location))
                     {
                         if (!File.Exists(location))

@@ -11,8 +11,9 @@ using Microsoft.Win32;
 using NXOpen;
 using System.Linq;
 using System.Threading.Tasks;
+using NXOpen.Extensions;
+using static NXOpen.Extensions.Globals;
 using RhinoInside.NX.Extensions;
-using static RhinoInside.NX.Extensions.Globals;
 
 namespace RhinoInside.NX
 {
@@ -62,7 +63,7 @@ namespace RhinoInside.NX
 
             if (System.Convert.ToInt32(release.Split(new char[] { '.' })[0].Replace("NX V", "")) < 1847)
             {
-                "需要 NX 版本 1847 以上才能运行RhinoInside.NX，请先升级".ShowNXMessageBox(NXMessageBox.DialogType.Error);
+                "需要 NX 版本 1847 以上才能运行RhinoInside.NX，请先升级".ShowInNXMessageBox(NXMessageBox.DialogType.Error);
                 Logger.Error("需要 NX 版本 1847 以上才能运行RhinoInside.NX，请先升级");
                 return 0;
             }
@@ -434,95 +435,32 @@ namespace RhinoInside.NX
             if (method == null)
                 return "Cannot find method: " + methodName;
 
-            string result2 = null;
+            string exceptionMsg = null;
             try
             {
-                object[] array = null;
-                if (method.Name == "Main")
-                {
-                    if (method.GetParameters().Length != 0)
-                    {
-                        array = new object[1];
-                        string[] array2 = new string[]
-                        {
-                        arg
-                        };
-                        array[0] = array2;
-                    }
-                    if (method.ReturnType == typeof(int))
-                    {
-                        result = (int)method.Invoke(null, array);
-                    }
-                    else
-                    {
-                        method.Invoke(null, array);
-                    }
-                }
-                else if (method.ReturnType == typeof(string))
-                {
-                    result2 = "Method signature not recognised - expecting integer return value";
-                }
-                else
-                {
-                    bool flag = false;
-                    ParameterInfo[] parameters = method.GetParameters();
-                    if (parameters.Length != 0)
-                    {
-                        array = new object[1];
-                        if (parameters[0].ParameterType.IsArray)
-                        {
-                            string[] array3 = new string[]
-                            {
-                            arg
-                            };
-                            array[0] = array3;
-                            flag = true;
-                        }
-                        else
-                        {
-                            array[0] = arg;
-                        }
-                    }
-                    if (method.ReturnType == typeof(void))
-                    {
-                        method.Invoke(null, array);
-                        result = 0;
-                    }
-                    else
-                    {
-                        result = (int)method.Invoke(null, array);
-                    }
-                    if (flag)
-                    {
-                        string[] array4 = (string[])array[0];
-                        if (array4[0] != arg)
-                        {
-                            outArg = array4[0];
-                        }
-                    }
-                }
+                result = (int)method.Invoke(null, null);
             }
-            catch (TargetInvocationException ex)
+            catch (TargetInvocationException ex1)
             {
                 Logger.Error("Caught exception while running: " + methodName);
                 try
                 {
-                    Logger.Error(ex.InnerException.ToString());
+                    Logger.Error(ex1.InnerException.ToString());
                 }
                 catch (Exception ex2)
                 {
                     Logger.Error("Exception while trying to print stack trace: " + ex2.Message);
-                    Logger.Error("Original exception: " + ex.InnerException.Message);
+                    Logger.Error("Original exception: " + ex1.InnerException.Message);
                 }
-                result2 = ex.InnerException.Message;
+                exceptionMsg = ex1.InnerException.Message;
             }
-            catch (Exception ex3)
+            catch (Exception ex2)
             {
                 Logger.Error("Caught unexpected exception");
-                Logger.Error(ex3.Message);
-                result2 = ex3.Message;
+                Logger.Error(ex2.Message);
+                exceptionMsg = ex2.Message;
             }
-            return result2;
+            return exceptionMsg;
         }
 
         internal class CoreArrayType

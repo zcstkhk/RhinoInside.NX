@@ -13,7 +13,7 @@ using NXOpen.MenuBar;
 using System.Windows.Forms;
 using NXOpen.UF;
 using NXOpen;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 
 namespace RhinoInside.NX.Core
 {

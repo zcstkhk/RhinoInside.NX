@@ -3,10 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using Rhino.Geometry;
 using BodyStyle = NXOpen.GeometricUtilities.FeatureOptions.BodyStyle;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using System;
-using static RhinoInside.NX.Extensions.Globals;
+using static NXOpen.Extensions.Globals;
 using RhinoInside.NX.Translator.Geometry.Raw;
+using RhinoInside.NX.Extensions;
 
 namespace RhinoInside.NX.Translator
 {
@@ -182,7 +183,7 @@ namespace RhinoInside.NX.Translator
                             // 使用有界平面创建
                             var boundaryCurves = boundaryEdgeCurves.SelectMany(obj => obj.edgeCurves).ToArray();
                             var boundedPlaneBody = _theSession.Parts.Work.Features.CreateBoundedPlane(boundaryCurves).GetBodies()[0];
-                            _theSession.Parts.Work.Features.RemoveParameters(boundedPlaneBody);
+                            boundedPlaneBody.RemoveParameter();
                             faceBodies.Add(boundedPlaneBody);
                             //boundaryCurves.Delete();
 

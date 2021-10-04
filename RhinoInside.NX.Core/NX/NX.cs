@@ -8,9 +8,11 @@ using Microsoft.Win32.SafeHandles;
 using NXOpen;
 using NXOpen.MenuBar;
 using NXOpen.UF;
+using NXOpen.Extensions;
+using static NXOpen.Extensions.Globals;
+using System.Globalization;
 using RhinoInside.NX.Extensions;
 using static RhinoInside.NX.Extensions.Globals;
-using System.Globalization;
 
 namespace RhinoInside.NX.Core
 {
@@ -87,7 +89,7 @@ namespace RhinoInside.NX.Core
 
                 if (result != MenuBarManager.CallbackStatus.Continue)
                 {
-                    "Can't Start Rhino Enviroment.".ShowNXMessageBox(NXMessageBox.DialogType.Error);
+                    "Can't Start Rhino Enviroment.".ShowInNXMessageBox(NXMessageBox.DialogType.Error);
                     Logger.Error("Can't Start Rhino Enviroment.");
                     return 0;
                 }
@@ -121,7 +123,7 @@ namespace RhinoInside.NX.Core
             }
             catch (NXOpen.NXException ex)
             {
-                ex.ToString().ShowNXMessageBox(NXMessageBox.DialogType.Error);
+                ex.ToString().ShowInNXMessageBox(NXMessageBox.DialogType.Error);
                 Logger.Error($"Start RhinoInside Failed. {ex}");
                 retValue = 1;
             }

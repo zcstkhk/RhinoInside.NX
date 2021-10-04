@@ -1,7 +1,7 @@
 using System;
 using Rhino;
 using Rhino.Geometry;
-using static RhinoInside.NX.Extensions.Globals;
+using static NXOpen.Extensions.Globals;
 
 namespace RhinoInside.NX.Translator
 {

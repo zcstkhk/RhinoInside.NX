@@ -5,26 +5,26 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Rhino.Geometry;
-using RhinoInside.NX.Extensions;
-using static RhinoInside.NX.Extensions.Globals;
+using NXOpen.Extensions;
+using static NXOpen.Extensions.Globals;
 using PK = PLMComponents.Parasolid.PK_.Unsafe;
 
 namespace RhinoInside.NX.Translator.Geometry.Raw
 {
-    internal static partial class RawDecoder
+    public static partial class RawDecoder
     {
-        struct BrepBoundary
+        public struct BrepBoundary
         {
             public BrepLoopType type;
             public List<BrepEdge> edges;
             public PolyCurve trims;
-            public List<Snap.Topology.Sense> orientation;
+            public List<NXOpen.Sense> orientation;
         }
 
-        static int AddSurface(Brep brep, NXOpen.Face face, out List<BrepBoundary>[] shells, Dictionary<NXOpen.Edge, BrepEdge> brepEdges = null)
+        public static int AddSurface(Brep brep, NXOpen.Face face, out List<BrepBoundary>[] shells, Dictionary<NXOpen.Edge, BrepEdge> brepEdges = null)
         {
             // Extract base surface
-            if (ToRhinoSurface(face, out var parametricOrientation) is Surface surface)
+            if (ToRhinoSurface(face, out bool parametricOrientation) is Surface surface)
             {
                 int si = brep.AddSurface(surface);
 
@@ -36,28 +36,65 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
                     surface = nurbs;
                 }
 
+                var brepFace = brep.Faces.Add(si);
+
                 // 抽取并分类边的 Loop
-                Snap.NX.Face snapFace = Snap.NX.Face.Wrap(face.Tag);
-                var edgeLoops = new List<BrepBoundary>(snapFace.Loops.Length);
-                foreach (var edgeLoop in snapFace.Loops)
+                var edgeLoops = new List<BrepBoundary>(face.GetLoops().Length);
+                foreach (var currentLoop in face.GetLoops())
                 {
-                    if (edgeLoop.Edges.Length == 0)
+                    if (currentLoop.Edges.Length == 0)
                         continue;
 
-                    Snap.Topology.Vertex[] loopVertices = edgeLoop.Vertices;
+                    var loopVertices = currentLoop.Vertices;
 
-                    Dictionary<string, BrepVertex> loopVerticesDic = new Dictionary<string, BrepVertex>();
+                    Dictionary<int, BrepVertex> loopVerticesDic = new Dictionary<int, BrepVertex>();
 
                     foreach (var vertex in loopVertices)
                     {
-                        var brepVertex = brep.Vertices.Add(new Point3d(vertex.Position.X, vertex.Position.Y, vertex.Position.Z), Globals.DistanceTolerance);
-                        loopVerticesDic.Add(vertex.ToString(), brepVertex);
+                        var brepVertex = brep.Vertices.Add(new Point3d(vertex.Position.X, vertex.Position.Y, vertex.Position.Z), DistanceTolerance);
+                        loopVerticesDic.Add(vertex.ParasolidTag, brepVertex);
                     }
 
-                    //brep.Loops.Add(BrepLoopType.Inner, );
+                    var brepLoop = brep.Loops.Add(currentLoop.Type == NXOpen.Extensions.Topology.LoopType.Inner ? BrepLoopType.Inner : BrepLoopType.Outer, brepFace);
 
-                    var edges = edgeLoop.Edges;
-                    if (snapFace.Sense == Snap.Topology.Sense.Negative)
+                    foreach (var loopEdge in currentLoop.Edges)
+                    {
+                        var brepCurve3dIndex = brep.Curves3D.Add(loopEdge.ToCurve().ToRhino());
+
+                        var brepEdge = brep.Edges.Add(loopVerticesDic[loopEdge.GetParasolidVertices()[0].ParasolidTag], loopVerticesDic[loopEdge.GetParasolidVertices()[1].ParasolidTag], brepCurve3dIndex, Globals.DistanceTolerance);
+
+                        var curve2D = brep.Curves2D.Add(CreateTrimmingCurve());
+
+                        // Create new trim topology that references edge, direction
+                        // reletive to edge, loop and trim curve geometry
+                        var trim = brep.Trims.Add(brepEdge, false, brepLoop, curve2D);
+                        trim.IsoStatus = IsoStatus.None;
+
+                        // This one Brep face, so all trims are boundary ones.
+                        trim.TrimType = BrepTrimType.Boundary;
+
+                        // This simple example is exact - for models with
+                        // non-exact data, set tolerance as explained in
+                        // definition of BrepTrim.
+                        trim.SetTolerances(0.0, 0.0);
+                    }
+
+                    continue;
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    var edges = currentLoop.Edges;
+                    if (face.GetSense() == NXOpen.Sense.Reverse)
                         edges = edges.Reverse().ToArray();
 
                     var loop = new BrepBoundary()
@@ -65,13 +102,13 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
                         type = BrepLoopType.Unknown,
                         edges = new List<BrepEdge>(edges.Length),
                         trims = new PolyCurve(),
-                        orientation = new List<Snap.Topology.Sense>(edges.Length),
+                        orientation = new List<NXOpen.Sense>(edges.Length),
                     };
 
                     foreach (var edge in edges)
                     {
                         var brepEdge = default(BrepEdge);
-                        var curve = edge.ToCurve().NXOpenCurve;
+                        var curve = edge.ToCurve();
                         if (brepEdges?.TryGetValue(edge, out brepEdge) != true)
                         {
                             if (curve is null)
@@ -79,7 +116,7 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
 
                             var curveIndex = brep.AddEdgeCurve(curve.ToRhino());
 
-                            brepEdge = brep.Edges.Add(loopVerticesDic[edge.Vertices[0].ToString()], loopVerticesDic[edge.Vertices[1].ToString()], curveIndex, Globals.DistanceTolerance);
+                            brepEdge = brep.Edges.Add(loopVerticesDic[edge.GetParasolidVertices()[0].ParasolidTag], loopVerticesDic[edge.GetParasolidVertices()[1].ParasolidTag], curveIndex, Globals.DistanceTolerance);
                             //brepEdge.SetStartPoint = loopVerticesDic[edge.Vertices[0]];
                             brepEdges?.Add(edge, brepEdge);
                         }
@@ -88,12 +125,12 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
 
                         Rhino.Geometry.Curve segment = null;
 
-                        var currentEdgeFin = edgeLoop.Fins.FirstOrDefault(obj => obj.Edge.NXOpenTag == edge.NXOpenTag);
-                        if (currentEdgeFin.Sense == Snap.Topology.Sense.Negative)
+                        var currentEdgeFin = currentLoop.Fins.FirstOrDefault(obj => obj.Edge.Tag == edge.Tag);
+                        if (currentEdgeFin.Sense == NXOpen.Sense.Reverse)
                         {
                             unsafe
                             {
-                                TheUfSession.Ps.AskPsTagOfObject(edge.NXOpenTag, out var edgePsTag);
+                                TheUfSession.Ps.AskPsTagOfObject(edge.Tag, out var edgePsTag);
 
                                 PK.CURVE_t edgeCurve;
                                 PK.EDGE.ask_curve(new PK.EDGE_t((int)edgePsTag), &edgeCurve);
@@ -235,6 +272,21 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
             return -1;
         }
 
+        private static Curve CreateTrimmingCurve()
+        {
+            // A trimming curve is a 2d curve whose image lies in the surface's domain.
+            // The "active" portion of the surface is to the left of the trimming curve.
+            // An outer trimming loop consists of a simple closed curve running 
+            // counter-clockwise around the region it trims.
+            //
+            // An inner trimming loop consists of a simple closed curve running 
+            // clockwise around the region the hole.
+
+            var curve = new LineCurve(new Point2d(0.0, 0.0), new Point2d(1.0, 1.0)) { Domain = new Interval(0.0, 1.0) };
+
+            return curve;
+        }
+
         static void TrimSurface(Brep brep, int surface, bool orientationIsReversed, List<BrepBoundary>[] shells)
         {
             foreach (var shell in shells)
@@ -270,61 +322,6 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
         public static Brep ToRhinoBrep(NXOpen.Face face)
         {
             Brep brep;
-
-            if (ToRhinoSurface(face, out var parametricOrientation) is Surface surface)
-            {
-                if (surface is PlaneSurface planar)
-                {
-                    var nurbs = planar.ToNurbsSurface();
-                    nurbs.KnotsU.InsertKnot(surface.Domain(0).Mid);
-                    nurbs.KnotsV.InsertKnot(surface.Domain(1).Mid);
-                    surface = nurbs;
-                }
-
-                brep =  surface.ToBrep();
-
-                //Snap.NX.Face snapFace = Snap.NX.Face.Wrap(face.Tag);
-
-                //foreach (var faceLoop in snapFace.Loops)
-                //{
-                //   var currentBrepLoop = brep.Loops.Add(faceLoop.Type == Snap.Topology.LoopType.Inner ? BrepLoopType.Inner : BrepLoopType.Outer);
-
-                //    foreach (var loopFin in faceLoop.Fins)
-                //    {
-                //       var currentEdgeCurveIndex = brep.AddEdgeCurve(ToRhino(loopFin.Edge.ToCurve()));
-                //      var currentCurve2DIndex = brep.Curves2D.Add(ToRhino(loopFin.Edge.ToCurve()));
-
-                //       var currentEdge = brep.AddTrimCurve(ToRhino(loopFin.Edge.ToCurve()));
-
-                //        brep.Trims.Add(currentEdge, loopFin.Sense == Snap.Topology.Sense.Negative, currentBrepLoop, currentCurve2DIndex);
-                //    }
-                //}
-
-                if (!brep.IsValid)
-                {
-#if DEBUG
-                    brep.IsValidWithLog(out var log);
-                    log.ConsoleWriteLine();
-#endif
-                    brep.Repair(DistanceTolerance);
-                }
-
-                return brep;
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             if (face is null)
                 return null;

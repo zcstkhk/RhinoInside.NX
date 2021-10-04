@@ -1,136 +1,86 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-	<PropertyGroup>
-		<ProjectGuid>{50F50200-A967-4BE5-932C-2D4A82569CFC}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>RhinoInside.NX.Extensions</RootNamespace>
-		<AssemblyName>RhinoInside.NX.Extensions</AssemblyName>
-		<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-		<DefineConstants>DEBUG;TRACE;$(Configuration)</DefineConstants>
-		<DebugSymbols>true</DebugSymbols>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<DebugType>full</DebugType>
-		<PlatformTarget>x64</PlatformTarget>
-		<LangVersion>8.0</LangVersion>
-		<ErrorReport>prompt</ErrorReport>
-		<OutputPath>..\00~Program\Startup\</OutputPath>
-		<Deterministic>true</Deterministic>
-		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-		<TargetFrameworkProfile />
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1872|x64'">
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
-	</PropertyGroup>
-	<PropertyGroup>
-		<ReferencePath>D:\Programs\Siemens\$(Configuration)\NXBIN\managed;D:\Engineering\Rhino 7\Plug-ins\Grasshopper;D:\Engineering\Rhino 7\System</ReferencePath>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="NXOpen, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="NXOpen.UF, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="NXOpen.Utilities, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="NXOpenUI, Culture=neutral, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="PresentationCore" />
-		<Reference Include="PresentationFramework" />
-		<Reference Include="pskernel_net, Culture=neutral, processorArchitecture=MSIL">
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="RhinoCommon">
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="System" />
-		<Reference Include="System.Core" />
-		<Reference Include="System.Windows.Forms" />
-		<Reference Include="System.Xml.Linq" />
-		<Reference Include="System.Data.DataSetExtensions" />
-		<Reference Include="Microsoft.CSharp" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Net.Http" />
-		<Reference Include="System.Xml" />
-		<Reference Include="WindowsBase" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="Globals\AssemblyResolveHandler.cs" />
-		<Compile Include="Globals\Globals.cs" />
-		<Compile Include="Globals\GetBasePath.cs" />
-		<Compile Include="Logger.cs" />
-		<Compile Include="MathEx\Geometry.cs" />
-		<Compile Include="MathEx\LinearAlgebra.cs" />
-		<Compile Include="MathEx\MathEx.cs" />
-		<Compile Include="MathEx\MatrixMath.cs" />
-		<Compile Include="MathEx\Roots.cs" />
-		<Compile Include="MathEx\SplineMath.cs" />
-		<Compile Include="Message\ConsoleEx.cs" />
-		<Compile Include="Message\ListingWindowEx.cs" />
-		<Compile Include="Message\MessageBoxEx.cs" />
-		<Compile Include="NX\NXOpen\DisplayableObjectEx.cs" />
-		<Compile Include="NX\NXOpen\FaceEx.cs" />
-		<Compile Include="NX\NXOpen\Features\Sew.cs" />
-		<Compile Include="NX\NXOpen\IBaseCurveEx.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\BoduningBox2D.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\BoundingBox3D.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\MassProperties.cs" />
-		<Compile Include="NX\NXOpen\BodyEx.cs" />
-		<Compile Include="NX\NXOpen\Features\Extrude.cs" />
-		<Compile Include="NX\NXOpen\Features\BoundedPlane.cs" />
-		<Compile Include="NX\NXOpen\Features\ExtractGeometry.cs" />
-		<Compile Include="NX\NXOpen\Features\ProjectCurve.cs" />
-		<Compile Include="NX\NXOpen\Features\RemoveParameters.cs" />
-		<Compile Include="NX\NXOpen\Features\_FeatureCollectionEx.cs" />
-		<Compile Include="NX\NXOpen\MaskTripleEx.cs" />
-		<Compile Include="NX\NXOpen\MeasureManagerEx\MeasureAngle.cs" />
-		<Compile Include="NX\NXOpen\MeasureManagerEx\MeasureDistance.cs" />
-		<Compile Include="NX\NXOpen\MeasureManagerEx\MeasureExtreme.cs" />
-		<Compile Include="NX\NXOpen\MeasureManagerEx\MeasureFaces.cs" />
-		<Compile Include="NX\NXOpen\MeasureManagerEx\MeasureProjectDistance.cs" />
-		<Compile Include="NX\NXOpen\NXObjectEx.cs" />
-		<Compile Include="NX\NXOpen\Assemblies\AssemblyManagerEx.cs" />
-		<Compile Include="NX\NXOpen\Assemblies\ComponentAssemblyEx.cs" />
-		<Compile Include="NX\NXOpen\Assemblies\ComponentEx.cs" />
-		<Compile Include="NX\NXOpen\PartEx.cs" />
-		<Compile Include="NX\NXOpen\TaggedObjectEx.cs" />
-		<Compile Include="NX\NXOpen\Triangle.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\ObjectTypes.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\Outline.cs" />
-		<Compile Include="NX\Parasolid\PKTag.cs" />
-		<Compile Include="NX\Parasolid\TOPOLEx.cs" />
-		<Compile Include="NX\Parasolid\VECTOR_TEx.cs" />
-		<Compile Include="NX\NXOpen\Structs\Matrix3x3Ex.cs" />
-		<Compile Include="NX\NXOpen\Structs\Point3dEx.cs" />
-		<Compile Include="NX\NXOpen\Structs\Point4d.cs" />
-		<Compile Include="NX\NXOpen\Structs\Quaternion.cs" />
-		<Compile Include="NX\NXOpen\Structs\Vector3dEx.cs" />
-		<Compile Include="NX\NXOpen\Structs\Vector4d.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\PointClouds.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\PointCloudsRoot.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\Rectangle.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\SimpleLine.cs" />
-		<Compile Include="NX\NXOpen\Structs\Matrix4x4Ex.cs" />
-		<Compile Include="NX\NXOpen\_Add-on\UV.cs" />
-		<Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="Rhino\RhinoCommon.cs" />
-		<Compile Include="State.cs" />
-		<Compile Include="Win32.cs" />
-		<Compile Include="WinForms.cs" />
-	</ItemGroup>
-	<ItemGroup />
-	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-	<PropertyGroup>
-		<PostBuildEvent>
-		</PostBuildEvent>
-	</PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProjectGuid>{50F50200-A967-4BE5-932C-2D4A82569CFC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RhinoInside.NX.Extensions</RootNamespace>
+    <AssemblyName>RhinoInside.NX.Extensions</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <DefineConstants>DEBUG;TRACE;$(Configuration)</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <OutputPath>..\00~Program\Startup\</OutputPath>
+    <Deterministic>true</Deterministic>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1872|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
+  </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\managed;$(RHINO_ROOT_DIR)\Plug-ins\Grasshopper;$(RHINO_ROOT_DIR)\System</ReferencePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NXOpen, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NXOpen.UF, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NXOpen.Utilities, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NXOpenUI, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="pskernel_net, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NXOpen.Extensions">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Documents\Programming\Repos\NXOpen.Extensions\bin\$(Configuration)\NXOpen.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="RhinoCommon">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Globals\Globals.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rhino\RhinoCommon.cs" />
+    <Compile Include="State.cs" />
+    <Compile Include="Win32.cs" />
+    <Compile Include="WinForms.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

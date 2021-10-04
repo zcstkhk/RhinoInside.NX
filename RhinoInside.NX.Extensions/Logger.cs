@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NXOpen.UF;
-using static RhinoInside.NX.Extensions.Globals;
+using static NXOpen.Extensions.Globals;
 
 namespace RhinoInside.NX.Extensions
 {

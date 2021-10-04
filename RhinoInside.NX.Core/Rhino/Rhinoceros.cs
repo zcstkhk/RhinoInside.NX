@@ -16,9 +16,9 @@ using System.IO;
 using System.Text;
 using Grasshopper.Kernel;
 using Grasshopper;
-using static RhinoInside.NX.Extensions.Globals;
+using static NXOpen.Extensions.Globals;
 using NXOpen.UF;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 
 namespace RhinoInside.NX.Core
 {
@@ -110,7 +110,7 @@ namespace RhinoInside.NX.Core
                 }
                 catch (Exception ex)
                 {
-                    ex.ToString().ShowNXMessageBox(NXOpen.NXMessageBox.DialogType.Error);
+                    ex.ToString().ShowInNXMessageBox(NXOpen.NXMessageBox.DialogType.Error);
                     return MenuBarManager.CallbackStatus.Error;
                 }
                 finally

@@ -9,7 +9,7 @@ using Grasshopper.Kernel.Types;
 using System.Windows.Forms;
 using Grasshopper.Kernel.Data;
 using RhinoInside.NX.GH.Types;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using NXOpen;
 using GH_IO.Serialization;
 using Grasshopper.Kernel.Attributes;

@@ -1,5 +1,5 @@
 ﻿using Grasshopper.Kernel;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using RhinoInside.NX.GH.Properties;
 using RhinoInside.NX.GH.Types;
 using System;

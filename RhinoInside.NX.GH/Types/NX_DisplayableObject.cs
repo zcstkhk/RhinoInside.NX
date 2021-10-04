@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NXOpen.UF;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using GH_IO.Serialization;
 using System.Diagnostics;
 using System.Timers;

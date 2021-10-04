@@ -8,7 +8,7 @@ using Grasshopper.Kernel;
 using RhinoInside.NX.GH.Types;
 using System.Drawing;
 using NXOpen;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using NXOpen.UF;
 using System.Windows.Forms;
 using RhinoInside.NX.GH.Properties;

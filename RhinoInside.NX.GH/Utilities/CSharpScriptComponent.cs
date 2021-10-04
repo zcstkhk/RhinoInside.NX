@@ -30,7 +30,7 @@ namespace RhinoInside.NX.GH.Utilities
                 ScriptSource.References.Add(Path.Combine(Loader.NXBinPath, nxopenAssembly + ".dll"));
             }
 
-            ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Startup", "RhinoInside.NX.Extensions.dll"));
+            ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Startup", "NXOpen.Extensions.dll"));
 
             ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Startup", "RhinoInside.NX.GH.dll"));
 

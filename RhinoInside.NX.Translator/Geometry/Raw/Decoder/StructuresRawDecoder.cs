@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Rhino.Geometry;
-using RhinoInside.NX.Extensions;
-using static RhinoInside.NX.Extensions.Globals;
+using NXOpen.Extensions;
+using static NXOpen.Extensions.Globals;
 
 namespace RhinoInside.NX.Translator.Geometry.Raw
 {
@@ -13,7 +13,7 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
     /// 此类中的方法是将 NX 几何体转换为 NX 单位的对象。
     /// <para>如需在 Rhino 中使用，需要转换到 Rhino 的单位。</para>
     /// </summary>
-    internal static partial class RawDecoder
+    public static partial class RawDecoder
     {
         #region Values
         public static Point3d ToRhino(NXOpen.Point3d p)
@@ -26,9 +26,9 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
             return new Vector3d(p.X, p.Y, p.Z);
         }
 
-        public static Transform ToRhinoTransform(NXOpen.Matrix4x4 transform)
+        public static Rhino.Geometry.Transform ToRhinoTransform(NXOpen.Matrix4x4 transform)
         {
-            var value = new Transform
+            var value = new Rhino.Geometry.Transform
             {
                 M00 = transform.Rxx,
                 M10 = transform.Rxy,

@@ -18,8 +18,9 @@ using System.Threading;
 using System.Globalization;
 using System.Text;
 using System.Runtime.InteropServices;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using RhinoInside.NX.Translator;
+using RhinoInside.NX.Extensions;
 
 namespace RhinoInside.NX.Core
 {

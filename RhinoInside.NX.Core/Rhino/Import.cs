@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RhinoInside.NX.Translator;
 using System.Windows.Forms;
-using static RhinoInside.NX.Extensions.Globals;
+using static NXOpen.Extensions.Globals;
 
 namespace RhinoInside.NX.Core
 {

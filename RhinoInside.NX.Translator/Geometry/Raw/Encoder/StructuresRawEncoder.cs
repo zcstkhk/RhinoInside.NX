@@ -12,8 +12,8 @@ using Point3d = Rhino.Geometry.Point3d;
 using Polyline = Rhino.Geometry.Polyline;
 using Vector3d = Rhino.Geometry.Vector3d;
 using PK = PLMComponents.Parasolid.PK_.Unsafe;
-using static RhinoInside.NX.Extensions.Globals;
-using RhinoInside.NX.Extensions;
+using static NXOpen.Extensions.Globals;
+using NXOpen.Extensions;
 
 namespace RhinoInside.NX.Translator.Geometry.Raw
 {
@@ -64,15 +64,30 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
             return new NXOpen.Point3d(value.X, value.Y, value.Z);
         }
 
-        public static Matrix4x4 AsTransform(Rhino.Geometry.Transform value)
+        public static NXOpen.Matrix4x4 ToMatrix4x4(this Rhino.Geometry.Transform value) => ToMatrix4x4(value, UnitConverter.RhinoToNXUnitsRatio);
+
+        public static NXOpen.Matrix4x4 ToMatrix4x4(this Rhino.Geometry.Transform value, double factor)
         {
             Debug.Assert(value.IsAffine);
 
-            var result = Matrix4x4Ex.Create(new NXOpen.Vector3d(value.M03, value.M13, value.M23));
+            NXOpen.Matrix4x4 result = default;
+            result.Ss = factor;
+            result.Sx = 0.0;
+            result.Sy = 0.0;
+            result.Sz = 0.0;
 
-            result.SetAxisX(new Vector4d(value.M00, value.M10, value.M20));
-            result.SetAxisY(new Vector4d(value.M01, value.M11, value.M21));
-            result.SetAxisZ(new Vector4d(value.M02, value.M12, value.M22));
+            result.Rxx = value.M00;
+            result.Rxy = value.M10;
+            result.Rxz = value.M20;
+
+            result.Ryx = value.M01;
+            result.Ryy = value.M11;
+            result.Ryz = value.M21;
+
+            result.Rzx = value.M02;
+            result.Rzy = value.M12;
+            result.Rzz = value.M22;
+
             return result;
         }
 

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Rhino.Geometry;
-using static RhinoInside.NX.Extensions.Globals;
+using static NXOpen.Extensions.Globals;
+using NXOpen.Extensions;
 using RhinoInside.NX.Extensions;
 
 namespace RhinoInside.NX.Translator
@@ -120,31 +121,6 @@ namespace RhinoInside.NX.Translator
         public static NXOpen.Plane ToPlane(this Plane value, double factor)
         {
             return WorkPart.Planes.CreatePlane(value.Origin.ToXYZ(factor), value.ZAxis.ToXYZ(), NXOpen.SmartObject.UpdateOption.WithinModeling);
-        }
-
-        public static NXOpen.Matrix4x4 ToMatrix4x4(this Rhino.Geometry.Transform value) => ToMatrix4x4(value, UnitConverter.RhinoToNXUnitsRatio);
-
-        public static NXOpen.Matrix4x4 ToMatrix4x4(this Rhino.Geometry.Transform value, double factor)
-        {
-            Debug.Assert(value.IsAffine);
-
-            NXOpen.Matrix4x4 result = factor == 1.0 ?
-            Matrix4x4Ex.Create(new NXOpen.Vector3d(value.M03, value.M13, value.M23)) :
-             Matrix4x4Ex.Create(new NXOpen.Vector3d(value.M03 * factor, value.M13 * factor, value.M23 * factor));
-
-            result.Rxx = value.M00;
-            result.Rxy = value.M10;
-            result.Rxz = value.M20;
-
-            result.Ryx = value.M01;
-            result.Ryy = value.M11;
-            result.Ryz = value.M21;
-
-            result.Rzx = value.M02;
-            result.Rzy = value.M12;
-            result.Rzz = value.M22;
-
-            return result;
         }
 
         //public static BoundingBox3D ToBoundingBoxXYZ(this BoundingBox value) => ToBoundingBoxXYZ(value, UnitConverter.ToHostUnits());

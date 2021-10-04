@@ -1,10 +1,12 @@
-﻿using NXOpen;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static RhinoInside.NX.Extensions.Globals;
+using PK = PLMComponents.Parasolid.PK_.Unsafe;
+using RhinoInside.NX.Extensions.Topology;
+using NXOpen;
 
 namespace RhinoInside.NX.Extensions
 {
@@ -162,6 +164,35 @@ namespace RhinoInside.NX.Extensions
         /// <returns></returns>
         // 通过参数访问面上的点
         public static Point3d GetPoint(this Face face, UV uv) => GetPoint(face, uv.U, uv.V);
+
+        public static Tag GetParasolidTag(this Face face)
+        {
+            Globals.TheUfSession.Ps.AskPsTagOfObject(face.Tag, out var psTag);
+            return psTag;
+        }
+
+        public static Loop[] GetLoops(this Face face)
+        {
+            unsafe
+            {
+                int numLoops = 0;
+                PK.LOOP_t* loops;
+                PK.FACE.ask_loops((int)face.GetParasolidTag(), &numLoops, &loops);
+                Loop[] result = new Loop[numLoops];
+                for (int i = 0; i < numLoops; i++)
+                {
+                    result[i] = new Loop(loops[i]);
+                }
+
+                if (numLoops > 0)
+                {
+                    PK.MEMORY.free(loops);
+                }
+
+                return result;
+            }
+
+        }
 
         public struct FaceProperties
         {

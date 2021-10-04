@@ -1,12 +1,12 @@
 ﻿using Rhino.Geometry;
 using Rhino.Geometry.Collections;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static RhinoInside.NX.Extensions.Globals;
+using static NXOpen.Extensions.Globals;
 
 namespace RhinoInside.NX.Translator.Geometry.Raw
 {

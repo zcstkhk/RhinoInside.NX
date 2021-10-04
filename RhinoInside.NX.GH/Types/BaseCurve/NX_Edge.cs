@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using RhinoInside.NX.Translator.Geometry;
 using GH_IO.Serialization;
 

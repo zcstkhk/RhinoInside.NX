@@ -1,6 +1,6 @@
 ﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using RhinoInside.NX.Extensions;
+using NXOpen.Extensions;
 using RhinoInside.NX.GH.Types;
 using System;
 using System.Collections.Generic;

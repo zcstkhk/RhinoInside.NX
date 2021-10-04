@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rhino.Geometry;
-using static RhinoInside.NX.Extensions.Globals;
-using RhinoInside.NX.Extensions;
+using static NXOpen.Extensions.Globals;
+using NXOpen.Extensions;
 using System.Diagnostics;
 using Rhino.Geometry.Collections;
 
@@ -161,11 +161,11 @@ namespace RhinoInside.NX.Translator
         public static NXOpen.Curve ToCurve(this NurbsCurve value) => value.ToCurve(UnitConverter.RhinoToNXUnitsRatio);
         public static NXOpen.Curve ToCurve(this NurbsCurve value, double factor)
         {
-            if (value.TryGetEllipse(out Ellipse ellipse, out var interval, DistanceTolerance * factor))
-                return ellipse.ToCurve(interval, factor);
+            if (value.TryGetEllipse(out Ellipse ellipse, DistanceTolerance * factor))
+                return ellipse.ToCurve(factor);
 
             var gap = DistanceTolerance * 0.5;
-            if (value.IsClosed(gap * factor))
+            if (value.IsClosable(gap * factor))
             {
                 var length = value.GetLength();
                 if (length > gap &&
@@ -348,7 +348,7 @@ namespace RhinoInside.NX.Translator
                     yield return CurveEncoder.ToNurbsSpline(segment, factor);
                 }
             }
-            else if (value.IsClosed(DistanceTolerance * 1.01))
+            else if (value.IsClosable(DistanceTolerance * 1.01))
             {
                 var segments = value.DuplicateSegments();
                 if (segments.Length == 1)

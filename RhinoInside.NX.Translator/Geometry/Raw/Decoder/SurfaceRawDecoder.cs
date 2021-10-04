@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rhino.Geometry;
-using RhinoInside.NX.Extensions;
-using static RhinoInside.NX.Extensions.Globals;
+using NXOpen.Extensions;
+using static NXOpen.Extensions.Globals;
 
 namespace RhinoInside.NX.Translator.Geometry.Raw
 {
-    internal static partial class RawDecoder
+    public static partial class RawDecoder
     {
         public static Surface ToRhinoSurface(NXOpen.Face face, out bool parametricOrientation, double relativeTolerance = 0.0)
         {
