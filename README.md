@@ -1,4 +1,4 @@
-[English Description](README_EN.MD)
+[English Description](https://github.com/zcstkhk/RhinoInside.NX/blob/master/README_EN.md)
 
 # RhinoInside.NX
 
