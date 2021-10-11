@@ -26,6 +26,10 @@ namespace RhinoInside.NX.Translator.Geometry
         public static Surface ToRhinoSurface(this NXOpen.Face face)
         {
             var rhino = RawDecoder.ToRhinoSurface(face, out _);
+
+            if (rhino == null)
+                return null;
+
             UnitConverter.Scale(rhino, UnitConverter.NXToRhinoUnitsRatio);
             return rhino;
         }

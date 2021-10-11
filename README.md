@@ -4,8 +4,6 @@
 
 A Rhino Plug-in For Siemens NX.
 
-# 将 NX 中的面转换为 Rhino Brep 的时候遇到一些问题，还请有相关经验的小伙伴不吝赐教。
-
 # 目前仍然是处于非常早期的测试版本.
 
 # Install Guide

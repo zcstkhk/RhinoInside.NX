@@ -44,7 +44,12 @@ namespace RhinoInside.NX.GH.Types
             }
             else if (typeof(Q) == typeof(GH_Surface))
             {
-                target = (Q)(object)new GH_Surface(Value.ToRhinoSurface());
+                var rhino = Value.ToRhinoSurface();
+
+                if (rhino == null)
+                    return false;
+
+                target = (Q)(object)new GH_Surface();
                 return true;
             }
             else

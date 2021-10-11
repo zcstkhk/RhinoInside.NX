@@ -1,29 +1,27 @@
-[English Description](README_EN.MD)
+[English Description](https://github.com/zcstkhk/RhinoInside.NX/blob/master/README_EN.md)
 
 # RhinoInside.NX
 
 A Rhino Plug-in For Siemens NX.
-
-# 将 NX 中的面转换为 Rhino Brep 的时候遇到一些问题，还请有相关经验的小伙伴不吝赐教。
 
 # It's now in a very very early beta. for now, it's not recommended for any actual use.
 
 # Install Guide
 To install this Plug-in, you must install Rhino 7 and Siemens NX 1847 or higher.
 
-下载最新版本 [点击此处](https://github.com/zcstkhk/RhinoInside.NX/releases/)
+Download latest version [Click here](https://github.com/zcstkhk/RhinoInside.NX/releases/)
 
 The program offered is signed with NX 1872, that means if you use 1847 or other version, you must build the program by yourself then sign the program. For more detail about the signing progress, click the link below.
 
-[签名过程](https://docs.plm.automation.siemens.com/tdoc/nx/1847/nx_api/#uid:signing_process)
+[Signing Process](https://docs.plm.automation.siemens.com/tdoc/nx/1847/nx_api/#uid:signing_process)
 
-# 使用方法
->1. 安装 Rhino 和 NX.
->2. 打开 RhinoInside.NX Starter.
->3. 根据界面提示进行选择.
->4. 点击启动.
+# How to use
+>1. Install Rhino 和 NX.
+>2. Open RhinoInside.NX Starter.
+>3. Select the paths as desired.
+>4. Click Start.
 
-# 编译方法
->1. 安装 NX 时将安装目录设置为如下形式，XXX\Siemens\NXVER，其中 XXX 为任意文件夹，注意最好不要有空格，否则可能会引发其它问题，NXVER 为 NX 的版本号，比如 NX1872、NX1953，注意 NX 和 版本号之间不要有空格。
->2. 创建环境变量 SPLM_ROOT_DIR，指向第一步安装路径中的 XXX\Siemens。
->3. 创建环境变量 RHINO_ROOT_DIR，指向 RHINO 的安装目录，比如 C:\Programs\Rhino\7。
+# Build Process
+>1. Install NX within directory like XXX\Siemens\NXVER, XXX is any folder you have write access. NXVER is the version number of NX, e.g. NX1872, NX1953. Be careful not to have spaces between NX and the version number.
+>2. Create Enviroment Variable SPLM_ROOT_DIR, Point to XXX\Siemens in step 1.
+>3. Create Enviroment Variable RHINO_ROOT_DIR, Point to RHINO install Path, e.g C:\Programs\Rhino\7.

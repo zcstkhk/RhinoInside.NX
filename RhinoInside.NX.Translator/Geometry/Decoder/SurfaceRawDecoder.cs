@@ -93,9 +93,12 @@ namespace RhinoInside.NX.Translator.Geometry
         {
             Surface surface = face.ToRhinoSurface();
 
-            var surfIndex = brep.AddSurface(surface);
+            if (surface == null)
+                return;
 
-            var brepFace = brep.Faces.Add(surfIndex);
+            int surfIndex = brep.AddSurface(surface);
+
+            BrepFace brepFace = brep.Faces.Add(surfIndex);
 
             // Console.WriteLine("***************************************************");
 
@@ -249,13 +252,13 @@ namespace RhinoInside.NX.Translator.Geometry
             switch (faceData.FaceType)
             {
                 case NXOpen.Face.FaceType.Planar:
-                    return ToRhinoPlaneSurface(face, relativeTolerance);
+                    return ToRhinoPlaneSurface(face);
                 case NXOpen.Face.FaceType.Conical:
-                    return ToRhinoConicalSurface(face, faceData, relativeTolerance);
+                    return ToRhinoConicalSurface(face, faceData);
                 case NXOpen.Face.FaceType.Cylindrical:
                     return ToRhinoCylindricalSurface(face, faceData);
                 case NXOpen.Face.FaceType.SurfaceOfRevolution:
-                    return ToRhinoRevSurface(face, faceData, relativeTolerance);
+                    return ToRhinoRevSurface(face, faceData);
                 case NXOpen.Face.FaceType.Spherical:
                     return ToRhinoSphereSurface(face);
                 default: return FromBsurf(face);
@@ -266,9 +269,8 @@ namespace RhinoInside.NX.Translator.Geometry
         /// 创建未修剪的 Rhino PlaneSurface
         /// </summary>
         /// <param name="face"></param>
-        /// <param name="relativeTolerance"></param>
         /// <returns></returns>
-        static PlaneSurface ToRhinoPlaneSurface(NXOpen.Face face, double relativeTolerance)
+        static PlaneSurface ToRhinoPlaneSurface(NXOpen.Face face)
         {
             double[] facePt = new double[3];
             double[] direction = new double[3];
@@ -280,7 +282,7 @@ namespace RhinoInside.NX.Translator.Geometry
             return PlaneSurface.CreateThroughBox(plane, new BoundingBox(new Point3d(box[0], box[1], box[2]), new Point3d(box[3], box[4], box[5])));
         }
 
-        static RevSurface ToRhinoConicalSurface(NXOpen.Face face, FaceEx.FaceData faceData, double relativeTolerance)
+        static RevSurface ToRhinoConicalSurface(NXOpen.Face face, FaceEx.FaceData faceData)
         {
             double totalHeight;           // 圆锥总高度
             NXOpen.Point3d top;           // 圆锥顶点
@@ -322,7 +324,7 @@ namespace RhinoInside.NX.Translator.Geometry
             // return RevSurface.Create(curve, new Line(bottom.ToRhino(), top.ToRhino()), 0.0, Math.PI * 2.0);
         }
 
-        static RevSurface ToRhinoRevSurface(NXOpen.Face face, FaceEx.FaceData faceData, double relativeTolerance)
+        static RevSurface ToRhinoRevSurface(NXOpen.Face face, FaceEx.FaceData faceData)
         {
             var bodyFeatures = face.GetBody().GetFeatures();
 
@@ -360,20 +362,40 @@ namespace RhinoInside.NX.Translator.Geometry
 
                 var point1 = faceData.Point.Move(faceData.Direction, faceBoundingBox.Height * 1.5);
 
-                var point2 = point1.Move(faceBoundingBox.LengthDirection, faceBoundingBox.Length);
+                var point4 = faceData.Point.Move(faceData.Direction.Reverse(), faceBoundingBox.Height * 1.5);
 
-                var point3 = point2.Move(faceData.Direction.Reverse(), faceBoundingBox.Height * 3);
+                var faceMidPoint = face.GetPoint();
 
-                var point4 = point3.Move(faceBoundingBox.LengthDirection.Reverse(), faceBoundingBox.Length);
+                var point2 = faceMidPoint.Move(faceData.Direction, faceBoundingBox.Height * 1.5);
 
-                var fourPointSurface = WorkPart.Features.CreateFourPointSurface(point1, point2, point3, point4);
+                var point3 = faceMidPoint.Move(faceData.Direction.Reverse(), faceBoundingBox.Height * 1.5);
 
-                var intersectionCurveFeature = WorkPart.Features.CreateIntersectionCurve(fourPointSurface.GetFaces(), face);
+                NXOpen.Session.UndoMarkId undoMarkId = TheSession.SetUndoMark(NXOpen.Session.MarkVisibility.Invisible, "Calc Rev Profile");
 
-                faceSectionCurve = (intersectionCurveFeature.GetEntities()[0] as NXOpen.Curve).ToRhino();
+                NXOpen.Body fourPointSurface = WorkPart.Features.CreateFourPointSurface(point1, point2, point3, point4);
 
-                intersectionCurveFeature.Delete();
-                fourPointSurface.Delete();
+                try
+                {
+                    NXOpen.Features.IntersectionCurve intersectionCurveFeature = WorkPart.Features.CreateIntersectionCurve(fourPointSurface.GetFaces(), face);
+
+                    faceSectionCurve = (intersectionCurveFeature.GetEntities()[0] as NXOpen.Curve).ToRhino();
+
+                    intersectionCurveFeature.Delete();
+
+                    fourPointSurface.Delete();
+                }
+                catch (Exception)
+                {
+                    TheSession.UndoToMark(undoMarkId, "Calc Rev Profile");
+
+                    Console.WriteLine($"无法创建面 {face.Tag} 的交线");
+
+                    return null;
+                }
+                finally
+                {
+                    TheSession.DeleteUndoMark(undoMarkId, "Calc Rev Profile");
+                }
             }
 
             return RevSurface.Create(faceSectionCurve, new Line(faceData.Point.ToRhino(), faceData.Point.Move(faceData.Direction, 10.0).ToRhino()), startRadian, endRadian);
