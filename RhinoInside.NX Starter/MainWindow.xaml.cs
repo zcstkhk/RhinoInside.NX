@@ -42,10 +42,10 @@ namespace RhinoInside_Starter
             {
                 string[] configContent = System.IO.File.ReadAllLines(configPath);
 
-                comboBoxSelectLanguage.SelectedIndex = Convert.ToInt32(configContent[0]);
-                NxInstallPath.SelectedPath = configContent[1];
-                RhinoInsidePath.SelectedPath = configContent[2];
-                RhinoPath.SelectedPath = configContent[3];
+                comboBoxSelectLanguage.SelectedIndex = Convert.ToInt32(configContent[0].Substring(2));
+                NxInstallPath.SelectedPath = configContent[1].Substring(2);
+                RhinoInsidePath.SelectedPath = configContent[2].Substring(2);
+                RhinoPath.SelectedPath = configContent[3].Substring(2);
             }
             else
             {
@@ -105,10 +105,10 @@ namespace RhinoInside_Starter
 
             using (var stream = System.IO.File.CreateText(configFilePath))
             {
-                stream.WriteLine(comboBoxSelectLanguage.SelectedIndex.ToString());
-                stream.WriteLine(textBoxNxInstallPath.Text);
-                stream.WriteLine(textBoxRhinoInsidePath.Text);
-                stream.WriteLine(textBoxRhinoPath.Text);
+                stream.WriteLine("# " + comboBoxSelectLanguage.SelectedIndex.ToString());
+                stream.WriteLine("# " + textBoxNxInstallPath.Text);
+                stream.WriteLine("# " + textBoxRhinoInsidePath.Text);
+                stream.WriteLine("# " + textBoxRhinoPath.Text);
             }
 
             Process nxProcess = new Process();
@@ -118,9 +118,23 @@ namespace RhinoInside_Starter
             else
                 Environment.SetEnvironmentVariable("UGII_LANG", "english");
 
-            Environment.SetEnvironmentVariable("UGII_CUSTOM_DIRECTORY_FILE", "");
+            if (System.IO.Directory.Exists(@"E:\Documents\Programming\Repos\NXOpen Debug Utilities\00~Program"))
+            {
+                using (var writer = System.IO.File.AppendText(configFilePath))
+                {
+                    writer.WriteLine(System.IO.Path.Combine( @"E:\Documents\Programming\Repos\NXOpen Debug Utilities\00~Program", textBoxNxInstallPath.Text.Split('\\').Last()));
 
-            Environment.SetEnvironmentVariable("UGII_USER_DIR", textBoxRhinoInsidePath.Text);
+                    writer.WriteLine(textBoxRhinoInsidePath.Text);
+                }
+                
+                Environment.SetEnvironmentVariable("UGII_CUSTOM_DIRECTORY_FILE", configFilePath);
+            }
+            else
+            {
+                Environment.SetEnvironmentVariable("UGII_CUSTOM_DIRECTORY_FILE", "");
+
+                Environment.SetEnvironmentVariable("UGII_USER_DIR", textBoxRhinoInsidePath.Text);
+            }
 
             Environment.SetEnvironmentVariable("UGII_RhinoInside_Dir", textBoxRhinoInsidePath.Text);
 

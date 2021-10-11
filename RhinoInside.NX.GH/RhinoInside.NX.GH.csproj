@@ -83,6 +83,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestComponents\UDOTest.cs" />
+    <Compile Include="TestComponents\TestComponent.cs" />
     <Compile Include="Utilities\CSharpScriptComponent.cs" />
     <Compile Include="Parameters\DisplayableObject\Param_NXCurve.cs" />
     <Compile Include="Parameters\DisplayableObject\Param_NXDisplayableObject.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="Types\NX_Plane.cs" />
     <Compile Include="Types\NX_Point.cs" />
     <Compile Include="Types\NX_SmartObject.cs" />
+    <Compile Include="Utilities\GetBrepLogComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RhinoInside.NX.Core\RhinoInside.NX.Core.csproj">

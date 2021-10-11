@@ -47,7 +47,7 @@ namespace RhinoInside.NX.GH
             {
                 return Assembly.LoadFrom(Path.Combine(NXBinPath, assemblyName + ".dll"));
             }
-            else if (assemblyName == "NXOpen.Extensions" || assemblyName == "RhinoInside.NX.Core")
+            else if (assemblyName == "NXOpen.Extensions" || assemblyName == "RhinoInside.NX.Core" || assemblyName == "RhinoInside.NX.Translator")
             {
                 return Assembly.LoadFrom(Path.Combine(RhinoInsideDirectory, "Startup", assemblyName + ".dll"));
             }

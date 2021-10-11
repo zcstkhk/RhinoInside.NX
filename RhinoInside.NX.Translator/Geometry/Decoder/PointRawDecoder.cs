@@ -1,30 +1,27 @@
+锘縰sing Rhino.Geometry;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using Rhino.Geometry;
-using NXOpen.Extensions;
-using static NXOpen.Extensions.Globals;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace RhinoInside.NX.Translator.Geometry.Raw
+namespace RhinoInside.NX.Translator.Geometry
 {
-    /// <summary>
-    /// 此类中的方法是将 NX 几何体转换为 NX 单位的对象。
-    /// <para>如需在 Rhino 中使用，需要转换到 Rhino 的单位。</para>
-    /// </summary>
     public static partial class RawDecoder
     {
-        #region Values
-        public static Point3d ToRhino(NXOpen.Point3d p)
+        public static Vector3d ToRhino(NXOpen.Vector3d value)
         {
-            return new Point3d(p.X, p.Y, p.Z);
+            return new Vector3d(value.X, value.Y, value.Z);
         }
 
-        public static Vector3d ToRhino(NXOpen.Vector3d p)
+        public static Point3d ToRhino(NXOpen.Point3d value)
         {
-            return new Vector3d(p.X, p.Y, p.Z);
+            return new Point3d(value.X, value.Y, value.Z);
         }
+
+        public static Point3d ToRhinoPoint3d(double[] value) => new Point3d(value[0], value[1], value[2]);
+
+        public static Vector3d ToRhinoVector3d(double[] value) => new Vector3d(value[0], value[1], value[2]);
 
         public static Rhino.Geometry.Transform ToRhinoTransform(NXOpen.Matrix4x4 transform)
         {
@@ -54,17 +51,9 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
             return value;
         }
 
-        public static Plane ToRhino(NXOpen.Plane plane)
-        {
-            return new Plane(ToRhino(plane.Origin), ToRhino(plane.Matrix.GetAxisX()), ToRhino(plane.Matrix.GetAxisY()));
-        }
-        #endregion
-
-        #region Point
         public static Point ToRhino(NXOpen.Point point)
         {
-            return new Point(ToRhino(point.Coordinates));
+            return new Point(point.Coordinates.ToRhino());
         }
-        #endregion
-    };
+    }
 }

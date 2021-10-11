@@ -16,14 +16,6 @@ namespace RhinoInside.NX.Translator
     /// </summary>
     public static class PointEncoder
     {
-        #region Context
-        public sealed class Context : State<Context>
-        {
-            public NXOpen.Tag MaterialId = NXOpen.Tag.Null;
-            public NXOpen.Tag GraphicsStyleId = NXOpen.Tag.Null;
-        }
-        #endregion
-
         #region Geometry values
         public static UV ToUV(this Point2f value)
         {

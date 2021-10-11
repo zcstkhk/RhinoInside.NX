@@ -40,12 +40,12 @@ namespace RhinoInside.NX.GH.Types
         {
             if (typeof(Q) == typeof(GH_Curve))
             {
-                Globals.TheUfSession.Modl.CreateCurveFromEdge(Tag, out var curveTag);
+                var edge = Tag.GetTaggedObject() as NXOpen.Edge;
 
-                target = (Q)(object)new GH_Curve((curveTag.GetTaggedObject() as NXOpen.Curve).ToRhino());
+                var rhinoCurve = edge.ToRhinoCurve();
 
-                Globals.TheUfSession.Obj.DeleteObject(curveTag);
-                
+                target = (Q)(object)new GH_Curve(rhinoCurve);
+
                 return true;
             }
             else

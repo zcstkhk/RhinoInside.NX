@@ -42,6 +42,11 @@ namespace RhinoInside.NX.GH.Types
                 target = (Q)(object)new GH_Brep(Value.ToBrep());
                 return true;
             }
+            else if (typeof(Q) == typeof(GH_Surface))
+            {
+                target = (Q)(object)new GH_Surface(Value.ToRhinoSurface());
+                return true;
+            }
             else
             {
                 Console.WriteLine(typeof(Q));

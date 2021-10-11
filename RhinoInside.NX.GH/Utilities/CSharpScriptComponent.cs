@@ -63,6 +63,8 @@ namespace RhinoInside.NX.GH.Utilities
             //originalSource = originalSource.Insert(0, "using RhinoInside.NX.GH.Types;\r\n");
 
             originalSource = originalSource.Insert(0, "using NXOpen;\r\n");
+            //originalSource = originalSource.Insert(0, "using RhinoInside.NX.Translator.Geometry;\r\n");
+            //originalSource = originalSource.Insert(0, "using NXOpen.Extensions;\r\n");
 
             return originalSource;
         }

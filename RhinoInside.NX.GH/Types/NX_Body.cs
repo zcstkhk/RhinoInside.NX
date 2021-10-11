@@ -1,4 +1,6 @@
 ﻿using Grasshopper.Kernel.Parameters;
+using Grasshopper.Kernel.Types;
+using RhinoInside.NX.Translator.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +32,20 @@ namespace RhinoInside.NX.GH.Types
         public NX_Body(NXOpen.Tag tag, bool highlight) : base(tag, highlight)
         {
 
+        }
+
+        public override bool CastTo<Q>(ref Q target)
+        {
+            if (typeof(Q) == typeof(GH_Brep))
+            {
+                target = (Q)(object)new GH_Brep(Value.ToBrep());
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(typeof(Q));
+                return base.CastTo(ref target);
+            }
         }
 
         public override string ToString()

@@ -24,8 +24,6 @@ namespace RhinoInside.NX.Translator
         /// Factor for converting a value from Rhino model units to NX internal units.
         /// </summary>
         public static double RhinoToNXUnitsRatio => RhinoMath.UnitScale(RhinoDoc.ActiveDoc?.ModelUnitSystem ?? UnitSystem.Millimeters, PartUnit.ToRhinoUnits());
-
-
         #endregion
 
         #region Scale

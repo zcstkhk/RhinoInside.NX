@@ -81,6 +81,7 @@
     <Compile Include="GH\GrasshopperCommands.cs" />
     <Compile Include="GH\GrasshopperPlayerCommand.cs" />
     <Compile Include="ImageBuilder.cs" />
+    <Compile Include="NX\GH_Object.cs" />
     <Compile Include="ObjectTypes.cs" />
     <Compile Include="Rhino\Import.cs" />
     <Compile Include="Rhino\RhinoCommands.cs" />

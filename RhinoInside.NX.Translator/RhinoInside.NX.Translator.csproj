@@ -62,18 +62,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Geometry\BrepEncoder.cs" />
-    <Compile Include="Geometry\CurveDecoder.cs" />
+    <Compile Include="Geometry\Decoder\CurveDecoder.cs" />
     <Compile Include="Geometry\CurveEncoder.cs" />
+    <Compile Include="Geometry\Decoder\PointDecoder.cs" />
+    <Compile Include="Geometry\Decoder\PointRawDecoder.cs" />
     <Compile Include="Geometry\GeometryDecoder.cs" />
     <Compile Include="Geometry\PointEncoder.cs" />
+    <Compile Include="Geometry\Decoder\SurfaceDcoder.cs" />
     <Compile Include="Geometry\Raw\Encoder\BrepRawEncoder.cs" />
     <Compile Include="Geometry\Raw\Encoder\CurveRawEncoder.cs" />
-    <Compile Include="Geometry\Raw\Decoder\BrepRawDecoder.cs" />
-    <Compile Include="Geometry\Raw\Decoder\CurveRawDecoder.cs" />
-    <Compile Include="Geometry\Raw\Decoder\StructuresRawDecoder.cs" />
+    <Compile Include="Geometry\Decoder\CurveRawDecoder.cs" />
     <Compile Include="Geometry\Raw\Encoder\MeshRawEncoder.cs" />
     <Compile Include="Geometry\Raw\Encoder\StructuresRawEncoder.cs" />
-    <Compile Include="Geometry\Raw\Decoder\SurfaceRawDecoder.cs" />
+    <Compile Include="Geometry\Decoder\SurfaceRawDecoder.cs" />
     <Compile Include="Geometry\ShapeEncoder.cs" />
     <Compile Include="Geometry\UnitConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

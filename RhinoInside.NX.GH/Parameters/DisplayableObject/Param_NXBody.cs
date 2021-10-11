@@ -1,5 +1,6 @@
 ﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
+using NXOpen.Extensions;
 using RhinoInside.NX.GH.Properties;
 using RhinoInside.NX.GH.Types;
 using System;
@@ -24,12 +25,37 @@ namespace RhinoInside.NX.GH.Parameters.Param_DisplayableObject
 
         protected override GH_GetterResult Prompt_Plural(ref List<NX_Body> values)
         {
-            throw new NotImplementedException();
+            SelectionPreparation();
+
+            var selectedObjects = Select_Plural(MaskTripleEx.Body);
+            if (selectedObjects != null)
+            {
+                values = new List<NX_Body>();
+                for (int i = 0; i < selectedObjects.Length; i++)
+                {
+                    values.Add(new NX_Body(selectedObjects[i].Tag, Attributes.Selected));
+                }
+
+                return GH_GetterResult.success;
+            }
+
+            return GH_GetterResult.cancel;
         }
 
         protected override GH_GetterResult Prompt_Singular(ref NX_Body value)
         {
-            throw new NotImplementedException();
+            SelectionPreparation();
+
+            var selectedObject = Select_Singular(MaskTripleEx.Body);
+
+            if (selectedObject != null)
+            {
+                value = new NX_Body(selectedObject.Tag, Attributes.Selected);
+
+                return GH_GetterResult.success;
+            }
+
+            return GH_GetterResult.cancel;
         }
     }
 }
