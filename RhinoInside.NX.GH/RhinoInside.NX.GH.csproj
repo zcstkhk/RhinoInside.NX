@@ -23,6 +23,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
   </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1980|x64'">
+  </PropertyGroup>
   <PropertyGroup>
     <ReferencePath>
       $(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\managed;$(RHINO_ROOT_DIR)\Plug-ins\Grasshopper;$(RHINO_ROOT_DIR)\System;$(RHINO_ROOT_DIR)\Plug-ins\Grasshopper\Components
@@ -83,8 +85,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestComponents\ExportTest.cs" />
     <Compile Include="TestComponents\UDOTest.cs" />
-    <Compile Include="TestComponents\TestComponent.cs" />
+    <Compile Include="TestComponents\TestBaseComponent.cs" />
     <Compile Include="Utilities\CSharpScriptComponent.cs" />
     <Compile Include="Parameters\DisplayableObject\Param_NXCurve.cs" />
     <Compile Include="Parameters\DisplayableObject\Param_NXDisplayableObject.cs" />

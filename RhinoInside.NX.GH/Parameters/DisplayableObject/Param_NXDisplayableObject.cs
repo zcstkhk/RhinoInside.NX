@@ -84,7 +84,7 @@ namespace RhinoInside.NX.GH.Parameters
                 }
             }
 
-            OnVolatileDataCollected();
+            // OnVolatileDataCollected();
         }
 
         /// <summary>
@@ -212,6 +212,8 @@ namespace RhinoInside.NX.GH.Parameters
 
         private void Menu_ClearPersistentData(object sender, EventArgs e)
         {
+            Console.WriteLine("清除");
+
             if (PersistentDataCount > 0)
             {
                 foreach (INXDisplayableObject item in PersistentData)
@@ -230,13 +232,47 @@ namespace RhinoInside.NX.GH.Parameters
 
         protected override void OnVolatileDataCollected()
         {
-
+            Console.WriteLine("OnVolatileDataCollected Called:" + PersistentDataCount);
         }
 
         public override void RemovedFromDocument(GH_Document document)
         {
             _timer.Dispose();
+
             base.RemovedFromDocument(document);
+        }
+
+        protected override void ExpireDownStreamObjects()
+        {
+            Console.WriteLine("ExpireDownStreamObjects Called:" + PersistentDataCount);
+
+            base.ExpireDownStreamObjects();
+        }
+
+        public override void AddSource(IGH_Param source)
+        {
+            Console.WriteLine("AddSource Called:" + source.GetType().FullName);
+
+            base.AddSource(source);
+        }
+
+        public override void AddSource(IGH_Param source, int index)
+        {
+            Console.WriteLine("AddSource2 Called：" + source.GetType().FullName);
+            base.AddSource(source, index);
+        }
+
+        public override void RemoveSource(Guid source_id)
+        {
+            Console.WriteLine("RemoveSource1 Called");
+            base.RemoveSource(source_id);
+        }
+
+        public override void RemoveSource(IGH_Param source)
+        {
+            VolatileData.AllData(true).Where(obj => obj.IsValid).ToList().ForEach(obj => (obj as T).Delete());
+
+            base.RemoveSource(source);
         }
     }
 }

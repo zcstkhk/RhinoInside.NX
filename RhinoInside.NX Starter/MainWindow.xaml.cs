@@ -122,11 +122,11 @@ namespace RhinoInside_Starter
             {
                 using (var writer = System.IO.File.AppendText(configFilePath))
                 {
-                    writer.WriteLine(System.IO.Path.Combine( @"E:\Documents\Programming\Repos\NXOpen Debug Utilities\00~Program", textBoxNxInstallPath.Text.Split('\\').Last()));
+                    writer.WriteLine(System.IO.Path.Combine(@"E:\Documents\Programming\Repos\NXOpen Debug Utilities\00~Program", textBoxNxInstallPath.Text.Split('\\').Last()));
 
                     writer.WriteLine(textBoxRhinoInsidePath.Text);
                 }
-                
+
                 Environment.SetEnvironmentVariable("UGII_CUSTOM_DIRECTORY_FILE", configFilePath);
             }
             else
@@ -138,11 +138,12 @@ namespace RhinoInside_Starter
 
             Environment.SetEnvironmentVariable("UGII_RhinoInside_Dir", textBoxRhinoInsidePath.Text);
 
+            // For Debug Use Only
             var allProcesses = Process.GetProcesses();
-            if (allProcesses.Any(obj => obj.ProcessName == "vmware" || obj.ProcessName == "vmplayer"))
+            if ((allProcesses.Any(obj => obj.ProcessName == "vmware" || obj.ProcessName == "vmplayer")) && Environment.UserName == "Changsheng")
                 Environment.SetEnvironmentVariable("SPLM_LICENSE_SERVER", "28000@WIN-KOUCIUBMHSM");
-            else
-                Environment.SetEnvironmentVariable("SPLM_LICENSE_SERVER", $"28000@{Environment.MachineName}");
+            //else
+            //    Environment.SetEnvironmentVariable("SPLM_LICENSE_SERVER", $"28000@{Environment.MachineName}");
 
             nxProcess.StartInfo.FileName = System.IO.Path.Combine(textBoxNxInstallPath.Text, "NXBIN", "ugraf.exe");
 

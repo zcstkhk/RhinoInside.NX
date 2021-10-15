@@ -58,35 +58,6 @@ namespace RhinoInside.NX.Translator.Geometry
             AddNXFace(face, brep);
 
             return brep;
-#if 添加顶点
-                        Point3d startVertetexpnt = curve3d.PointAtStart;
-
-                        BrepVertex startVertex = brep.Vertices.Add(startVertetexpnt, Globals.DistanceTolerance);
-
-                        Point3d endVertetexpnt = curve3d.PointAtEnd;
-
-                        BrepVertex endVertex = brep.Vertices.Add(endVertetexpnt, Globals.DistanceTolerance);
-
-                        // Curve curve2d = surface.Pullback(curve3d, Globals.DistanceTolerance, new Interval(0, 1.0));
-
-                        int startVertexIndex = startVertex.VertexIndex;
-
-                        int endVertexIndex = endVertex.VertexIndex;
-
-                        int curve3dIndex = brep.AddEdgeCurve(curve3d);
-
-                        BrepEdge edge = brep.Edges.Add(startVertexIndex, endVertexIndex, curve3dIndex, Globals.DistanceTolerance);
-
-                        int curve2dIndex = brep.AddTrimCurve(curve2d);
-
-                        BrepTrim trim = brepLoop.Trims.Add(edge, currentFin.Sense == NXOpen.Sense.Forward, brepLoop, curve2dIndex);
-
-                        trim.IsoStatus = Rhino.Geometry.IsoStatus.None;
-
-                        trim.TrimType = BrepTrimType.Boundary;
-
-                        trim.SetTolerances(Globals.DistanceTolerance, Globals.DistanceTolerance);
-#endif            
         }
 
         private static void AddNXFace(NXOpen.Face face, Brep brep)
@@ -244,7 +215,7 @@ namespace RhinoInside.NX.Translator.Geometry
                 ToRhino(plane.Matrix.GetAxisY()));
         }
 
-        public static Surface ToRhinoSurface(NXOpen.Face face, out bool parametricOrientation, double relativeTolerance = 0.0)
+        public static Surface ToRhinoSurface(NXOpen.Face face, out bool parametricOrientation)
         {
             FaceEx.FaceData faceData = face.GetData();
             parametricOrientation = faceData.NormalReversed;
@@ -260,6 +231,7 @@ namespace RhinoInside.NX.Translator.Geometry
                 case NXOpen.Face.FaceType.SurfaceOfRevolution:
                     return ToRhinoRevSurface(face, faceData);
                 case NXOpen.Face.FaceType.Spherical:
+                case NXOpen.Face.FaceType.Blending:
                     return ToRhinoSphereSurface(face);
                 default: return FromBsurf(face);
             }
@@ -362,13 +334,16 @@ namespace RhinoInside.NX.Translator.Geometry
 
                 var point1 = faceData.Point.Move(faceData.Direction, faceBoundingBox.Height * 1.5);
 
-                var point4 = faceData.Point.Move(faceData.Direction.Reverse(), faceBoundingBox.Height * 1.5);
-
                 var faceMidPoint = face.GetPoint();
 
-                var point2 = faceMidPoint.Move(faceData.Direction, faceBoundingBox.Height * 1.5);
+                // 求与旋转方向垂直，并且位于面上的方向
+                var verticalDirection = faceData.Direction.CrossProduct(faceMidPoint.Subtract(faceData.Point)).CrossProduct(faceData.Direction);
 
-                var point3 = faceMidPoint.Move(faceData.Direction.Reverse(), faceBoundingBox.Height * 1.5);
+                var point2 = point1.Move(verticalDirection, faceBoundingBox.Length * 1.5);
+
+                var point3 = point2.Move(faceData.Direction.Reverse(), faceBoundingBox.Height * 3);
+
+                var point4 = point3.Move(verticalDirection.Reverse(), faceBoundingBox.Length * 1.5);
 
                 NXOpen.Session.UndoMarkId undoMarkId = TheSession.SetUndoMark(NXOpen.Session.MarkVisibility.Invisible, "Calc Rev Profile");
 
@@ -431,7 +406,7 @@ namespace RhinoInside.NX.Translator.Geometry
                 TheUfSession.Eval.AskArc(edgeEvaluator, out var arc2);
                 TheUfSession.Eval.Free(edgeEvaluator);
 
-                if (arc2.center.ToPoint3d().Subtract(arc1.center.ToPoint3d()).GetUnitVector().IsEqual(faceData.Direction.GetUnitVector()))
+                if (arc2.center.ToPoint3d().Subtract(arc1.center.ToPoint3d()).GetUnitVector().EqualsTo(faceData.Direction.GetUnitVector()))
                 {
                     bottom = arc1.center.ToPoint3d();
                 }

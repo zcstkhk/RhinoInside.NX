@@ -29,6 +29,8 @@ namespace RhinoInside.NX.GH.Types
         int Layer { get; set; }
 
         void RedisplayObject();
+
+        void Delete();
     }
 
     public abstract class NX_DisplayableObject<T> : GH_Goo<T>, INXDisplayableObject where T : DisplayableObject
@@ -40,9 +42,14 @@ namespace RhinoInside.NX.GH.Types
 
         }
 
+        public NX_DisplayableObject(T obj)
+        {
+            m_value = obj;
+        }
+
         public NX_DisplayableObject(Tag tag) : base()
         {
-            _tag = tag;
+            m_value = tag.GetTaggedObject() as T;
 
             UFSession.GetUFSession().Tag.AskHandleFromTag(tag, out Handle);
         }
@@ -58,20 +65,20 @@ namespace RhinoInside.NX.GH.Types
             Highlight = highlight;
         }
 
-        public override T Value
-        {
-            get
-            {
-                if (Tag == Tag.Null)
-                    return null;
-                else
-                {
-                    Tag.TryGetTaggedObject(out var obj);
-                    return obj as T;
-                }
-            }
-            set => base.Value = value;
-        }
+        //public override T Value
+        //{
+        //    get
+        //    {
+        //        if (Tag == Tag.Null)
+        //            return null;
+        //        else
+        //        {
+        //            Tag.TryGetTaggedObject(out var obj);
+        //            return obj as T;
+        //        }
+        //    }
+        //    set => m_value = value;
+        //}
 
         bool _highlight;
         public bool Highlight
@@ -113,13 +120,17 @@ namespace RhinoInside.NX.GH.Types
             set => throw new NotImplementedException();
         }
 
-        protected Tag _tag;
-
-        public Tag Tag => _tag;
+        public Tag Tag => m_value.Tag;
 
         public void RedisplayObject()
         {
             throw new NotImplementedException();
+        }
+
+        public void Delete()
+        {
+            m_value.Delete();
+            m_value = null;
         }
 
         public override bool Write(GH_IWriter writer)
@@ -136,9 +147,9 @@ namespace RhinoInside.NX.GH.Types
             var objectTag = Globals.TheUfSession.Tag.AskTagOfHandle(handle);
 
             if (objectTag != Tag.Null)
-                _tag = objectTag;
+                m_value = objectTag.GetTaggedObject() as T;
             else
-                _tag = Tag.Null;
+                m_value = null;
 
             return base.Read(reader);
         }
@@ -147,7 +158,7 @@ namespace RhinoInside.NX.GH.Types
         {
             get
             {
-                if (_tag == Tag.Null || Value == null)
+                if (Value == null)
                 {
                     return false;
                 }

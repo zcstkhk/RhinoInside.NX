@@ -32,13 +32,15 @@ namespace RhinoInside.NX.GH.Utilities
 
             ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Startup", "NXOpen.Extensions.dll"));
 
-            ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Startup", "RhinoInside.NX.GH.dll"));
+            ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Application", "RhinoInside.NX.GH.dll"));
 
             ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Startup", "RhinoInside.NX.Core.dll"));
 
             ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Application", "RhinoInside.NX.GH.Loader.dll"));
 
             ScriptSource.References.Add(Path.Combine(Loader.RhinoInsideDirectory, "Startup", "RhinoInside.NX.Translator.dll"));
+
+            ScriptSource.UsingCode = "using NXOpen;\r\nusing NXOpen.Extensions;\r\nusing RhinoInside.NX.Translator.Geometry;\r\nusing RhinoInside.NX.GH.Types;\r\nusing System.Linq;";
         }
 
         protected override List<IGH_TypeHint> AvailableTypeHints
@@ -55,19 +57,6 @@ namespace RhinoInside.NX.GH.Utilities
         }
 
         public override Guid ComponentGuid => new Guid("774E8C94-3979-4837-B4D1-568298087453");
-
-        protected override string CreateSourceForEdit(ScriptSource script)
-        {
-            var originalSource = base.CreateSourceForEdit(script);
-
-            //originalSource = originalSource.Insert(0, "using RhinoInside.NX.GH.Types;\r\n");
-
-            originalSource = originalSource.Insert(0, "using NXOpen;\r\n");
-            //originalSource = originalSource.Insert(0, "using RhinoInside.NX.Translator.Geometry;\r\n");
-            //originalSource = originalSource.Insert(0, "using NXOpen.Extensions;\r\n");
-
-            return originalSource;
-        }
 
         protected override CompilerResults CompileSource(string source)
         {

@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:s="clr-namespace:System;assembly=mscorlib"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <s:String x:Key="RhinoInsideStarter">RhinoInside.NX Starter</s:String>
     <s:String x:Key="selectLanguage">Select Language</s:String>
     <s:String x:Key="selectNxInstallPath">Select NX Install Path(If Calculate failed or want to select another version)</s:String>
     <s:String x:Key="selectNxInstallPathWatermark">Select NX Install Path</s:String>

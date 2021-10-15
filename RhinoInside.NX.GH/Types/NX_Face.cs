@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using RhinoInside.NX.Translator.Geometry;
 using Grasshopper.Kernel.Types;
 using Grasshopper.Kernel.Parameters;
+using RhinoInside.NX.Translator;
 
 namespace RhinoInside.NX.GH.Types
 {
@@ -35,7 +36,7 @@ namespace RhinoInside.NX.GH.Types
 
         }
 
-        public override bool CastTo<Q>(ref Q target)
+        public bool CastToOld<Q>(ref Q target)
         {
             if (typeof(Q) == typeof(GH_Brep))
             {
@@ -49,7 +50,36 @@ namespace RhinoInside.NX.GH.Types
                 if (rhino == null)
                     return false;
 
-                target = (Q)(object)new GH_Surface();
+                target = (Q)(object)new GH_Surface(rhino);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(typeof(Q));
+                return base.CastTo(ref target);
+            }
+        }
+
+        public override bool CastTo<Q>(ref Q target)
+        {
+            if (typeof(Q) == typeof(GH_Brep))
+            {
+                var exportedStp = SolidExchanger.NXExport(Value);
+
+                var import = SolidExchanger.GrasshopperImport(exportedStp);
+
+                target = (Q)(object)new GH_Brep(import);
+
+                return true;
+            }
+            else if (typeof(Q) == typeof(GH_Surface))
+            {
+                var rhino = Value.ToRhinoSurface();
+
+                if (rhino == null)
+                    return false;
+
+                target = (Q)(object)new GH_Surface(rhino);
                 return true;
             }
             else

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RhinoInside_Starter"
         mc:Ignorable="d"
-        Title="RhinoInside 启动器" Height="400" Width="750" ResizeMode="NoResize">
+        Title="{DynamicResource RhinoInsideStarter}" Height="400" Width="750" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="2" />

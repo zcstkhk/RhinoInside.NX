@@ -24,10 +24,15 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
   </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1980|x64'">
+  </PropertyGroup>
   <PropertyGroup>
-    <ReferencePath>$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\managed;$(RHINO_ROOT_DIR)\System</ReferencePath>
+    <ReferencePath>$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\managed;$(RHINO_ROOT_DIR)\System;$(RHINO_ROOT_DIR)\Plug-ins\Grasshopper</ReferencePath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Grasshopper">
+      <Private>false</Private>
+    </Reference>
     <Reference Include="NXOpen, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -77,6 +82,7 @@
     <Compile Include="Geometry\Decoder\SurfaceRawDecoder.cs" />
     <Compile Include="Geometry\ShapeEncoder.cs" />
     <Compile Include="Geometry\UnitConverter.cs" />
+    <Compile Include="SolidExchanger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System.Collections.Generic.cs" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RhinoInside.NX.Translator.System.Collections.Generic
+namespace RhinoInside.NX.Translator.GenericCollections
 {
   public static class IListConverter
   {

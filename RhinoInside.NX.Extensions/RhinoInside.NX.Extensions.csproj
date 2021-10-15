@@ -24,6 +24,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
   </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1980|x64'">
+  </PropertyGroup>
   <PropertyGroup>
     <ReferencePath>$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\managed;$(RHINO_ROOT_DIR)\Plug-ins\Grasshopper;$(RHINO_ROOT_DIR)\System</ReferencePath>
   </PropertyGroup>

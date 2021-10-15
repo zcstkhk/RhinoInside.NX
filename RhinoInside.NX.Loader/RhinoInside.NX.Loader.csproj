@@ -27,6 +27,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
   </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1980|x64'">
+  </PropertyGroup>
   <PropertyGroup>
     <ReferencePath>$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\managed</ReferencePath>
   </PropertyGroup>

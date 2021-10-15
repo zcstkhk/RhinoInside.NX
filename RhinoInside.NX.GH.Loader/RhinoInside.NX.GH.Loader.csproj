@@ -25,6 +25,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NX1953|x64' ">
   </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NX1980|x64' ">
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Grasshopper">
       <HintPath>$(RHINO_ROOT_DIR)\Plug-ins\Grasshopper\Grasshopper.dll</HintPath>
