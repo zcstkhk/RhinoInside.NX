@@ -10,6 +10,8 @@ using Rhino.DocObjects;
 using Rhino.Geometry;
 using static NXOpen.Extensions.Globals;
 using NXOpen.Extensions;
+using System.IO;
+using Grasshopper.Kernel;
 
 namespace RhinoInside.NX.Translator
 {
@@ -46,74 +48,116 @@ namespace RhinoInside.NX.Translator
         {
             var originalBodies = WorkPart.Bodies.ToArray();
 
-            NXOpen.Step242Importer step242Importer = TheSession.DexManager.CreateStep242Importer();
-
-            step242Importer.SimplifyGeometry = true;
-
-            step242Importer.Messages = NXOpen.Step242Importer.MessageEnum.None;
-
-            step242Importer.ObjectTypes.Surfaces = true;
-
-            step242Importer.ObjectTypes.Solids = true;
-
-            step242Importer.SimplifyGeometry = false;
-
-            step242Importer.SmoothBSurfaces = false;
+            var preferenceFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "RhinoInside Preferences.config");
 
             var currentNXProcessFile = new System.IO.FileInfo(Process.GetCurrentProcess().MainModule.FileName);        // NXBIN\ugraf.exe
 
-            var nxRootPath = currentNXProcessFile.Directory.Parent;
+            var nxRootPath = currentNXProcessFile.Directory.Parent.FullName;
 
-            step242Importer.SettingsFile = System.IO.Path.Combine(nxRootPath.FullName, "translators", "step242", "step242ug.def");
+            //if (!System.IO.File.Exists(preferenceFilePath) || System.IO.File.ReadAllLines(preferenceFilePath).First(obj => obj.Contains("STEPMode")).Split('=')[1] == "Internal")
+            if (true)
+            {
+                NXOpen.Step242Importer step242Importer = TheSession.DexManager.CreateStep242Importer();
 
-            step242Importer.ImportToTeamcenter = false;
+                step242Importer.SimplifyGeometry = true;
+
+                step242Importer.Messages = NXOpen.Step242Importer.MessageEnum.None;
+
+                step242Importer.ObjectTypes.Surfaces = true;
+
+                step242Importer.ObjectTypes.Solids = true;
+
+                step242Importer.SimplifyGeometry = false;
+
+                step242Importer.SmoothBSurfaces = false;
+
+                step242Importer.SettingsFile = Path.Combine(nxRootPath, "translators", "step242", "step242ug.def");
+
+                step242Importer.ImportToTeamcenter = false;
 
 #if !NX1847 && !NX1872 && !NX1899 && !NX1926
-            step242Importer.SetMode(NXOpen.BaseImporter.Mode.NativeFileSystem);
+                step242Importer.SetMode(NXOpen.BaseImporter.Mode.NativeFileSystem);
 #endif
 
-            step242Importer.OutputFile = GetTempFileName(".prt");
+                step242Importer.OutputFile = GetTempFileName(".prt");
 
-            step242Importer.InputFile = filePath;
+                step242Importer.InputFile = filePath;
 
-            step242Importer.ObjectTypes.Curves = false;
+                step242Importer.ObjectTypes.Curves = false;
 
-            step242Importer.ObjectTypes.Surfaces = true;
+                step242Importer.ObjectTypes.Surfaces = true;
 
-            step242Importer.ObjectTypes.Solids = true;
+                step242Importer.ObjectTypes.Solids = true;
 
-            step242Importer.ObjectTypes.Csys = false;
+                step242Importer.ObjectTypes.Csys = false;
 
-            step242Importer.ObjectTypes.PmiData = false;
+                step242Importer.ObjectTypes.PmiData = false;
 
 #if !NX1847 && !NX1872 && !NX1899 && !NX1926
-            step242Importer.ObjectTypes.Kinematic = false;
+                step242Importer.ObjectTypes.Kinematic = false;
 
-            step242Importer.ObjectTypes.Attributes = false;
+                step242Importer.ObjectTypes.Attributes = false;
 #endif
 
-            step242Importer.SewSurfaces = true;
+                step242Importer.SewSurfaces = true;
 
-            step242Importer.SimplifyGeometry = true;
+                step242Importer.SimplifyGeometry = true;
 
-            step242Importer.Optimize = true;
+                step242Importer.Optimize = true;
 
-            step242Importer.SmoothBSurfaces = true;
+                step242Importer.SmoothBSurfaces = true;
 
-            step242Importer.FlattenAssembly = false;
+                step242Importer.FlattenAssembly = false;
 
-            step242Importer.FileOpenFlag = false;
+                step242Importer.FileOpenFlag = false;
 
-            step242Importer.ProcessHoldFlag = false;
+                step242Importer.ProcessHoldFlag = false;
 
-            NXOpen.NXObject nXObject = step242Importer.Commit();
+                NXOpen.NXObject nXObject = step242Importer.Commit();
 
-            step242Importer.Destroy();
+                step242Importer.Destroy();
+            }
+            else
+            {
+                string outputFile = GetTempFileName("prt");
+
+                using (Process p = new Process())
+                {
+                    p.StartInfo.FileName = "cmd.exe";
+                    p.StartInfo.UseShellExecute = false;        //是否使用操作系统shell启动
+                    p.StartInfo.RedirectStandardInput = true;   //接受来自调用程序的输入信息
+                    p.StartInfo.RedirectStandardOutput = true;  //由调用程序获取输出信息
+                    p.StartInfo.RedirectStandardError = true;   //重定向标准错误输出
+                    p.StartInfo.CreateNoWindow = true;          //不显示程序窗口
+                    p.Start();      //启动程序
+
+                    //向cmd窗口写入命令
+                    p.StandardInput.AutoFlush = true;
+
+                    p.StandardInput.WriteLine(Path.Combine(nxRootPath, "UGII", "nxcommand.bat") + "&exit");
+
+                    string cmd = Path.Combine(nxRootPath, @"step214ug\step214ug.cmd") + $" {filePath} o={outputFile} d=" + Path.Combine(nxRootPath, @"STEP214UG\step214ug.def") + $" l={outputFile}.log" + "&exit";
+
+                    p.StandardInput.WriteLine(cmd);
+
+                    //获取cmd窗口的输出信息
+                    p.StandardOutput.ReadToEnd();
+                    p.WaitForExit();//等待程序执行完退出进程
+                    p.Close();
+                }
+
+                PartEx.ImportPart(WorkPart, outputFile, Matrix4x4Ex.Identity);
+            }
 
             if (WorkPart.Bodies.ToArray().Length == originalBodies.Length)
                 return null;
             else
-                return WorkPart.Bodies.ToArray().Last();
+            {
+                var resultBody = WorkPart.Bodies.ToArray().Last();
+                resultBody.SetBooleanUserAttribute("GH_Baked_Object", -1, false, NXOpen.Update.Option.Now);
+                return resultBody;
+            }
+
         }
 
         /// <summary>
@@ -121,8 +165,15 @@ namespace RhinoInside.NX.Translator
         /// </summary>
         /// <param name="bodyToExport"></param>
         /// <returns></returns>
-        public static string NXExport(NXOpen.Body bodyToExport)
+        public static string NXExport(NXOpen.Body bodyToExport, bool forceUpate = false)
         {
+            var bodyHashCode = bodyToExport.GetHandle().GetHashCode();
+
+            string targetFile = Path.Combine(Path.GetTempPath(), bodyHashCode.ToString() + ".stp");
+
+            if (System.IO.File.Exists(targetFile) && !forceUpate)
+                return targetFile;
+
             NXOpen.StepCreator stepCreator = TheSession.DexManager.CreateStepCreator();
 
             stepCreator.ExportAs = NXOpen.StepCreator.ExportAsOption.Ap242;
@@ -138,8 +189,6 @@ namespace RhinoInside.NX.Translator
             stepCreator.ExportSelectionBlock.SelectionScope = NXOpen.ObjectSelector.Scope.SelectedObjects;
 
             stepCreator.ExportSelectionBlock.SelectionComp.Add(bodyToExport);
-
-            string targetFile = GetTempFileName("stp");
 
             stepCreator.OutputFile = targetFile;
 
@@ -187,7 +236,7 @@ namespace RhinoInside.NX.Translator
 
             string exportName = GetTempFileName("stp");
 
-            string exportCmd = "!_-Export " + "\"" + exportName + "\"" + " _Enter";
+            string exportCmd = "!_-Export _SaveSmall=Yes _GeometryOnly=Yes _SaveTextures=No _SavePlugInData=Yes " + "\"" + exportName + "\"" + " _Schema=AP214AutomotiveDesign _ExportParameterSpaceCurves=Yes _SplitClosedSurfaces=No _LetImportingApplicationSetColorForBlackObjects=Yes " + " _Enter";
 
             RhinoApp.RunScript(exportCmd, false);
 

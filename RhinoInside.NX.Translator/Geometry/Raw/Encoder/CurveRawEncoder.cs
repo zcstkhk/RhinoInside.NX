@@ -13,13 +13,13 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
         public static NXOpen.Line ToHost(LineCurve value)
         {
             var line = value.Line;
-            return line.ToLine();
+            return line.ToNXLine();
         }
 
         public static NXOpen.Arc ToHost(ArcCurve value)
         {
             var arc = value.Arc;
-            return arc.ToArc();
+            return arc.ToNXArc();
         }
 
         public static double[] ToHost(NurbsCurveKnotList list)
@@ -53,7 +53,7 @@ namespace RhinoInside.NX.Translator.Geometry.Raw
 
         public static NXOpen.Curve ToHost(NurbsCurve value)
         {
-            return value.ToCurve();
+            return value.ToNXCurve();
         }
     }
 }

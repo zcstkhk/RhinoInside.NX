@@ -387,7 +387,7 @@ namespace RhinoInside.NX
                     for (int i = 0; i < array2.Length; i++)
                     {
                         object value = array.GetValue(i);
-                        object obj2 = Loader.convertToParameterType(parameterType.GetElementType(), value);
+                        object obj2 = Loader.ConvertToParameterType(parameterType.GetElementType(), value);
                         if (obj2 == null && value != null)
                         {
                             return null;
@@ -418,7 +418,7 @@ namespace RhinoInside.NX
             }
         }
 
-        internal static object convertToParameterType(Type parameterType, object argument)
+        internal static object ConvertToParameterType(Type parameterType, object argument)
         {
             CheckTypesEqual(parameterType, argument);
             return ConvertToParameterTypeInternal(parameterType, argument);
@@ -484,23 +484,6 @@ namespace RhinoInside.NX
             public Type coreType;
         }
 
-        //------------------------------------------------------------------------------
-        // This method specifies how a shared image is unloaded from memory
-        // within NX. This method gives you the capability to unload an
-        // internal NX Open application or user  exit from NX. Specify any
-        // one of the three constants as a return value to determine the type
-        // of unload to perform:
-        //
-        //
-        //    Immediately : unload the library as soon as the automation program has completed
-        //    Explicitly  : unload the library from the "Unload Shared Image" dialog
-        //    AtTermination : unload the library when the NX session terminates
-        //
-        //
-        // NOTE:  A program which associates NX Open applications with the menubar
-        // MUST NOT use this option since it will UNLOAD your NX Open application image
-        // from the menubar.
-        //------------------------------------------------------------------------------
         public static int GetUnloadOption(string arg)
         {
             //return System.Convert.ToInt32(Session.LibraryUnloadOption.Explicitly);

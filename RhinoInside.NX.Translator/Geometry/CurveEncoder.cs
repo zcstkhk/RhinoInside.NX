@@ -14,15 +14,15 @@ namespace RhinoInside.NX.Translator
     public static class CurveEncoder
     {
         #region Curve
-        public static NXOpen.Curve ToRhino(this Curve value, double factor)
+        public static NXOpen.Curve ToNXCurve(Curve value, double factor)
         {
             switch (value)
             {
                 case LineCurve line:
-                    return line.Line.ToLine(factor);
+                    return ToNXLine(line.Line, factor);
 
                 case ArcCurve arc:
-                    return arc.Arc.ToArc(factor);
+                    return ToNXArc(arc.Arc, factor);
 
                 case PolylineCurve polyline:
                     value = polyline.Simplify
@@ -35,10 +35,9 @@ namespace RhinoInside.NX.Translator
                     ?? value;
 
                     if (value is PolylineCurve)
-                        return value.ToNurbsCurve().ToCurve(factor);
+                        return ToNXCurve(value.ToNurbsCurve(), factor);
                     else
-                        return value.ToRhino(factor);
-
+                        return ToNXCurve(value, factor);
                 case PolyCurve polyCurve:
                     value = polyCurve.Simplify
                     (
@@ -50,43 +49,42 @@ namespace RhinoInside.NX.Translator
                     ?? value;
 
                     if (value is PolyCurve)
-                        return value.ToNurbsCurve().ToCurve(factor);
+                        return ToNXCurve(value.ToNurbsCurve(), factor);
                     else
-                        return value.ToRhino(factor);
-
+                        return ToNXCurve(value, factor);
                 case NurbsCurve nurbsCurve:
-                    return nurbsCurve.ToCurve(factor);
+                    return ToNXCurve(nurbsCurve, factor);
 
                 default:
-                    return value.ToNurbsCurve().ToCurve(factor);
+                    return ToNXCurve(value.ToNurbsCurve(), factor);
             }
         }
-        public static NXOpen.Curve ToCurve(this Curve value) => value.ToRhino(UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Curve ToCurve(this Curve value) => ToNXCurve(value, UnitConverter.RhinoToNXUnitsRatio);
 
-        public static IEnumerable<NXOpen.Curve> ToCurveMany(this Curve curve, double factor)
+        public static IEnumerable<NXOpen.Curve> ToNXCurves(Curve curve, double factor)
         {
             switch (curve)
             {
                 case LineCurve lineCurve:
-                    yield return lineCurve.Line.ToLine(factor);
+                    yield return ToNXLine(lineCurve.Line, factor);
                     yield break;
 
                 case PolylineCurve polylineCurve:
-                    foreach (var line in polylineCurve.ToCurveMany(factor))
+                    foreach (var line in ToNXLines(polylineCurve, factor))
                         yield return line;
                     yield break;
 
                 case ArcCurve arcCurve:
-                    yield return arcCurve.Arc.ToArc(factor);
+                    yield return ToNXArc(arcCurve.Arc, factor);
                     yield break;
 
                 case PolyCurve poly:
-                    foreach (var segment in poly.ToCurveMany(factor))
+                    foreach (var segment in ToNXCurves(poly, factor))
                         yield return segment;
                     yield break;
 
                 case NurbsCurve nurbs:
-                    foreach (var segment in nurbs.ToCurveMany(factor))
+                    foreach (var segment in ToNXCurves(nurbs, factor))
                         yield return segment;
                     yield break;
 
@@ -94,7 +92,7 @@ namespace RhinoInside.NX.Translator
                     if (curve.HasNurbsForm() != 0)
                     {
                         var nurbsForm = curve.ToNurbsCurve();
-                        foreach (var c in nurbsForm.ToCurveMany(factor))
+                        foreach (var c in ToNXCurves(nurbsForm, factor))
                             yield return c;
                     }
                     else throw new Exception($"Failed to convert {curve} to DB.Curve");
@@ -102,67 +100,69 @@ namespace RhinoInside.NX.Translator
                     yield break;
             }
         }
-        public static IEnumerable<NXOpen.Curve> ToCurveMany(this Curve value) => value.ToCurveMany(UnitConverter.RhinoToNXUnitsRatio);
 
-        public static IEnumerable<NXOpen.Curve> ToCurveMany(this PolyCurve value) => value.ToCurveMany(UnitConverter.RhinoToNXUnitsRatio);
-        public static IEnumerable<NXOpen.Curve> ToCurveMany(this PolyCurve value, double factor)
+        public static IEnumerable<NXOpen.Curve> ToNXCurves(this Curve value) => ToNXCurves(value, UnitConverter.RhinoToNXUnitsRatio);
+
+        public static IEnumerable<NXOpen.Curve> ToNXCurves(this PolyCurve value) => ToNXCurves(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static IEnumerable<NXOpen.Curve> ToNXCurves(PolyCurve value, double factor)
         {
             int segmentCount = value.SegmentCount;
             for (int s = 0; s < segmentCount; ++s)
             {
-                foreach (var segment in value.SegmentCurve(s).ToCurveMany(factor))
+                foreach (var segment in ToNXCurves(value.SegmentCurve(s), factor))
                     yield return segment;
             }
         }
         #endregion
 
         #region ArcCurve
-        public static NXOpen.Curve ToCurve(this ArcCurve value) => value.Arc.ToArc(UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Curve ToCurve(this ArcCurve value, double factor) => value.Arc.ToArc(factor);
+        public static NXOpen.Arc ToNXArc(this ArcCurve value) => ToNXArc(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Arc ToNXArc(ArcCurve value, double factor) => ToNXArc(value.Arc, factor);
         #endregion
 
         #region Arc Structure
-        public static NXOpen.Arc ToArc(this Arc value) => value.ToArc(UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Arc ToArc(this Arc value, double factor)
+        public static NXOpen.Arc ToNXArc(this Arc value) => ToNXArc(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Arc ToNXArc(Arc value, double factor)
         {
             return WorkPart.Curves.CreateArc(value.Center.ToXYZ(factor), value.Plane.XAxis.ToXYZ(factor), value.Plane.YAxis.ToXYZ(factor), value.Radius * factor, value.StartAngle, value.EndAngle);
         }
         #endregion
 
         #region Circle Structure
-        public static NXOpen.Arc ToArc(this Circle value) => value.ToArc(UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Arc ToArc(this Circle value, double factor)
+        public static NXOpen.Arc ToNXArc(this Circle value) => ToNXArc(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Arc ToNXArc(Circle value, double factor)
         {
             return WorkPart.Curves.CreateArc(value.Center.ToXYZ(factor), value.Plane.XAxis.ToXYZ(factor), value.Plane.YAxis.ToXYZ(factor), value.Radius * factor, 0.0, 2 * Math.PI);
         }
         #endregion
 
         #region Ellipse Structure
-        public static NXOpen.Curve ToCurve(this Ellipse value) => value.ToCurve(new Interval(0.0, 2.0 * Math.PI), UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Curve ToCurve(this Ellipse value, double factor) => value.ToCurve(new Interval(0.0, 2.0 * Math.PI), factor);
-        public static NXOpen.Curve ToCurve(this Ellipse value, Interval interval) => value.ToCurve(interval, UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Curve ToCurve(this Ellipse value, Interval interval, double factor)
+        public static NXOpen.Ellipse ToNXEllipse(this Ellipse value) => ToNXEllipse(value, new Interval(0.0, 2.0 * Math.PI), UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Ellipse ToNXEllipse(Ellipse value, double factor) => ToNXEllipse(value, new Interval(0.0, 2.0 * Math.PI), factor);
+        public static NXOpen.Ellipse ToNXEllipse(Ellipse value, Interval interval) => ToNXEllipse(value, interval, UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Ellipse ToNXEllipse(Ellipse value, Interval interval, double factor)
         {
             return WorkPart.Curves.CreateEllipse(value.Plane.Origin.ToXYZ(factor), value.Plane.XAxis.ToXYZ(), value.Plane.YAxis.ToXYZ(), value.Radius1, value.Radius2, interval.Min, interval.Max);
         }
         #endregion
 
         #region Line Structure
-        public static NXOpen.Line ToLine(this Line value) => value.ToLine(UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Line ToLine(this Line value, double factor) => WorkPart.Curves.CreateLine(value.From.ToXYZ(factor), value.To.ToXYZ(factor));
+        public static NXOpen.Line ToNXLine(this Line value) => ToNXLine(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Line ToNXLine(Line value, double factor) => WorkPart.Curves.CreateLine(value.From.ToXYZ(factor), value.To.ToXYZ(factor));
         #endregion
 
         #region LineCurve
-        public static NXOpen.Curve ToCurve(this LineCurve value) => value.Line.ToLine(UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Curve ToCurve(this LineCurve value, double factor) => value.Line.ToLine(factor);
+        public static NXOpen.Line ToNXCurve(this LineCurve value) => ToNXLine(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Line ToNXLine(LineCurve value, double factor) => ToNXLine(value.Line, factor);
         #endregion
 
         #region NurbsCurve
-        public static NXOpen.Curve ToCurve(this NurbsCurve value) => value.ToCurve(UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Curve ToCurve(this NurbsCurve value, double factor)
+        public static NXOpen.Curve ToNXCurve(this NurbsCurve value) => ToNXCurve(value, UnitConverter.RhinoToNXUnitsRatio);
+
+        public static NXOpen.Curve ToNXCurve(NurbsCurve value, double factor)
         {
             if (value.TryGetEllipse(out Ellipse ellipse, DistanceTolerance * factor))
-                return ellipse.ToCurve(factor);
+                return ToNXEllipse(ellipse, factor);
 
             var gap = DistanceTolerance * 0.5;
             if (value.IsClosable(gap * factor))
@@ -185,7 +185,7 @@ namespace RhinoInside.NX.Translator
                 value.IncreaseDegree(3);
             }
 
-            return ToNurbsSpline(value, factor);
+            return ToNXSpline(value, factor);
         }
 
         static bool KnotAlmostEqualTo(double max, double min) =>
@@ -255,7 +255,7 @@ namespace RhinoInside.NX.Translator
             return knots;
         }
 
-        static global::NXOpen.Point3d[] ToXYZArray(NurbsCurvePointList list, double factor)
+        static global::NXOpen.Point3d[] ToNXPoint3dArray(NurbsCurvePointList list, double factor)
         {
             var count = list.Count;
             var points = new global::NXOpen.Point3d[count];
@@ -281,7 +281,7 @@ namespace RhinoInside.NX.Translator
             return points;
         }
 
-        public static NXOpen.Curve ToNurbsSpline(this NurbsCurve value, double factor)
+        public static NXOpen.Spline ToNXSpline(this NurbsCurve value, double factor)
         {
             var degree = value.Degree;
             var knots = ToDoubleArray(value.Knots, degree);
@@ -319,12 +319,12 @@ namespace RhinoInside.NX.Translator
 
             //splineTag.GetTaggedObject().GetType().ToString().ListingWindowWriteLine();
 
-            return splineTag.GetTaggedObject() as NXOpen.Curve;
+            return splineTag.GetTaggedObject() as NXOpen.Spline;
 
         }
 
-        public static IEnumerable<NXOpen.Curve> ToCurveMany(this NurbsCurve value) => value.ToCurveMany(UnitConverter.RhinoToNXUnitsRatio);
-        public static IEnumerable<NXOpen.Curve> ToCurveMany(this NurbsCurve value, double factor)
+        public static IEnumerable<NXOpen.Curve> ToNXCurves(this NurbsCurve value) => ToNXCurves(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static IEnumerable<NXOpen.Curve> ToNXCurves(NurbsCurve value, double factor)
         {
             if (value.Degree == 1)
             {
@@ -345,7 +345,7 @@ namespace RhinoInside.NX.Translator
                 for (int s = 0; s < value.SpanCount; ++s)
                 {
                     var segment = value.Trim(value.SpanDomain(s)) as NurbsCurve;
-                    yield return CurveEncoder.ToNurbsSpline(segment, factor);
+                    yield return CurveEncoder.ToNXSpline(segment, factor);
                 }
             }
             else if (value.IsClosable(DistanceTolerance * 1.01))
@@ -359,15 +359,15 @@ namespace RhinoInside.NX.Translator
                       value.Split(mid) is Curve[] half
                     )
                     {
-                        yield return (half[0] as NurbsCurve).ToNurbsSpline(factor);
-                        yield return (half[1] as NurbsCurve).ToNurbsSpline(factor);
+                        yield return (half[0] as NurbsCurve).ToNXSpline(factor);
+                        yield return (half[1] as NurbsCurve).ToNXSpline(factor);
                     }
                     else throw new Exception("Failed to Split closed Edge");
                 }
                 else
                 {
                     foreach (var segment in segments)
-                        yield return (segment as NurbsCurve).ToNurbsSpline(factor);
+                        yield return (segment as NurbsCurve).ToNXSpline(factor);
                 }
             }
             else if (value.GetNextDiscontinuity(Continuity.C1_continuous, value.Domain.Min, value.Domain.Max, out var t))
@@ -378,46 +378,24 @@ namespace RhinoInside.NX.Translator
 
                 var segments = value.Split(splitters);
                 foreach (var segment in segments.Cast<NurbsCurve>())
-                    yield return CurveEncoder.ToNurbsSpline(segment, factor);
+                    yield return CurveEncoder.ToNXSpline(segment, factor);
             }
             else
             {
-                yield return CurveEncoder.ToNurbsSpline(value, factor);
+                yield return CurveEncoder.ToNXSpline(value, factor);
             }
         }
         #endregion
 
         #region Polyline
-        public static NXOpen.Line[] ToLines(this Polyline value) => value.ToLines(UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Line[] ToLines(this Polyline value, double factor)
-        {
-            value.ReduceSegments(DistanceTolerance);
-
-            int count = value.Count;
-            var list = new NXOpen.Line[Math.Max(0, count - 1)];
-            if (count > 1)
-            {
-                var point = value[0];
-                NXOpen.Point3d end, start = new NXOpen.Point3d(point.X * factor, point.Y * factor, point.Z * factor);
-                for (int p = 1; p < count; start = end, ++p)
-                {
-                    point = value[p];
-                    end = new NXOpen.Point3d(point.X * factor, point.Y * factor, point.Z * factor);
-                    list[p - 1] = WorkPart.Curves.CreateLine(start, end);
-                }
-            }
-
-            return list;
-        }
-
-        public static NXOpen.Line[] ToPolyLine(this Polyline value) => value.ToPolyLine(UnitConverter.RhinoToNXUnitsRatio);
-        public static NXOpen.Line[] ToPolyLine(this Polyline value, double factor)
+        public static NXOpen.Line[] ToNXLines(this Polyline value) => ToNXLines(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static NXOpen.Line[] ToNXLines(Polyline value, double factor)
         {
             int count = value.Count;
             NXOpen.Line[] lines = new NXOpen.Line[value.SegmentCount];
             for (int i = 0; i < lines.Length; i++)
             {
-                lines[i] = value.SegmentAt(i).ToLine();
+                lines[i] = value.SegmentAt(i).ToNXLine();
             }
 
             return lines;
@@ -425,8 +403,8 @@ namespace RhinoInside.NX.Translator
         #endregion
 
         #region PolylineCurve
-        public static IEnumerable<NXOpen.Curve> ToCurveMany(this PolylineCurve value) => value.ToCurveMany(UnitConverter.RhinoToNXUnitsRatio);
-        public static IEnumerable<NXOpen.Curve> ToCurveMany(this PolylineCurve value, double factor)
+        public static IEnumerable<NXOpen.Line> ToNXLines(this PolylineCurve value) => ToNXLines(value, UnitConverter.RhinoToNXUnitsRatio);
+        public static IEnumerable<NXOpen.Line> ToNXLines(PolylineCurve value, double factor)
         {
             int pointCount = value.PointCount;
             if (pointCount > 1)

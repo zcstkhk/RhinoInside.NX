@@ -26,11 +26,9 @@ namespace RhinoInside.NX.GH.Types
 
         bool Visible { get; set; }
 
-        int Layer { get; set; }
-
-        void RedisplayObject();
-
         void Delete();
+
+        DisplayableObject NXObject { get; }
     }
 
     public abstract class NX_DisplayableObject<T> : GH_Goo<T>, INXDisplayableObject where T : DisplayableObject
@@ -114,18 +112,7 @@ namespace RhinoInside.NX.GH.Types
             }
         }
 
-        public int Layer
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
         public Tag Tag => m_value.Tag;
-
-        public void RedisplayObject()
-        {
-            throw new NotImplementedException();
-        }
 
         public void Delete()
         {
@@ -180,6 +167,11 @@ namespace RhinoInside.NX.GH.Types
                 else
                     return base.IsValidWhyNot;
             }
+        }
+
+        public DisplayableObject NXObject
+        {
+            get => m_value;
         }
 
         public override IGH_Goo Duplicate()

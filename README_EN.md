@@ -7,13 +7,13 @@ A Rhino Plug-in For Siemens NX.
 # It's now in a very very early beta. for now, it's not recommended for any actual use.
 
 # Note
->1. To install this Plug-in, you must install Rhino 7 and Siemens NX 1847 or higher.
+>1. To install this Plug-in, you must install Rhino 7 and Siemens NX 1980 or higher.
 >2. Now the program uses STEP to interact Body data between NX and Rhino, so your NX should has a STEP242 license to use this tool.
->3. There is an issue in NX 1953, when import step data, it will throw an error. so avoid usins NX 1953.
+>3. There is an issue in NX 1953, when import step data, it will throw an error. so avoid using NX 1953.
 
 Download latest version [Click here](https://github.com/zcstkhk/RhinoInside.NX/releases/)
 
-The program offered is signed with NX 1872, you can use it in higher version of NX in theoraise an issuery, if not, you can build the program by yourself then sign the program. For more detail about the signing progress, click the link below. Or raise an issue to let me build another specific version for you.
+The program offered is signed with NX 1980, you can use it in higher version of NX in theoraise an issuery, if not, you can build the program by yourself then sign the program. For more detail about the signing progress, click the link below. Or raise an issue to let me build another specific version for you.
 
 [Signing Process](https://docs.plm.automation.siemens.com/tdoc/nx/1847/nx_api/#uid:signing_process)
 
@@ -31,3 +31,4 @@ The program offered is signed with NX 1872, you can use it in higher version of 
 # Known Issues
 >1. Can not rename Grasshopper Component, it will stuck the program.
 >2. NX 1953 STEP import problem.
+>3. Grasshopper will show object expired during a solution error while translating data, the reason why this shows is still under investigation, reconnect grasshopper component will fix this for temporary.

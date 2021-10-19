@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RhinoInside.NX.GH
 {
-    public class GetBrepLogComponent : GH_Component
+    public abstract class GetBrepLogComponent : GH_Component
     {
         public override Guid ComponentGuid
         {

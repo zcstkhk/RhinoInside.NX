@@ -23,7 +23,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
   </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1980|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1980|x64'">
   </PropertyGroup>
   <PropertyGroup>
     <ReferencePath>$(SPLM_ROOT_DIR)\$(Configuration)\NXBIN\managed;$(RHINO_ROOT_DIR)\Plug-ins\Grasshopper;$(RHINO_ROOT_DIR)\System</ReferencePath>
@@ -84,6 +84,7 @@
     <Compile Include="GH\GrasshopperPlayerCommand.cs" />
     <Compile Include="ImageBuilder.cs" />
     <Compile Include="NX\GH_Object.cs" />
+    <Compile Include="NX\RhinoInside_Preferences.cs" />
     <Compile Include="ObjectTypes.cs" />
     <Compile Include="Rhino\Import.cs" />
     <Compile Include="Rhino\RhinoCommands.cs" />

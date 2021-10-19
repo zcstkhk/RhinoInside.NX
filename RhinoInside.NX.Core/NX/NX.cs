@@ -102,9 +102,9 @@ namespace RhinoInside.NX.Core
                 File.Copy(Path.Combine(ApplicationPath, "RhinoInside.NX.GH.Loader.pdb"), Path.Combine(GrassHopperDefaultAssemblyFolder, "RhinoInside.NX.GH.Loader.pdb"), true);
 #endif
 
-                theUI.MenuBarManager.AddMenuAction("STARTRHINOINSIDE", new MenuBarManager.ActionCallback(RhinoCommands.StartRhinoInside));
                 theUI.MenuBarManager.AddMenuAction("STARTRHINO", new MenuBarManager.ActionCallback(RhinoCommands.StartRhino));
                 theUI.MenuBarManager.AddMenuAction("IMPORTRHINO", new MenuBarManager.ActionCallback(ImportCommand.ImportRhino));
+
                 theUI.MenuBarManager.AddMenuAction("STARTIRONPYTHON", new MenuBarManager.ActionCallback(RhinoCommands.StartIronPython));
 
                 theUI.MenuBarManager.AddMenuAction("STARTGRASSHOPPER", new MenuBarManager.ActionCallback(GrasshopperCommands.StartGrasshopper));
@@ -113,7 +113,9 @@ namespace RhinoInside.NX.Core
                 theUI.MenuBarManager.AddMenuAction("GRASSHOPPERRECOMPUTE", new MenuBarManager.ActionCallback(GrasshopperCommands.GrasshopperRecompute));
                 theUI.MenuBarManager.AddMenuAction("GRASSHOPPERBAKE", new MenuBarManager.ActionCallback(GrasshopperCommands.GrasshopperBake));
 
-                theUI.MenuBarManager.AddMenuAction("CLOSERHINO", new MenuBarManager.ActionCallback(CloseRhino));
+                theUI.MenuBarManager.AddMenuAction("RHINOINSIDEPREFERENCES", new MenuBarManager.ActionCallback(SetRhinoInsidePreferences));
+                theUI.MenuBarManager.AddMenuAction("RHINOINSIDEINFORMATION", new MenuBarManager.ActionCallback(ShowRhinoInsideInformation));
+                theUI.MenuBarManager.AddMenuAction("RHINOINSIDEHELP", new MenuBarManager.ActionCallback(ShowRhinoInsideHelp));
 
                 MainWindow = new WindowHandle(NXOpenUI.FormUtilities.GetDefaultParentWindowHandle());
 
@@ -130,10 +132,52 @@ namespace RhinoInside.NX.Core
             return retValue;
         }
 
-        private static MenuBarManager.CallbackStatus CloseRhino(MenuButtonEvent buttonEvent)
+        private static MenuBarManager.CallbackStatus ShowRhinoInsideInformation(MenuButtonEvent buttonEvent)
         {
-            Rhinoceros.Core.Dispose();
-            Rhinoceros.Core = null;
+            DateTime latestBuildTime = File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
+
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            theUI.NXMessageBox.Show("About", NXMessageBox.DialogType.Information, "Version:\t" + version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision + "\n" + "Last Build At: " + latestBuildTime.ToString());
+
+            return MenuBarManager.CallbackStatus.Continue;
+        }
+
+        private static MenuBarManager.CallbackStatus ShowRhinoInsideHelp(MenuButtonEvent buttonEvent)
+        {
+            "Not Ready yet!".ShowInNXMessageBox(NXMessageBox.DialogType.Warning);
+            return MenuBarManager.CallbackStatus.Continue;
+        }
+
+        private static MenuBarManager.CallbackStatus SetRhinoInsidePreferences(MenuButtonEvent buttonEvent)
+        {
+            RhinoInsidePreferences theRhinoInside_Preferences = null;
+            try
+            {
+                "Nothing need to set now.".ShowInNXMessageBox(NXMessageBox.DialogType.Information);
+                return MenuBarManager.CallbackStatus.Continue;
+
+                if (WorkPart == null)
+                {
+                    "Open a part first!".ShowInNXMessageBox(NXMessageBox.DialogType.Error);
+                    return MenuBarManager.CallbackStatus.Error;
+                }
+
+                theRhinoInside_Preferences = new RhinoInsidePreferences();
+
+                theRhinoInside_Preferences.Show();
+            }
+            catch (Exception ex)
+            {
+                //---- Enter your exception handling code here -----
+                TheUI.NXMessageBox.Show("Block Styler", NXMessageBox.DialogType.Error, ex.ToString());
+            }
+            finally
+            {
+                if (theRhinoInside_Preferences != null)
+                    theRhinoInside_Preferences.Dispose();
+                theRhinoInside_Preferences = null;
+            }
 
             return MenuBarManager.CallbackStatus.Continue;
         }
@@ -142,12 +186,6 @@ namespace RhinoInside.NX.Core
         {
             //Unloads the image explicitly, via an unload dialog
             return System.Convert.ToInt32(Session.LibraryUnloadOption.AtTermination);
-
-            //Unloads the image immediately after execution within NX
-            // return System.Convert.ToInt32(Session.LibraryUnloadOption.Immediately);
-
-            //Unloads the image when the NX session terminates
-            //return System.Convert.ToInt32(Session.LibraryUnloadOption.AtTermination);
         }
 
         public static void UnloadLibrary(string arg)

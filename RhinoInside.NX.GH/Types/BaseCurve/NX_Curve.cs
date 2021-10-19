@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RhinoInside.NX.Translator.Geometry;
+using RhinoInside.NX.Translator;
 
 namespace RhinoInside.NX.GH.Types
 {
@@ -48,6 +49,21 @@ namespace RhinoInside.NX.GH.Types
             }
 
             return base.CastTo(ref target);
+        }
+
+        public override bool CastFrom(object source)
+        {
+            if (source is GH_Curve gh_curve)
+            {
+                Value = gh_curve.Value.ToCurve();
+
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"无法将 {source.GetType()} 转换为 NXOpen.Curve");
+                return base.CastFrom(source);
+            }
         }
     }
 }

@@ -28,6 +28,8 @@ namespace RhinoInside_Starter
 
         public static ResourceDictionary LanguageDictionary;
 
+        private static string ConfigFileName = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "RhinoInside Starter.config");
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,16 +38,14 @@ namespace RhinoInside_Starter
             textBoxRhinoInsidePath.SetBinding(TextBox.TextProperty, new Binding() { Source = RhinoInsidePath, Path = new PropertyPath("SelectedPath") });
             textBoxRhinoPath.SetBinding(TextBox.TextProperty, new Binding() { Source = RhinoPath, Path = new PropertyPath("SelectedPath") });
 
-            string configPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "RhinoInside Starter Config.config");
-
-            if (System.IO.File.Exists(configPath))
+            if (System.IO.File.Exists(ConfigFileName))
             {
-                string[] configContent = System.IO.File.ReadAllLines(configPath);
+                string[] configContent = System.IO.File.ReadAllLines(ConfigFileName);
 
-                comboBoxSelectLanguage.SelectedIndex = Convert.ToInt32(configContent[0].Substring(2));
-                NxInstallPath.SelectedPath = configContent[1].Substring(2);
-                RhinoInsidePath.SelectedPath = configContent[2].Substring(2);
-                RhinoPath.SelectedPath = configContent[3].Substring(2);
+                comboBoxSelectLanguage.SelectedIndex = Convert.ToInt32(configContent.First(obj=>obj.Contains("Language=")).Split('=')[1]);
+                NxInstallPath.SelectedPath = configContent.First(obj=>obj.Contains("NxInstallPath=")).Split('=')[1];
+                RhinoInsidePath.SelectedPath = configContent.First(obj => obj.Contains("RhinoInsidePath=")).Split('=')[1];
+                RhinoPath.SelectedPath = configContent.First(obj => obj.Contains("RhinoPath=")).Split('=')[1];
             }
             else
             {
@@ -101,14 +101,12 @@ namespace RhinoInside_Starter
 
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {
-            var configFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "RhinoInside Starter Config.config");
-
-            using (var stream = System.IO.File.CreateText(configFilePath))
+            using (var stream = System.IO.File.CreateText(ConfigFileName))
             {
-                stream.WriteLine("# " + comboBoxSelectLanguage.SelectedIndex.ToString());
-                stream.WriteLine("# " + textBoxNxInstallPath.Text);
-                stream.WriteLine("# " + textBoxRhinoInsidePath.Text);
-                stream.WriteLine("# " + textBoxRhinoPath.Text);
+                stream.WriteLine("# Language=" + comboBoxSelectLanguage.SelectedIndex.ToString());
+                stream.WriteLine("# NxInstallPath=" + textBoxNxInstallPath.Text);
+                stream.WriteLine("# RhinoInsidePath=" + textBoxRhinoInsidePath.Text);
+                stream.WriteLine("# RhinoPath=" + textBoxRhinoPath.Text);
             }
 
             Process nxProcess = new Process();
@@ -120,14 +118,14 @@ namespace RhinoInside_Starter
 
             if (System.IO.Directory.Exists(@"E:\Documents\Programming\Repos\NXOpen Debug Utilities\00~Program"))
             {
-                using (var writer = System.IO.File.AppendText(configFilePath))
+                using (var writer = System.IO.File.AppendText(ConfigFileName))
                 {
                     writer.WriteLine(System.IO.Path.Combine(@"E:\Documents\Programming\Repos\NXOpen Debug Utilities\00~Program", textBoxNxInstallPath.Text.Split('\\').Last()));
 
                     writer.WriteLine(textBoxRhinoInsidePath.Text);
                 }
 
-                Environment.SetEnvironmentVariable("UGII_CUSTOM_DIRECTORY_FILE", configFilePath);
+                Environment.SetEnvironmentVariable("UGII_CUSTOM_DIRECTORY_FILE", ConfigFileName);
             }
             else
             {

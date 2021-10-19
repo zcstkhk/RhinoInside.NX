@@ -25,7 +25,7 @@ namespace RhinoInside.NX.Translator
                     return pointCloud.ToPoints(factor);
 
                 case Curve curve:
-                    return curve.ToCurveMany(factor).OfType<NXOpen.DisplayableObject>().ToArray();
+                    return CurveEncoder.ToNXCurves(curve, factor).OfType<NXOpen.DisplayableObject>().ToArray();
 
                 //case Brep brep:
                 //  return ToGeometryObjectMany(BrepEncoder.ToRawBrep(brep, factor)).OfType<NXOpen.GeometryObject>().ToArray();

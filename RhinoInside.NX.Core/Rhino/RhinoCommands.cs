@@ -29,53 +29,6 @@ namespace RhinoInside.NX.Core
         private static Part dispPart = theSession.Parts.Display;
 
         /// <summary>
-        /// 显示工具条
-        /// </summary>
-        /// <param name="buttonEvent"></param>
-        /// <returns></returns>
-        public static MenuBarManager.CallbackStatus StartRhinoInside(MenuButtonEvent buttonEvent)
-        {
-            try
-            {
-                if (!RibbonCreated)
-                {
-                    theUfSession.Ui.CreateRibbon("RhinoInside.rtb", 0, out RhinoInsideRibbon);
-
-                    if (RhinoInsideRibbon == IntPtr.Zero)
-                    {
-                        "创建工具条失败".ListingWindowWriteLine();
-                        return MenuBarManager.CallbackStatus.Error;
-                    }
-
-                    RibbonCreated = true;
-                }
-
-                if (buttonEvent.ActiveButton.ToggleStatus == MenuButton.Toggle.On)
-                {
-                    theUfSession.Ui.SetRibbonVis(RhinoInsideRibbon, 1);
-                }
-                else
-                {
-                    "关闭 RhinoInside 环境".ConsoleWriteLine();
-
-                    Rhinoceros.Exposed = false;
-
-                    theUfSession.Ui.SetRibbonVis(RhinoInsideRibbon, 0);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                theUI.NXMessageBox.Show("Block Styler", 0, ex.ToString());
-            }
-            finally
-            {
-
-            }
-            return 0;
-        }
-
-        /// <summary>
         /// 用户关闭 Rhino 界面后，通过此按钮重新打开
         /// </summary>
         /// <param name="buttonEvent"></param>

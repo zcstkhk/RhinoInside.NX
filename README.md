@@ -7,13 +7,13 @@
 # 目前仍然是处于非常早期的测试版本.
 
 # 注意事项
->1. 要使用此工具，必须使用 Rhino 7 与 NX 1847 及以上版本。
+>1. 要使用此工具，必须使用 Rhino 7 与 NX 1980 及以上版本。
 >2. 鉴于编写的 Brep 代码目前仍然问题较多，因此使用 STEP 来进行格式转换，因此要求 NX 有 STEP242 的许可证。
 >3. NX 1953 在导入 STEP 的过程中存在问题，请不要使用此版本。
 
 下载最新版本 [点击此处](https://github.com/zcstkhk/RhinoInside.NX/releases/)
 
-提供的程序是 NX 1872 的版本，理论上适用于 1872 及更高版本，如果不适用，可以自己进行编译并进行签名，更多和签名相关的信息，请点击下方的链接。如果有相关问题或者需要提供其它版本，请提交 issue。
+提供的程序是 NX 1980 的版本，理论上适用于 1980 及更高版本，如果不适用，可以自己进行编译并进行签名，更多和签名相关的信息，请点击下方的链接。如果有相关问题或者需要提供其它版本，请提交 issue。
 
 [签名过程](https://docs.plm.automation.siemens.com/tdoc/nx/1847/nx_api/#uid:signing_process)
 
@@ -31,3 +31,4 @@
 #已知问题
 >1. 不能修改 Grasshopper 中组件的描述（名称），否则会卡死，原因暂时未知。
 >2. 实际测试的时候发现，NX 1953 导入 STP 的时候可能会有问题，提示 Failed to find/create NX OCC part for PLM part，西门子支持网站上显示可能是一个 bug
+>3. 数据转换过程中 Grasshopper 会出现 object expired during a solution 的报错，错误原因还在分析中，再次连线可暂时解决此问题。

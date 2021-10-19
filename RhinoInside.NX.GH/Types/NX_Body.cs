@@ -1,4 +1,5 @@
-﻿using Grasshopper.Kernel.Parameters;
+﻿using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;
 using RhinoInside.NX.Translator;
 using RhinoInside.NX.Translator.Geometry;
@@ -12,8 +13,6 @@ namespace RhinoInside.NX.GH.Types
 {
     public class NX_Body : NX_DisplayableObject<NXOpen.Body>
     {
-
-
         public override string TypeName => "NX Body";
 
         public override string TypeDescription => Properties.Languages.GetString("NXBodyTypeDesc");
@@ -51,15 +50,20 @@ namespace RhinoInside.NX.GH.Types
             }
         }
 
+        /// <summary>
+        /// 中间 STEP 文件
+        /// </summary>
+        internal string InterFile;
+
         public override bool CastTo<Q>(ref Q target)
         {
             if (typeof(Q) == typeof(GH_Brep))
             {
                 var body = Value;
 
-                var interFile = SolidExchanger.NXExport(body);
+                InterFile = SolidExchanger.NXExport(body);
 
-                var s = SolidExchanger.GrasshopperImport(interFile);
+                var s = SolidExchanger.GrasshopperImport(InterFile);
 
                 target = (Q)(object)new GH_Brep(s);
 
@@ -76,7 +80,7 @@ namespace RhinoInside.NX.GH.Types
         {
             if (source is GH_Brep gh_brep)
             {
-               var interFile = SolidExchanger.GrasshopperExport(gh_brep.Value);
+                var interFile = SolidExchanger.GrasshopperExport(gh_brep.Value);
 
                 Value = SolidExchanger.NXImport(interFile);
 

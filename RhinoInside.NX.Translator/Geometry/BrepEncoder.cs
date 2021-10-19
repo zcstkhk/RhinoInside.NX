@@ -8,6 +8,7 @@ using System;
 using static NXOpen.Extensions.Globals;
 using RhinoInside.NX.Translator.Geometry.Raw;
 using RhinoInside.NX.Extensions;
+using RhinoInside.NX.Translator;
 
 namespace RhinoInside.NX.Translator
 {
@@ -301,7 +302,7 @@ namespace RhinoInside.NX.Translator
 
         static NXOpen.Line ToEdgeCurve(LineCurve curve)
         {
-            return curve.Line.ToLine();
+            return curve.Line.ToNXLine();
         }
 
         static IEnumerable<NXOpen.Line> ToEdgeCurveMany(PolylineCurve curve)
@@ -384,7 +385,7 @@ namespace RhinoInside.NX.Translator
 
                 case NurbsCurve nurbsCurve:
 
-                    foreach (var nurbs in nurbsCurve.ToCurveMany(UnitConverter.NoScale))
+                    foreach (var nurbs in CurveEncoder.ToNXCurves(nurbsCurve, UnitConverter.NoScale))
                         yield return nurbs;
                     yield break;
 
@@ -392,7 +393,7 @@ namespace RhinoInside.NX.Translator
                     if (curve.HasNurbsForm() != 0)
                     {
                         var nurbsForm = curve.ToNurbsCurve();
-                        foreach (var c in nurbsForm.ToCurveMany(UnitConverter.NoScale))
+                        foreach (var c in CurveEncoder.ToNXCurves(nurbsForm, UnitConverter.NoScale))
                             yield return c;
                     }
                     else throw new Exception($"Unable to convert {curve} to DB.Curve");

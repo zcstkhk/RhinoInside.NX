@@ -15,6 +15,8 @@ using GH_IO.Serialization;
 using Grasshopper.Kernel.Attributes;
 using Timer = System.Timers.Timer;
 using static RhinoInside.NX.GH.Properties.Languages;
+using Logger = RhinoInside.NX.Extensions.Logger;
+using Rhino;
 
 namespace RhinoInside.NX.GH.Parameters
 {
@@ -35,10 +37,16 @@ namespace RhinoInside.NX.GH.Parameters
             {
                 if (!Owner.VolatileData.IsEmpty)
                 {
-                    var validDatas = Owner.VolatileData.AllData(true).Where(obj => obj.IsValid).Select(obj => (obj as INXDisplayableObject).Tag).ToArray();
+                    var validDatas = Owner.VolatileData.AllData(true).Where(obj => obj.IsValid).Select(obj => (obj as INXDisplayableObject)).ToArray();
 
                     if (validDatas.Length > 0)
-                        Globals.TheUfSession.Disp.SetHighlights(validDatas.Length, validDatas, value ? 1 : 0);
+                    {
+                        Globals.TheUfSession.Disp.SetHighlights(validDatas.Length, validDatas.Select(obj=>obj.Tag).ToArray(), value ? 1 : 0);
+                        foreach (var data in validDatas)
+                        {
+                            data.Highlight = value;
+                        }
+                    }
                 }
 
                 base.Selected = value;
@@ -122,9 +130,11 @@ namespace RhinoInside.NX.GH.Parameters
 
         protected void SelectionPreparation()
         {
-            if (PersistentData.DataCount != 0)
+            if (VolatileData.DataCount != 0)
             {
-                foreach (INXDisplayableObject data in PersistentData)
+               var validDatas = VolatileData.AllData(true).Where(obj => obj.IsValid).ToArray();
+
+                foreach (INXDisplayableObject data in validDatas)
                 {
                     if (data.Highlight)
                         data.Highlight = false;
@@ -143,6 +153,13 @@ namespace RhinoInside.NX.GH.Parameters
             System.Windows.Forms.MessageBox.Show("View in NX, Not Implement yet!");
         }
 
+        private void Menu_ForceUpdate(object sender, EventArgs e)
+        {
+            VolatileData.AllData(true).Select(obj => obj as NX_Body).Where(obj => obj.IsValid).ToList().ForEach(obj => System.IO.File.Delete(obj.InterFile));
+
+            ExpireSolution(true);
+        }
+
         public override bool AppendMenuItems(ToolStripDropDown menu)
         {
             if (Attributes.IsTopLevel)
@@ -157,6 +174,10 @@ namespace RhinoInside.NX.GH.Parameters
             Menu_AppendItem(menu, "Visible", Menu_VisibleInNXClicked, Properties.Icons.NX_Show, true, Visible);
             Menu_AppendEnableItem(menu);
             Menu_AppendItem(menu, "View in NX", Menu_ViewInNX);
+
+            if (typeof(T) == typeof(NX_Body))
+                Menu_AppendItem(menu, "Force Update", Menu_ForceUpdate);
+
             Menu_AppendRuntimeMessages(menu);
 
             Menu_AppendReverseParameter(menu);
@@ -212,8 +233,6 @@ namespace RhinoInside.NX.GH.Parameters
 
         private void Menu_ClearPersistentData(object sender, EventArgs e)
         {
-            Console.WriteLine("清除");
-
             if (PersistentDataCount > 0)
             {
                 foreach (INXDisplayableObject item in PersistentData)
@@ -232,7 +251,7 @@ namespace RhinoInside.NX.GH.Parameters
 
         protected override void OnVolatileDataCollected()
         {
-            Console.WriteLine("OnVolatileDataCollected Called:" + PersistentDataCount);
+            Console.WriteLine("OnVolatileDataCollected Called:" + VolatileDataCount);
         }
 
         public override void RemovedFromDocument(GH_Document document)
@@ -244,9 +263,21 @@ namespace RhinoInside.NX.GH.Parameters
 
         protected override void ExpireDownStreamObjects()
         {
-            Console.WriteLine("ExpireDownStreamObjects Called:" + PersistentDataCount);
+            Console.WriteLine("ExpireDownStreamObjects Called:" + VolatileDataCount);
 
             base.ExpireDownStreamObjects();
+        }
+
+        protected override void CollectVolatileData_FromSources()
+        {
+            Console.WriteLine("CollectVolatileData_FromSources Called:" + VolatileDataCount);
+
+            base.CollectVolatileData_FromSources();
+        }
+
+        protected override void ValuesChanged()
+        {
+            Console.WriteLine("Value Changed Called:" + VolatileDataCount);
         }
 
         public override void AddSource(IGH_Param source)
@@ -262,17 +293,49 @@ namespace RhinoInside.NX.GH.Parameters
             base.AddSource(source, index);
         }
 
-        public override void RemoveSource(Guid source_id)
-        {
-            Console.WriteLine("RemoveSource1 Called");
-            base.RemoveSource(source_id);
-        }
-
+        /// <summary>
+        /// 连接的 Source 断开
+        /// </summary>
+        /// <param name="source"></param>
         public override void RemoveSource(IGH_Param source)
         {
             VolatileData.AllData(true).Where(obj => obj.IsValid).ToList().ForEach(obj => (obj as T).Delete());
 
             base.RemoveSource(source);
+        }
+
+        public override void ClearData()
+        {
+            Logger.Info("ClearData Called");
+
+            VolatileData.AllData(true).Select(obj => obj as T).Where(obj => obj.IsValid && obj.NXObject.HasUserAttribute("GH_Baked_Object", NXObject.AttributeType.Boolean, -1) && !obj.NXObject.GetBooleanUserAttribute("GH_Baked_Object", -1)).ToList().ForEach(obj => (obj as T).Delete());
+
+            base.ClearData();
+        }
+
+        public override void ExpireSolution(bool recompute)
+        {
+            Logger.Info("ExpireSolution Called");
+
+            base.ExpireSolution(recompute);
+        }
+
+        public override void ExpirePreview(bool redraw)
+        {
+            Logger.Info("ExpirePreview Called:" + VolatileDataCount);
+            base.ExpirePreview(redraw);
+        }
+
+        public override void IsolateObject()
+        {
+            Logger.Info("IsolateObject Called:" + VolatileDataCount);
+            base.IsolateObject();
+        }
+
+        public override void RemoveAllSources()
+        {
+            Logger.Info("RemoveAllSources Called:" + VolatileDataCount);
+            base.RemoveAllSources();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace RhinoInside.NX.Core
                             case Curve curve:
                                 if (curve.TryGetPlane(out var plane, DistanceTolerance))        // 平面曲线转换
                                 {
-                                    if (curve.ToRhino(scaleFactor) is NXOpen.Curve crv)
+                                    if (CurveEncoder.ToNXCurve(curve, scaleFactor) is NXOpen.Curve crv)
                                         elements.Add(crv);
                                 }
                                 else

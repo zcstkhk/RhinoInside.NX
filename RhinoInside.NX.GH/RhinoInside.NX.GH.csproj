@@ -23,7 +23,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1953|x64'">
   </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1980|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NX1980|x64'">
   </PropertyGroup>
   <PropertyGroup>
     <ReferencePath>
@@ -85,7 +85,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestComponents\ExportTest.cs" />
     <Compile Include="TestComponents\UDOTest.cs" />
     <Compile Include="TestComponents\TestBaseComponent.cs" />
     <Compile Include="Utilities\CSharpScriptComponent.cs" />
@@ -117,6 +116,10 @@
       <Project>{5b74d4ce-e07d-4a78-8481-d9f1ca87704b}</Project>
       <Name>RhinoInside.NX.Core</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\RhinoInside.NX.Extensions\RhinoInside.NX.Extensions.csproj">
+      <Project>{50F50200-A967-4BE5-932C-2D4A82569CFC}</Project>
+      <Name>RhinoInside.NX.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\RhinoInside.NX.GH.Loader\RhinoInside.NX.GH.Loader.csproj">
       <Project>{f4e0ffec-9223-4817-a363-52a78ed6b6d0}</Project>

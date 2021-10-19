@@ -8,7 +8,7 @@ using RhinoInside.NX.Core;
 
 namespace RhinoInside.NX.GH.TestComponents
 {
-    public class UDOTest : TestBaseComponent
+    public abstract class UDOTest : TestBaseComponent
     {
         public UDOTest() : base("UDO Test")
         {
